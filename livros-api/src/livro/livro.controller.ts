@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, NotAcceptableException, Param, Patch, Post, Put } from "@nestjs/common";
 import { Livro } from "./livro.entity";
 import { LivroService } from "./livro.service";
 
@@ -29,6 +29,9 @@ export class LivroControler {
 
     @Patch(':id')
     public alteraEstadoLivro(@Body() body, @Param('id') idLivro: number): Livro {
+        if (typeof body.lido !== 'boolean')
+            throw new NotAcceptableException('JSON informado em corpo da requisição inválido')
+
         const estado: boolean = body.lido;
         
         return this.livroService.alteraEstadoLivro(idLivro, estado);
