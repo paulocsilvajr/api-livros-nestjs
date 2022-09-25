@@ -84,7 +84,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:3000/api/livros",
+			"name": "localhost:3000/api/livros \"Mundo de Sofia\"",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -112,12 +112,115 @@
 			"response": []
 		},
 		{
-			"name": "localhost:3000/api/livros/4",
+			"name": "localhost:3000/api/livros \"Novembro de 63\"",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nome\": \"Novembro de 63\",\n    \"autor\": \"Stephen King\",\n    \"numeroPaginas\": 1056,\n    \"dataCompra\": \"2020-01-15\",\n    \"lido\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/livros",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"livros"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/api/livros \"1984\"",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nome\": \"1984\",\n    \"autor\": \"George Orwell\",\n    \"numeroPaginas\": 482,\n    \"dataCompra\": \"2020-11-13\",\n    \"lido\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/livros",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"livros"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/api/livros \"Rápido e devagar\"",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nome\": \"Rápido e devagar: Duas formas de pensar\",\n    \"autor\": \"Daniel Kahneman\",\n    \"numeroPaginas\": 746,\n    \"dataCompra\": \"2021-07-13\",\n    \"lido\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/livros",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"livros"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/api/livros Pos POST",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/livros/4",
+					"raw": "localhost:3000/api/livros",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"livros"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/api/livros/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/livros/1",
 					"host": [
 						"localhost"
 					],
@@ -125,14 +228,14 @@
 					"path": [
 						"api",
 						"livros",
-						"4"
+						"1"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "localhost:3000/api/livros/4",
+			"name": "localhost:3000/api/livros/1",
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -146,7 +249,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/api/livros/4",
+					"raw": "localhost:3000/api/livros/1",
 					"host": [
 						"localhost"
 					],
@@ -154,7 +257,7 @@
 					"path": [
 						"api",
 						"livros",
-						"4"
+						"1"
 					]
 				}
 			},
@@ -192,6 +295,26 @@
 		{
 			"name": "localhost:3000/api/livros/4",
 			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/livros/4",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"livros",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/api/livros/4",
+			"request": {
 				"method": "PATCH",
 				"header": [],
 				"body": {
@@ -219,7 +342,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:3000/api/livros/4 JSON inválido",
+			"name": "localhost:3000/api/livros/1 JSON inválido",
 			"request": {
 				"method": "PATCH",
 				"header": [],
@@ -233,7 +356,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/api/livros/4",
+					"raw": "localhost:3000/api/livros/1",
 					"host": [
 						"localhost"
 					],
@@ -241,19 +364,19 @@
 					"path": [
 						"api",
 						"livros",
-						"4"
+						"1"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "localhost:3000/api/livros/4",
+			"name": "localhost:3000/api/livros/1",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/livros/4",
+					"raw": "localhost:3000/api/livros/1",
 					"host": [
 						"localhost"
 					],
@@ -261,7 +384,26 @@
 					"path": [
 						"api",
 						"livros",
-						"4"
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/api/livros Pos DELETE",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/livros",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"livros"
 					]
 				}
 			},
