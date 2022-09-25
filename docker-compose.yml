@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  postgres-api-livros-nestjs:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: "masterkey"
+    ports:
+      - "25432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    networks:
+      - postgres-api-livros-nestjs-network
+
+networks:
+  postgres-api-livros-nestjs-network:
+
