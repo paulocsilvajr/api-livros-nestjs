@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotAcceptableException, Param, Patch, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, NotAcceptableException, NotFoundException, Param, Patch, Post, Put } from "@nestjs/common";
 import { Livro } from "./livro.entity";
 import { LivroService } from "./livro.service";
 
@@ -8,27 +8,35 @@ export class LivroControler {
     constructor(private livroService: LivroService) {}
     
     @Get()
-    public buscaLivros(): Array<Livro> {
-        return this.livroService.buscaLivros();
+    public async buscaLivros(): Promise<Livro[]> {
+        const livros = await this.livroService.buscaLivros();
+        if (livros.length > 0)
+            return livros
+        
+        throw new NotFoundException('Não há livros cadastrados')
     }
     
     @Get(':id')
-    public buscaLivroPorId(@Param('id') idLivro: number): Livro {
-        return this.livroService.buscaLivroPorId(idLivro);
+    public async buscaLivroPorId(@Param('id') idLivro: number): Promise<Livro> {
+        const livro = await this.livroService.buscaLivroPorId(idLivro);
+        if (!livro)
+            throw new NotFoundException(`Não existe um livro cadastrado com o id ${idLivro}`)
+
+        return livro;
     }
 
     @Post()
-    public cadastraLivro(@Body() livro: Livro): Livro {
+    public async cadastraLivro(@Body() livro: Livro): Promise<Livro> {
         return this.livroService.cadastraLivro(livro);
     }
 
     @Put(':id')
-    public alteraLivro(@Body() livro: Livro, @Param('id') idLivro: number): Livro {
+    public async alteraLivro(@Body() livro: Livro, @Param('id') idLivro: number): Promise<Livro> {
         return this.livroService.alteraLivro(idLivro, livro);
     }
 
     @Patch(':id')
-    public alteraEstadoLivro(@Body() body, @Param('id') idLivro: number): Livro {
+    public async alteraEstadoLivro(@Body() body, @Param('id') idLivro: number): Promise<Livro> {
         if (typeof body.lido !== 'boolean')
             throw new NotAcceptableException('JSON informado em corpo da requisição inválido')
 
@@ -38,7 +46,7 @@ export class LivroControler {
     }
 
     @Delete(':id')
-    public removeLivro(@Param('id') idLivro: number) {
+    public async removeLivro(@Param('id') idLivro: number) {
         return this.livroService.removeLivro(idLivro);
     }
 }

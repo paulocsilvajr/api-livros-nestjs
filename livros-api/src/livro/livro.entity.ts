@@ -1,15 +1,27 @@
-export class Livro {
-    public id: number;
-    public nome: string;
-    public autor: string;
-    public numeroPaginas: number;
-    public dataCompra: Date;
-    public lido: boolean;
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-    private static contador: number = 0;
+// https://typeorm.io/entities
+@Entity()
+export class Livro {
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column()
+    nome: string;
+
+    @Column({ nullable: true })
+    autor: string;
+
+    @Column()
+    numeroPaginas: number;
+
+    @Column({ default: new Date() })
+    dataCompra: Date;
+
+    @Column()
+    lido: boolean;
 
     constructor(nome: string, autor: string, numeroPagina: number, dataCompra: Date, lido: boolean) {
-        this.id = this.proximoId()
         this.nome = nome;
         this.autor = autor;
         this.numeroPaginas = numeroPagina;
@@ -17,8 +29,11 @@ export class Livro {
         this.lido = lido;
     }
 
-    private proximoId(): number {
-        Livro.contador += 1;
-        return Livro.contador;
+    altera(nome: string, autor: string, numeroPagina: number, dataCompra: Date, lido: boolean) {
+        this.nome = nome;
+        this.autor = autor;
+        this.numeroPaginas = numeroPagina;
+        this.dataCompra = dataCompra;
+        this.lido = lido;
     }
 }

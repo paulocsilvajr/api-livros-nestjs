@@ -1,77 +1,53 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 import { Livro } from "./livro.entity";
 
 @Injectable()
 export class LivroService {
-    private livros: Array<Livro> = [
-        new Livro('Novembro de 63', 'Stephen King', 1056, new Date(2022, 1, 15), true),
-        new Livro('1984', 'George Orwell', 482, new Date(2021, 11, 13), true),new Livro('Rápido e devagar: Duas formar de pensar', 'Daniel Kahneman', 746, new Date(2021, 7, 12), false)
-    ];
+
+    constructor(
+        @InjectRepository(Livro) private livroRepository: Repository<Livro>,
+    ) {}
     
-    private contador: number = this.livros.length;
-    
-    public buscaLivros(): Array<Livro> {
-        if (typeof this.livros !== 'undefined' && this.livros.length > 0)
-        return this.livros;
-        
-        throw new NotFoundException('Não há livros cadastrados')
+    public async buscaLivros(): Promise<Livro[]> {
+        return this.livroRepository.find();
     }
     
-    public buscaLivroPorId(idLivro: number): Livro {
-        const livroEncontrado = this.livros.find(livro => livro.id == idLivro);
-        if (typeof livroEncontrado !== 'undefined')
-        return livroEncontrado
-        
-        throw new NotFoundException(`Não existe um livro cadastrado com o id ${idLivro}`)
+    public async buscaLivroPorId(idLivro: number): Promise<Livro> {
+        return this.livroRepository.findOneBy({ id: idLivro });
     }
     
-    public cadastraLivro(livro: Livro): Livro {
+    public async cadastraLivro(livro: Livro): Promise<Livro> {
         const dataCompraConvertida = new Date(livro.dataCompra);
         const livroNovo = new Livro(livro.nome, livro.autor, livro.numeroPaginas, dataCompraConvertida, livro.lido);
         
-        this.livros.push(livroNovo);
-        
-        return livroNovo;
+        return this.livroRepository.save(livroNovo);
     }
     
-    public alteraLivro(idLivro: number, livroAlterado: Livro): Livro {
-        const posicaoLivro = this.posicaoLivro(idLivro);
+    public async alteraLivro(idLivro: number, livroAlterado: Livro): Promise<Livro> {
+        const livroEncontrado = await this.buscaLivroPorId(idLivro);
         
-        this.livros[posicaoLivro].nome = livroAlterado.nome;
-        this.livros[posicaoLivro].autor = livroAlterado.autor;
-        this.livros[posicaoLivro].numeroPaginas = livroAlterado.numeroPaginas;
-        this.livros[posicaoLivro].dataCompra = livroAlterado.dataCompra;
-        this.livros[posicaoLivro].lido = livroAlterado.lido;
-        
-        return this.livros[posicaoLivro];
+        if (!livroEncontrado)
+            throw new NotFoundException(`Não existe um livro cadastrado com o id ${idLivro}`)
+
+        livroEncontrado.altera(livroAlterado.nome, livroAlterado.autor, livroAlterado.numeroPaginas, livroAlterado.dataCompra, livroAlterado.lido);
+
+        return this.livroRepository.save(livroEncontrado);
     }
 
-    private posicaoLivro(idLivro: number): number {
-        const posicaoLivro = this.livros.findIndex(livro => livro.id == idLivro);
-        
-        if (posicaoLivro == -1)
-        throw new NotFoundException(`Livro com id ${idLivro} não existe`)
-        
-        return posicaoLivro; 
-    }
-    
-    public removeLivro(idLivro: number) {
-        const posicaoLivro = this.posicaoLivro(idLivro);
-        
-        if (posicaoLivro == -1)
-            throw new NotFoundException(`Livro com id ${idLivro} não existe`);
-        
-        this.livros.splice(posicaoLivro, 1);
+    public async removeLivro(idLivro: number): Promise<void> {
+        const livro = await this.buscaLivroPorId(idLivro);
+        if (!livro)
+            throw new NotFoundException(`Não existe um livro cadastrado com o id ${idLivro}`)
+
+        await this.livroRepository.delete(idLivro);
     }
 
-    public alteraEstadoLivro(idLivro: number, estado: boolean): Livro {
-        const posicaoLivro = this.posicaoLivro(idLivro);
+    public async alteraEstadoLivro(idLivro: number, estado: boolean): Promise<Livro> {
+        var livroEncontrado = await this.buscaLivroPorId(idLivro);
+        livroEncontrado.lido = estado
 
-        if (posicaoLivro == -1)
-            throw new NotFoundException(`Livro com id ${idLivro}não existe`);
-        
-        this.livros[posicaoLivro].lido = estado;
-
-        return this.livros[posicaoLivro];
+        return this.livroRepository.save(livroEncontrado);
     }
 }
