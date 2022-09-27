@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+    <title>Cadastro de livros</title>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <h1 class="text-center mt-3">{{ titulo }}</h1>
+            <hr />
+
+            <form>
+                <div class="row g-3">
+                    <input type="text" id="id" v-model="livro.id" hidden>
+                    <div class="col-auto">
+                        <label for="nome" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="nome" v-model.trim="livro.nome" required>
+                    </div>
+                    <div class="col-auto">
+                        <label for="autor" class="form-label">Autor</label>
+                        <input type="text" class="form-control" id="autor" v-model.trim="livro.autor" required>
+                    </div>
+                    <div class="col-auto">
+                        <label for="npaginas" class="form-label">Número de Páginas</label>
+                        <input type="number" class="form-control" id="npaginas" v-model="livro.numeroPaginas">
+                    </div>
+                    <div class="col-auto">
+                        <label for="datacompra" class="form-label">Data de compra</label>
+                        <input type="date" class="form-control" id="datacompra" v-model="livro.dataCompra">
+                    </div>
+                    <div class="col-auto">
+                        <label for="lido" class="form-label">Lido</label>
+                        <div class="input-group-text">
+                            <input class="form-check-input mt-0" type="checkbox" value="" id="lido" v-model="livro.lido">
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                        <button type="button" v-on:click="salvaLivro" class="btn btn-primary btn-lg mt-3">Salvar</button>
+                        <button type="button" v-on:click.prevent="defineLivroVazio" class="btn btn-secondary btn-lg mt-3">Novo</button>
+                </div>
+            </form>
+
+            <div class="row">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="col">#</th>
+                            <th class="col">Nome</th>
+                            <th class="col">Autor</th>
+                            <th class="col">N. páginas</th>
+                            <th class="col">Compra</th>
+                            <th class="col">Lido</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="liv in livros">
+                            <th scope="row">{{ liv.id }}</th>
+                            <td>{{ liv.nome }}</td>
+                            <td>{{ liv.autor }}</td>
+                            <td>{{ liv.numeroPaginas }}</td>
+                            <td>{{ liv.dataCompra }}</td>
+                            <td><strong v-if="liv.lido">SIM</strong><span v-else>não</span></td>
+                            <td><button class="btn btn-outline-primary btn-sm p-1" v-on:click="alteraLivro(liv.id)">Alterar</button></td>
+                            <td><button class="btn btn-outline-danger btn-sm p-1" v-on:click="apagaLivro(liv.id)">Apagar</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        const { createApp } = Vue
+
+        createApp({
+            created() {
+                this.URL = 'http://localhost:3000/api/livros';
+            },
+            data() {
+                return {
+                    titulo: 'Cadastro de livros',
+                    livros: [],
+                    livro: {
+                        id: 0,
+                        nome: '',
+                        autor: '',
+                        numeroPaginas: '',
+                        dataCompra: '',
+                        lido: false
+                    },
+                    url: 'http://localhost:3000/api/livros'
+                }
+            },
+            methods: {
+                async salvaLivro() {
+                    if (this.livro.nome === '' || this.livro.autor === '') {
+                        return
+                    }
+
+                    console.log("ID: ", this.livro.id);
+
+                    if (this.livro.id === 0) {
+                        var response = await fetch(this.URL, {method: "POST", headers: {'Content-Type': 'application/json'}, body: JSON.stringify(this.livro)});
+                    } else {
+                        var response = await fetch(`${this.URL}/${this.livro.id}`, {method: "PUT", headers: {'Content-Type': 'application/json'}, body: JSON.stringify(this.livro)});
+                    }
+
+                    let livroCadastrado = await response.json();
+                    console.log("Retorno de livro cadastrado em API: ", livroCadastrado);
+
+                    if (response.status == 201) {
+                        this.livros.push(livroCadastrado);
+
+                        this.defineLivroVazio();
+                    } else if (response.status == 200) {
+                        let indice = this.livros.findIndex(livro => livro.id === livroCadastrado.id);
+                        this.livros[indice] = livroCadastrado;
+
+                        this.defineLivroVazio();
+                    }
+                },
+                async buscaLivros() {
+                    let response = await fetch(this.URL);
+                    let data = await response.json();
+                    
+                    if (response.status == 200) {
+                        this.livros.splice(0, this.livros.length);  // zera array this.livros
+                        data.forEach(livro => {
+                            livro.dataCompra = new Date(livro.dataCompra).toISOString().split('T')[0];
+                            this.livros.push(livro);
+                        });
+                    }
+                },
+                alteraLivro(id) {
+                    let indice = this.livros.findIndex(livro => livro.id === id);
+                    this.livro.id = this.livros[indice].id;
+                    this.livro.nome = this.livros[indice].nome;
+                    this.livro.autor = this.livros[indice].autor;
+                    this.livro.numeroPaginas = this.livros[indice].numeroPaginas;
+                    this.livro.dataCompra = this.livros[indice].dataCompra;
+                    this.livro.lido = this.livros[indice].lido;
+                },
+                async apagaLivro(id) {
+                    let response = await fetch(`${this.URL}/${id}`, {method: "DELETE"});
+
+                    if (response.status == 200) {
+                        let indice = this.livros.findIndex(livro => livro.id === id);
+                        this.livros.splice(indice, 1);
+                    }
+                },
+                defineLivroVazio() {
+                    this.livro = {
+                        id: 0,
+                        nome: '',
+                        autor: '',
+                        numeroPaginas: '',
+                        dataCompra: new Date().toISOString().split('T')[0],
+                        lido: false
+                    };
+                }
+            },
+            beforeMount() {
+                this.buscaLivros();
+                this.defineLivroVazio();
+            }
+        }).mount('#app')
+    </script>
+    
+</body>
+</html>
