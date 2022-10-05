@@ -42,7 +42,7 @@
                 </div>
                 <div class="btn-group">
                         <button type="button" v-on:click="salvaLivro" class="btn btn-primary btn-lg mt-3">Salvar</button>
-                        <button type="button" v-on:click.prevent="defineLivroVazio" class="btn btn-secondary btn-lg mt-3">Novo</button>
+                        <button type="button" v-on:click.prevent="defineLivroVazio" class="btn btn-secondary btn-lg mt-3">Limpar</button>
                 </div>
             </form>
 
@@ -59,15 +59,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="liv in livros">
+                        <tr v-for="liv in livros" :key="liv.id">
                             <th scope="row">{{ liv.id }}</th>
                             <td>{{ liv.nome }}</td>
                             <td>{{ liv.autor }}</td>
                             <td>{{ liv.numeroPaginas }}</td>
-                            <td>{{ liv.dataCompra }}</td>
+                            <td>{{ formataDataBR(liv.dataCompra) }}</td>
                             <td><strong v-if="liv.lido">SIM</strong><span v-else>não</span></td>
                             <td><button class="btn btn-outline-primary btn-sm p-1" v-on:click="alteraLivro(liv.id)">Alterar</button></td>
-                            <td><button class="btn btn-outline-danger btn-sm p-1" v-on:click="apagaLivro(liv.id)">Apagar</button></td>
+                            <td><button class="btn btn-outline-danger btn-sm p-1" v-on:click="apagaLivro(liv.id, liv.nome)">Apagar</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -82,7 +82,7 @@
 
         createApp({
             created() {
-                this.URL = 'http://localhost:3000/api/livros';
+                this.URL = 'http://localhost:3000/api/livros'
             },
             data() {
                 return {
@@ -93,7 +93,7 @@
                         nome: '',
                         autor: '',
                         numeroPaginas: '',
-                        dataCompra: '',
+                        dataCompra: this.formataDataInputDate(new Date()),
                         lido: false
                     },
                     url: 'http://localhost:3000/api/livros'
@@ -105,55 +105,58 @@
                         return
                     }
 
-                    console.log("ID: ", this.livro.id);
+                    console.log("ID: ", this.livro.id)
 
                     if (this.livro.id === 0) {
-                        var response = await fetch(this.URL, {method: "POST", headers: {'Content-Type': 'application/json'}, body: JSON.stringify(this.livro)});
+                        var response = await fetch(this.URL, {method: "POST", headers: {'Content-Type': 'application/json'}, body: JSON.stringify(this.livro)})
                     } else {
-                        var response = await fetch(`${this.URL}/${this.livro.id}`, {method: "PUT", headers: {'Content-Type': 'application/json'}, body: JSON.stringify(this.livro)});
+                        var response = await fetch(`${this.URL}/${this.livro.id}`, {method: "PUT", headers: {'Content-Type': 'application/json'}, body: JSON.stringify(this.livro)})
                     }
 
-                    let livroCadastrado = await response.json();
-                    console.log("Retorno de livro cadastrado em API: ", livroCadastrado);
+                    let livroCadastrado = await response.json()
+                    console.log("Retorno de livro cadastrado em API: ", livroCadastrado)
 
                     if (response.status == 201) {
-                        this.livros.push(livroCadastrado);
+                        this.livros.push(livroCadastrado)
 
-                        this.defineLivroVazio();
+                        this.defineLivroVazio()
                     } else if (response.status == 200) {
-                        let indice = this.livros.findIndex(livro => livro.id === livroCadastrado.id);
-                        this.livros[indice] = livroCadastrado;
+                        let indice = this.livros.findIndex(livro => livro.id === livroCadastrado.id)
+                        this.livros[indice] = livroCadastrado
 
-                        this.defineLivroVazio();
+                        this.defineLivroVazio()
                     }
                 },
                 async buscaLivros() {
-                    let response = await fetch(this.URL);
-                    let data = await response.json();
+                    let response = await fetch(this.URL)
+                    let data = await response.json()
                     
                     if (response.status == 200) {
-                        this.livros.splice(0, this.livros.length);  // zera array this.livros
+                        this.livros.splice(0, this.livros.length)  // zera array this.livros
                         data.forEach(livro => {
-                            livro.dataCompra = new Date(livro.dataCompra).toISOString().split('T')[0];
-                            this.livros.push(livro);
-                        });
+                            livro.dataCompra = new Date(livro.dataCompra)
+                            this.livros.push(livro)
+                        })
                     }
                 },
                 alteraLivro(id) {
-                    let indice = this.livros.findIndex(livro => livro.id === id);
-                    this.livro.id = this.livros[indice].id;
-                    this.livro.nome = this.livros[indice].nome;
-                    this.livro.autor = this.livros[indice].autor;
-                    this.livro.numeroPaginas = this.livros[indice].numeroPaginas;
-                    this.livro.dataCompra = this.livros[indice].dataCompra;
-                    this.livro.lido = this.livros[indice].lido;
+                    let indice = this.livros.findIndex(livro => livro.id === id)
+                    this.livro.id = this.livros[indice].id
+                    this.livro.nome = this.livros[indice].nome
+                    this.livro.autor = this.livros[indice].autor
+                    this.livro.numeroPaginas = this.livros[indice].numeroPaginas
+                    const dataCompraFormatada = this.formataDataInputDate(this.livros[indice].dataCompra)
+                    this.livro.dataCompra = dataCompraFormatada
+                    this.livro.lido = this.livros[indice].lido
                 },
-                async apagaLivro(id) {
-                    let response = await fetch(`${this.URL}/${id}`, {method: "DELETE"});
+                async apagaLivro(id, nome) {
+                    if (confirm(`Deseja remover o livro '${id} - ${nome}'`) === true) {
+                        let response = await fetch(`${this.URL}/${id}`, {method: "DELETE"})
 
-                    if (response.status == 200) {
-                        let indice = this.livros.findIndex(livro => livro.id === id);
-                        this.livros.splice(indice, 1);
+                        if (response.status == 200) {
+                            const indice = this.livros.findIndex(livro => livro.id === id)
+                            this.livros.splice(indice, 1)
+                        }
                     }
                 },
                 defineLivroVazio() {
@@ -162,14 +165,20 @@
                         nome: '',
                         autor: '',
                         numeroPaginas: '',
-                        dataCompra: new Date().toISOString().split('T')[0],
+                        dataCompra: this.formataDataInputDate(new Date()),
                         lido: false
-                    };
-                }
+                    }
+                },
+                formataDataBR(data) {
+                    return new Date(data).toLocaleDateString('pt-BR', {timeZone: 'UTC'})
+                },
+                formataDataInputDate(data) {
+                    return data.toISOString().split('T')[0]
+                },
             },
             beforeMount() {
-                this.buscaLivros();
-                this.defineLivroVazio();
+                this.buscaLivros()
+                this.defineLivroVazio()
             }
         }).mount('#app')
     </script>
