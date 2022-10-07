@@ -1,8 +1,11 @@
 export default class Livro {
-    id: number = 0
-    nome: string = ''
-    autor: string = ''
-    numeroPaginas: number = 0
-    dataCompra: Date = new Date()
-    lido: boolean = false
-} 
+
+    constructor(
+        public id: number = 0,
+        public nome: string = '',
+        public autor: string = '',
+        public numeroPaginas: number = 0,
+        public dataCompra: Date = new Date(),
+        public lido: boolean = false
+        ) {}
+}

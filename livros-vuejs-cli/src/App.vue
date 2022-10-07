@@ -3,7 +3,7 @@
 
     <div class="columns">
       <div class="column mt-6">
-        <h1 class="title is-1 has-text-centered">Cadastro de livros</h1>
+        <h1 class="title is-1 has-text-centered">{{ titulo }}</h1>
       </div>
     </div>
 
@@ -96,22 +96,25 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th>1</th>
-            <td>A espera de um milagre</td>
-            <td>Stephen King</td>
-            <td>1020</td>
-            <td>10/12/2020</td>
-            <td><strong>SIM</strong></td>
+          <tr v-for="l in livros" :key="l.id">
+            <th>{{ l.id }}</th>
+            <td>{{ l.nome }}</td>
+            <td>{{ l.autor }}</td>
+            <td>{{ l.numeroPaginas }}</td>
+            <td>{{ formataDataBR(l.dataCompra) }}</td>
+            <td>
+              <strong v-if="l.lido">SIM</strong>
+              <span v-else>não</span>
+            </td>
           </tr>
-          <tr class="is-selected">
+          <!-- <tr class="is-selected">
             <th>2</th>
             <td>A coisa</td>
             <td>Stephen King</td>
             <td>1200</td>
             <td>01/02/2000</td>
             <td>não</td>
-          </tr>
+          </tr> -->
         </tbody>
       </table>
 
@@ -130,19 +133,36 @@ export default defineComponent({
   components: {
   },
   created() {
-      return {
-        URL: 'http://localhost:3000/api/livros'
-      }
+    return {
+      URL: 'http://localhost:3000/api/livros'
+    }
   },
   data() {
     return {
       titulo: 'Cadastro de livros',
-      livros: [] as Livro[],
+      livro: new Livro(),
+      livros: new Array<Livro>(),
     }
   },
   methods: {
+    defineLivroVazio() {
+      this.livro = new Livro()
+    },
+    buscaLivros() {
+      const l1 = new Livro(1, 'A espera de um milagre', 'Stephen King', 1023, new Date('2022-01-03'), true)
+      const l2 = new Livro(2, 'It', 'Stephen King', 1200, new Date('2021-12-11'), false)
 
+      this.livros.push(l1)
+      this.livros.push(l2)
+    },
+    formataDataBR(data: Date) {
+      return data.toLocaleDateString('pt-BR', { timeZone: 'UTC' })
+    },
   },
+  beforeMount() {
+    this.defineLivroVazio()
+    this.buscaLivros();
+  }
 });
 </script>
 
