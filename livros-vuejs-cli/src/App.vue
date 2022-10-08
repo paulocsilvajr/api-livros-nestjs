@@ -9,11 +9,13 @@
 
     <div class="columns is-vcentered">
 
+      <input type="text" id="id" hidden v-model="livro.id">
+
       <div class="column is-three-quarters">
         <div class="field">
           <label for="nome">Título</label>
           <div class="control">
-            <input type="text" class="input" placeholder="Título do livro" id="nome">
+            <input type="text" class="input" placeholder="Título do livro" id="nome" v-model.trim="livro.nome">
           </div>
         </div>
       </div>
@@ -22,7 +24,7 @@
         <div class="field">
           <label for="autor">Autor</label>
           <div class="control">
-            <input type="text" class="input" placeholder="Nome do autor" id="autor">
+            <input type="text" class="input" placeholder="Nome do autor" id="autor"  v-model.trim="livro.autor">
           </div>
         </div>
       </div>
@@ -35,7 +37,7 @@
         <div class="field">
           <label for="npaginas">Número de páginas</label>
           <div class="control">
-            <input type="number" class="input" placeholder="Número de páginas" id="npaginas">
+            <input type="number" class="input" placeholder="Número de páginas" id="npaginas"  v-model="livro.numeroPaginas">
           </div>
         </div>
       </div>
@@ -44,7 +46,7 @@
         <div class="field">
           <label for="datacompra">Data de compra</label>
           <div class="control">
-            <input type="date" class="input" placeholder="Data de compra" id="datacompra">
+            <input type="date" class="input" placeholder="Data de compra" id="datacompra"  v-model="livro.dataCompraInput">
           </div>
         </div>
       </div>
@@ -53,7 +55,7 @@
         <div class="field">
           <div class="control">
             <label class="checkbox" for="lido">
-              <input type="checkbox" id="lido">
+              <input type="checkbox" id="lido" v-model="livro.lido">
               Lido
             </label>
           </div>
@@ -65,13 +67,13 @@
     <div class="colums">
 
       <div class="buttons has-addons">
-        <button class="button is-success">
+        <button class="button is-success" @click="salvaLivro">
           <span class="icon is-small">
             <i class="fas fa-check"></i>
           </span>
           <span>Salvar</span>
         </button>
-        <button class="button is-warning">
+        <button class="button is-warning" @click="defineLivroVazio">
           <span class="icon is-small">
             <i class="fas fa-times"></i>
           </span>
@@ -93,6 +95,7 @@
             <th>N° páginas</th>
             <th>Compra</th>
             <th>Lido</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -105,6 +108,12 @@
             <td>
               <strong v-if="l.lido">SIM</strong>
               <span v-else>não</span>
+            </td>
+            <td>
+              <div class="buttons has-addons is-centered">
+                <button class="button is-info is-small">Alterar</button>
+                <button class="button is-danger is-small">Remover</button>
+              </div>
             </td>
           </tr>
           <!-- <tr class="is-selected">
@@ -127,18 +136,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import Livro from './models/livro';
+import LivroService from './services/livro-service';
 
 export default defineComponent({
   name: 'App',
   components: {
   },
-  created() {
-    return {
-      URL: 'http://localhost:3000/api/livros'
-    }
-  },
   data() {
     return {
+      livroService: new LivroService(),
       titulo: 'Cadastro de livros',
       livro: new Livro(),
       livros: new Array<Livro>(),
@@ -149,11 +155,23 @@ export default defineComponent({
       this.livro = new Livro()
     },
     buscaLivros() {
-      const l1 = new Livro(1, 'A espera de um milagre', 'Stephen King', 1023, new Date('2022-01-03'), true)
-      const l2 = new Livro(2, 'It', 'Stephen King', 1200, new Date('2021-12-11'), false)
+      this.livroService.buscaLivros(this.livros)
+    },
+    salvaLivro() {
+      if(this.livro.nome === '') {
+        alert('Informe o título do livro')
+        return
+      } else if (this.livro.autor === '') {
+        alert('Informe o nome do autor')
+        return
+      } else if (this.livro.numeroPaginas < 1) {
+        alert('Informe o número de páginas')
+        return
+      }
 
-      this.livros.push(l1)
-      this.livros.push(l2)
+      this.livroService.salvaLivro(this.livro, this.livros)
+
+      this.defineLivroVazio()
     },
     formataDataBR(data: Date) {
       return data.toLocaleDateString('pt-BR', { timeZone: 'UTC' })
