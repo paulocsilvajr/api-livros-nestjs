@@ -114,6 +114,12 @@
                     <th></th>
                 </tr>
             </thead>
+            <tfoot>
+                <tr>
+                    <th>Total</th>
+                    <th>{{ totalLivros }}</th>
+                </tr>
+            </tfoot>
             <tbody>
                 <tr v-for="l in livros" :key="l.id">
                     <th>{{ l.id }}</th>
@@ -133,14 +139,13 @@
                         </div>
                     </td>
                 </tr>
-                <!-- <tr class="is-selected">
+            <!-- <tr class="is-selected">
             <th>2</th>
             <td>A coisa</td>
             <td>Stephen King</td>
             <td>1200</td>
             <td>01/02/2000</td>
-            <td>não</td>
-          </tr> -->
+            <td>não</td> -->
             </tbody>
         </table>
 
@@ -163,6 +168,11 @@ export default defineComponent({
             livros: new Array<Livro>(),
             msg: '',
             validacaoCampos: { titulo: false, autor: false, numeroPaginas: false },
+        }
+    },
+    computed: {
+        totalLivros(): string {
+            return `${this.livros.length} livro${this.livros.length != 1 ? 's' : ''}`
         }
     },
     methods: {
