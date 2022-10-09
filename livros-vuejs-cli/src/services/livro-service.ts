@@ -1,30 +1,21 @@
 import LivroJson from "@/interfaces/livro-json"
 import Livro from "@/models/livro"
 
-type Livros = Promise<Array<Livro>>
-
 export default class LivroService {
     private url = 'http://localhost:3000/api/livros'
 
-    public async buscaLivros(livros: Array<Livro>): Livros {
+    public async buscaLivros(livros: Array<Livro>) {
         const response = await fetch(this.url)
         const data = await response.json()
 
         livros.splice(0, livros.length)
         if (response.status == 200) {
             data.forEach((livroJson: LivroJson) => {
-                const livro = new Livro(
-                    livroJson.id,
-                    livroJson.nome,
-                    livroJson.autor,
-                    livroJson.numeroPaginas,
-                    new Date(livroJson.dataCompra),
-                    livroJson.lido)
+                const livro = Livro.fromJson(livroJson)
 
                 livros.push(livro)
             });
         }
-        return livros
     }
 
     public async salvaLivro(livro: Livro, livros: Array<Livro>) {
@@ -43,11 +34,23 @@ export default class LivroService {
         console.log("Livro(JSON) retornado após salvar/alterar:", livroJson)
 
         if (response.status == 201) {
-            const livro = Livro.fromJson(livroJson)
-            livros.push(livro)
+            const livroSalvo = Livro.fromJson(livroJson)
+
+            livros.push(livroSalvo)
         } else if (response.status == 200) {
             const indice = livros.findIndex(liv => liv.id === livroJson.id)
-            livros[indice] = Livro.fromJson(livroJson)
+            const livroAlterado = Livro.fromJson(livroJson)
+
+            livros[indice] = livroAlterado
+        }
+    }
+
+    public async removeLivro(id: number, livros: Array<Livro>) {
+        const response = await fetch(`${this.url}/${id}`, {method: "DELETE"})
+
+        if (response.status == 200) {
+            const indice = livros.findIndex(l => l.id === id)
+            livros.splice(indice, 1)
         }
     }
     
