@@ -22,6 +22,17 @@ export default class Livro {
         }
     }
 
+    public copia(): Livro {
+        return new Livro(
+            this.id,
+            this.nome,
+            this.autor,
+            this.numeroPaginas,
+            this.dataCompra,
+            this.lido
+            )
+    }
+
     static fromJson(livro: LivroJson): Livro {
         return new Livro(
             livro.id,
