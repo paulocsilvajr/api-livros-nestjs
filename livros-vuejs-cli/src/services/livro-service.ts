@@ -4,17 +4,22 @@ import Livro from "@/models/livro"
 export default class LivroService {
     private url = 'http://localhost:3000/api/livros'
 
-    public async buscaLivros(livros: Array<Livro>) {
-        const response = await fetch(this.url)
-        const data = await response.json()
+    public async buscaLivros(livros: Array<Livro>): Promise<string> {
+        try {
+            const response = await fetch(this.url)
+            const data = await response.json()
 
-        livros.splice(0, livros.length)
-        if (response.status == 200) {
-            data.forEach((livroJson: LivroJson) => {
-                const livro = Livro.fromJson(livroJson)
+            livros.splice(0, livros.length)
+            if (response.status == 200) {
+                data.forEach((livroJson: LivroJson) => {
+                    const livro = Livro.fromJson(livroJson)
 
-                livros.push(livro)
-            });
+                    livros.push(livro)
+                });
+            }
+            return ''
+        } catch (err) {
+            return `Erro na conexão com a API '${this.url}'`
         }
     }
 
@@ -23,11 +28,11 @@ export default class LivroService {
         if (this.ehNovoLivro(livro)) {
             console.log("Salvar livro ID:", livro.id)
 
-            response = await fetch(this.url, {method: "POST", headers: {'Content-Type': 'application/json'}, body: Livro.toJson(livro)})
+            response = await fetch(this.url, { method: "POST", headers: { 'Content-Type': 'application/json' }, body: Livro.toJson(livro) })
         } else {
             console.log("Alterar livro ID:", livro.id)
-            
-            response = await fetch(`${this.url}/${livro.id}`, {method: "PUT", headers: {'Content-Type': 'application/json'}, body: Livro.toJson(livro)})
+
+            response = await fetch(`${this.url}/${livro.id}`, { method: "PUT", headers: { 'Content-Type': 'application/json' }, body: Livro.toJson(livro) })
         }
 
         const livroJson: LivroJson = await response.json()
@@ -46,14 +51,14 @@ export default class LivroService {
     }
 
     public async removeLivro(id: number, livros: Array<Livro>) {
-        const response = await fetch(`${this.url}/${id}`, {method: "DELETE"})
+        const response = await fetch(`${this.url}/${id}`, { method: "DELETE" })
 
         if (response.status == 200) {
             const indice = livros.findIndex(l => l.id === id)
             livros.splice(indice, 1)
         }
     }
-    
+
     private ehNovoLivro(livro: Livro) {
         // NOVO livro, id == 0, senão ALTERAR livro
         return livro.id === 0
