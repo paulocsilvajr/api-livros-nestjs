@@ -29,7 +29,7 @@ A pasta *livros-vuejs* contém a interface web para cadastro de livros. Foi dese
 
 ### Licença
 
-[Licença MIT](https://github.com/paulocsilvajr/controle_pessoal_de_financas/blob/api/license_mit.txt), arquivo em anexo no repositório.
+[Licença MIT](https://github.com/paulocsilvajr/api-livros-nestjs/blob/master/license_mit.txt), arquivo em anexo no repositório.
 
 
 ### Contato
