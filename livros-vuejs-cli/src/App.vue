@@ -17,6 +17,7 @@
           <div class="control">
             <input type="text" class="input" placeholder="Título do livro" id="nome" v-model.trim="livro.nome">
           </div>
+          <p class="help is-danger" v-if="validacaoCampos.titulo">Informe um título</p>
         </div>
       </div>
 
@@ -24,8 +25,9 @@
         <div class="field">
           <label for="autor">Autor</label>
           <div class="control">
-            <input type="text" class="input" placeholder="Nome do autor" id="autor"  v-model.trim="livro.autor">
+            <input type="text" class="input" placeholder="Nome do autor" id="autor" v-model.trim="livro.autor">
           </div>
+          <p class="help is-danger" v-if="validacaoCampos.autor">Informe um autor</p>
         </div>
       </div>
 
@@ -37,8 +39,10 @@
         <div class="field">
           <label for="npaginas">Número de páginas</label>
           <div class="control">
-            <input type="number" class="input" placeholder="Número de páginas" id="npaginas"  v-model="livro.numeroPaginas">
+            <input type="number" min="1" class="input" placeholder="Número de páginas" id="npaginas"
+              v-model="livro.numeroPaginas">
           </div>
+          <p class="help is-danger" v-if="validacaoCampos.numeroPaginas">Informe um número de páginas válido</p>
         </div>
       </div>
 
@@ -46,7 +50,8 @@
         <div class="field">
           <label for="datacompra">Data de compra</label>
           <div class="control">
-            <input type="date" class="input" placeholder="Data de compra" id="datacompra"  v-model="livro.dataCompraInput">
+            <input type="date" class="input" placeholder="Data de compra" id="datacompra"
+              v-model="livro.dataCompraInput">
           </div>
         </div>
       </div>
@@ -111,8 +116,8 @@
             </td>
             <td>
               <div class="buttons has-addons is-centered">
-                <button class="button is-info is-small">Alterar</button>
-                <button class="button is-danger is-small">Remover</button>
+                <button class="button is-info is-small" @click="alteraLivro(l.id)">Alterar</button>
+                <button class="button is-danger is-small" @click="removeLivro(l.id, l.nome)">Remover</button>
               </div>
             </td>
           </tr>
@@ -148,30 +153,43 @@ export default defineComponent({
       titulo: 'Cadastro de livros',
       livro: new Livro(),
       livros: new Array<Livro>(),
+      validacaoCampos: {titulo: false, autor: false, numeroPaginas: false},
     }
   },
   methods: {
     defineLivroVazio() {
       this.livro = new Livro()
+      this.validacaoCampos.titulo = this.validacaoCampos.autor = this.validacaoCampos.numeroPaginas = false
     },
     buscaLivros() {
       this.livroService.buscaLivros(this.livros)
     },
     salvaLivro() {
-      if(this.livro.nome === '') {
-        alert('Informe o título do livro')
-        return
-      } else if (this.livro.autor === '') {
-        alert('Informe o nome do autor')
-        return
-      } else if (this.livro.numeroPaginas < 1) {
-        alert('Informe o número de páginas')
+      this.validacaoCampos.titulo = this.livro.nome === ''
+      this.validacaoCampos.autor = this.livro.autor === ''
+      this.validacaoCampos.numeroPaginas = this.livro.numeroPaginas < 1 || !Number.isInteger(this.livro.numeroPaginas)
+      if (this.validacaoCampos.titulo ||
+          this.validacaoCampos.autor || 
+          this.validacaoCampos.numeroPaginas) {
         return
       }
 
       this.livroService.salvaLivro(this.livro, this.livros)
 
       this.defineLivroVazio()
+    },
+    alteraLivro(id: number) {
+      const indice = this.livros.findIndex(l => l.id === id)
+      const livroParaAlterar = this.livros[indice]
+
+      this.livro = livroParaAlterar.copia()
+    },
+    removeLivro(id: number, titulo: string) {
+      this.defineLivroVazio()
+
+      if (confirm(`Deseja remover o livro '${id} - ${titulo}'`)) {
+        this.livroService.removeLivro(id, this.livros)
+      }
     },
     formataDataBR(data: Date) {
       return data.toLocaleDateString('pt-BR', { timeZone: 'UTC' })
