@@ -24,7 +24,9 @@ Detalhes dos scripts *postgres_docker*:
 - O script *postgres_docker_down.sh* para a execução do conteiner e o script *postgres_docker_ps.sh* mostra o estado do conteiner.
 - O script *postgres_docker_reset.sh* para o conteiner e remove a pasta *data*, resetando as informações do banco de dados.
 
-A pasta *livros-vuejs* contém a interface web para cadastro de livros. Foi desenvolvida em **Vue.js**, usando um componente simples no proprio HTML da página, usando o *Bootstrap* e o *CND do Vue.js* como dependências.
+A pasta *livros-vuejs* contém a interface web simples para o cadastro de livros. Foi desenvolvida em **Vue.js**, usando um componente simples no próprio HTML da página, usando o *Bootstrap* e o *CND do Vue.js* como dependências. Para executar, use o seguinte comando `firefox index.html`(troque firefox pelo navegador instalado).
+
+A pasta *livros-vuejs-cli* contém a interface web desenvolvida em **Vue.js** a partir de um projeto gerado pelo CLI do Vuejs. Para testar essa aplicação, com o Node instalado, execute *npm install* para instalar todas as dependências. Use o script *run-serve.sh* para testar no modo desenvolvimento ou compile com o script *run-build.sh* para gerar a aplicação final na pasta *build*. O script *install_http-server.sh* instala um servidor HTTP em Node para rodar a interface web. Use o script *run-server-http_dist.sh* para rodar o interface web que está na pasta *dist*.
 
 
 ### Licença
