@@ -19,8 +19,8 @@ A pasta *livros-api* contém o projeto desenvolvido em **NestJS**:
 
 O arquivo *livros-api.postman_collection.json* contém testes efetuados via [Postman](https://www.postman.com/). Importe esse arquivo no Postman para visualizar os testes e criar novos.
 
-Detalhes dos scripts *postgres_docker*:
-- O script *postgres_docker_up.sh* cria as pastas *data* e *docker-entrypoint-initdb.d*, se não existirem, e inicia o conteiner *postgres-api-livros-nestjs* baseado no arquivo *docker-compose.yml*. A pasta *data* mantém a base de dados do PostgreSQL(volume Docker) e *docker-entrypoint-initdb.d* contém a definição do usuário *docker*(senha "masterkey") para o PostgreSQL e do banco de dados *livros*.
+Detalhes dos scripts *db/postgres_docker*:
+- O script *postgres_docker_up.sh* cria a pasta *data*, se não existir, e inicia o projeto *postgres-api-livros-nestjs* baseado no arquivo *docker-compose.yml*. A pasta *data* mantém a base de dados do PostgreSQL(volume Docker) e *docker-entrypoint-initdb.d* contém a definição do usuário *docker*(senha "masterkey") para o PostgreSQL e do banco de dados *livros*.
 - O script *postgres_docker_down.sh* para a execução do conteiner e o script *postgres_docker_ps.sh* mostra o estado do conteiner.
 - O script *postgres_docker_reset.sh* para o conteiner e remove a pasta *data*, resetando as informações do banco de dados.
 
