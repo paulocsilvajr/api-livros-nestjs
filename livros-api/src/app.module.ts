@@ -17,7 +17,7 @@ import { LivroModule } from './livro/livro.module';
       port: parseInt(process.env.PORTA_BANCO_DADOS, 10),
       username: process.env.USUARIO_BANCO_DADOS,
       password: process.env.SENHA_BANCO_DADOS,
-      database: 'livros',
+      database: process.env.NOME_BANCO_DADOS,
       entities: [Livro],
       synchronize: true,  // synchronize não deve ser usado em PRODUÇÃO
     }),
