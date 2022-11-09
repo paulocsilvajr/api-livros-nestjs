@@ -25,28 +25,28 @@ export class LivroControler {
         return livro;
     }
 
-    @Post()
-    public async cadastraLivro(@Body() livro: Livro): Promise<Livro> {
-        return this.livroService.cadastraLivro(livro);
-    }
+    // @Post()
+    // public async cadastraLivro(@Body() livro: Livro): Promise<Livro> {
+    //     return this.livroService.cadastraLivro(livro);
+    // }
 
-    @Put(':id')
-    public async alteraLivro(@Body() livro: Livro, @Param('id') idLivro: number): Promise<Livro> {
-        return this.livroService.alteraLivro(idLivro, livro);
-    }
+    // @Put(':id')
+    // public async alteraLivro(@Body() livro: Livro, @Param('id') idLivro: number): Promise<Livro> {
+    //     return this.livroService.alteraLivro(idLivro, livro);
+    // }
 
-    @Patch(':id')
-    public async alteraEstadoLivro(@Body() body, @Param('id') idLivro: number): Promise<Livro> {
-        if (typeof body.lido !== 'boolean')
-            throw new NotAcceptableException('JSON informado em corpo da requisição inválido')
+    // @Patch(':id')
+    // public async alteraEstadoLivro(@Body() body, @Param('id') idLivro: number): Promise<Livro> {
+    //     if (typeof body.lido !== 'boolean')
+    //         throw new NotAcceptableException('JSON informado em corpo da requisição inválido')
 
-        const estado: boolean = body.lido;
+    //     const estado: boolean = body.lido;
         
-        return this.livroService.alteraEstadoLivro(idLivro, estado);
-    }
+    //     return this.livroService.alteraEstadoLivro(idLivro, estado);
+    // }
 
-    @Delete(':id')
-    public async removeLivro(@Param('id') idLivro: number) {
-        return this.livroService.removeLivro(idLivro);
-    }
+    // @Delete(':id')
+    // public async removeLivro(@Param('id') idLivro: number) {
+    //     return this.livroService.removeLivro(idLivro);
+    // }
 }

@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Autor } from "../autor/autor.entity";
+import { LivroUsuario } from "../livro-usuario/livro-usuario.entity";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 // https://typeorm.io/entities
 @Entity()
@@ -7,33 +9,34 @@ export class Livro {
     id: number;
 
     @Column()
-    nome: string;
+    titulo: string;
+
+    @ManyToOne(() => Autor, (autor) => autor.livros)
+    autor: Autor;
 
     @Column({ nullable: true })
-    autor: string;
+    resumo: string;
 
-    @Column()
+    @Column({ default: 1 })
     numeroPaginas: number;
 
     @Column({ default: new Date() })
     dataCompra: Date;
 
-    @Column()
-    lido: boolean;
+    @OneToMany(() => LivroUsuario, (livrosusuarios) => livrosusuarios.livro)
+    livrosUsuarios: LivroUsuario[];
 
-    constructor(nome: string, autor: string, numeroPagina: number, dataCompra: Date, lido: boolean) {
-        this.nome = nome;
-        this.autor = autor;
-        this.numeroPaginas = numeroPagina;
-        this.dataCompra = dataCompra;
-        this.lido = lido;
-    }
+    // constructor(titulo: string, autor: Autor, resumo: string, numeroPagina: number, dataCompra: Date) {
+    //     this.titulo = titulo;
+    //     this.autor = autor;
+    //     this.numeroPaginas = numeroPagina;
+    //     this.dataCompra = dataCompra;
+    // }
 
-    altera(nome: string, autor: string, numeroPagina: number, dataCompra: Date, lido: boolean) {
-        this.nome = nome;
-        this.autor = autor;
-        this.numeroPaginas = numeroPagina;
-        this.dataCompra = dataCompra;
-        this.lido = lido;
-    }
+    // altera(titulo: string, autor: Autor, numeroPagina: number, dataCompra: Date) {
+    //     this.titulo = titulo;
+    //     this.autor = autor;
+    //     this.numeroPaginas = numeroPagina;
+    //     this.dataCompra = dataCompra;
+    // }
 }
