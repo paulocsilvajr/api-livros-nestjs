@@ -1,6 +1,10 @@
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
+import { Usuario } from './src/usuario/usuario.entity';
+import { Autor } from './src/autor/autor.entity';
+import { Livro } from './src/livro/livro.entity';
+import { LivroUsuario } from './src/livro-usuario/livro-usuario.entity';
  
 config();
  
@@ -13,5 +17,10 @@ export default new DataSource({
   username: configService.get('USUARIO_BANCO_DADOS'),
   password: configService.get('SENHA_BANCO_DADOS'),
   database: configService.get('NOME_BANCO_DADOS'),
-  entities: [],
+  entities: [
+    Usuario,
+    Autor,
+    Livro,
+    LivroUsuario,
+  ],
 });
