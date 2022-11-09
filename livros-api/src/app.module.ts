@@ -3,12 +3,18 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AutorModule } from './autor/autor.module';
+import { LivroUsuarioModule } from './livro-usuario/livro-usuario.module';
 import { Livro } from './livro/livro.entity';
 import { LivroModule } from './livro/livro.module';
+import { UsuarioModule } from './usuario/usuario.module';
 
 @Module({
   imports: [
     LivroModule,
+    UsuarioModule,
+    AutorModule,
+    LivroUsuarioModule,
     ConfigModule.forRoot(),
     // https://docs.nestjs.com/techniques/database
     TypeOrmModule.forRoot({
