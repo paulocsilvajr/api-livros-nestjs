@@ -10,13 +10,13 @@ export class LivroService {
         @InjectRepository(Livro) private livroRepository: Repository<Livro>,
     ) {}
     
-    public async buscaLivros(): Promise<Livro[]> {
-        return this.livroRepository.find();
-    }
+    // public async buscaLivros(): Promise<Livro[]> {
+    //     return this.livroRepository.find();
+    // }
     
-    public async buscaLivroPorId(idLivro: number): Promise<Livro> {
-        return this.livroRepository.findOneBy({ id: idLivro });
-    }
+    // public async buscaLivroPorId(idLivro: number): Promise<Livro> {
+    //     return this.livroRepository.findOneBy({ id: idLivro });
+    // }
     
     // public async cadastraLivro(livro: Livro): Promise<Livro> {
     //     const dataCompraConvertida = new Date(livro.dataCompra);
