@@ -3,10 +3,13 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { Autor } from './autor/autor.entity';
 import { AutorModule } from './autor/autor.module';
+import { LivroUsuario } from './livro-usuario/livro-usuario.entity';
 import { LivroUsuarioModule } from './livro-usuario/livro-usuario.module';
 import { Livro } from './livro/livro.entity';
 import { LivroModule } from './livro/livro.module';
+import { Usuario } from './usuario/usuario.entity';
 import { UsuarioModule } from './usuario/usuario.module';
 
 @Module({
@@ -24,7 +27,12 @@ import { UsuarioModule } from './usuario/usuario.module';
       username: process.env.USUARIO_BANCO_DADOS,
       password: process.env.SENHA_BANCO_DADOS,
       database: process.env.NOME_BANCO_DADOS,
-      entities: [Livro],
+      entities: [
+        Autor,
+        Usuario,
+        Livro,
+        LivroUsuario
+      ],
       synchronize: true,  // synchronize não deve ser usado em PRODUÇÃO
     }),
   ],
