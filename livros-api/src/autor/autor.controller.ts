@@ -1,6 +1,6 @@
-import { Body, Controller, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Post, Put } from "@nestjs/common";
 import { QueryFailedError } from "typeorm";
-import { CadastraAutorDto } from "./autor.dto";
+import { AlteraAutorDto, CadastraAutorDto } from "./autor.dto";
 import { Autor } from "./autor.entity";
 import { AutorService } from "./autor.service";
 
@@ -18,6 +18,11 @@ export class AutorController {
         throw new NotFoundException('Não há autores cadastrados');
     }
 
+    @Get(':id')
+    public async buscaAutorPorId(@Param('id') idAutor: number): Promise<Autor> {
+        return this.autorService.buscaAutorPorId(idAutor);
+    }
+
     @Post()
     public async cadastraAutor(@Body() autor: CadastraAutorDto): Promise<Autor> {
         try {
@@ -29,5 +34,15 @@ export class AutorController {
                 throw new InternalServerErrorException(error.message);
             }
         }
+    }
+
+    @Put(':id')
+    public async alteraAutor(@Body() autor: AlteraAutorDto, @Param('id') idAutor: number): Promise<Autor> {
+        return this.autorService.alteraAutor(idAutor, autor);
+    }   
+
+    @Delete(':id')
+    public async removeAutor(@Param('id') idAutor: number) {
+        return this.autorService.removeAutor(idAutor);
     }
 }

@@ -1,6 +1,6 @@
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
 
-export class CadastraAutorDto {
+class CadastraAutorDto {
     @IsNotEmpty({
         message: 'Nome do autor não pode ser vazio',
     })
@@ -9,3 +9,15 @@ export class CadastraAutorDto {
     @IsOptional()
     descricao: string;
 }
+
+class AlteraAutorDto extends CadastraAutorDto {
+    @IsNotEmpty({
+        message: 'ID deve ser informado',
+    })
+    @IsNumber({}, {
+        message: 'ID deve ser um número',
+    })
+    id: number;
+}
+
+export { CadastraAutorDto, AlteraAutorDto }
