@@ -16,9 +16,7 @@ export class AutorService {
     }
 
     public async cadastraAutor(autor: CadastraAutorDto): Promise<Autor> {
-        const novoAutor = new Autor();
-        novoAutor.nome = autor.nome;
-        novoAutor.descricao = autor.descricao;
+        const novoAutor = new Autor(autor);
 
         return this.autorRepository.save(novoAutor);
     }

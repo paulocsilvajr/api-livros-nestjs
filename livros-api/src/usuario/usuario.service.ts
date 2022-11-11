@@ -15,10 +15,7 @@ export class UsuarioService {
     }
 
     public async cadastraUsuario(usuario: CadastraUsuarioDto): Promise<Usuario> {
-        const novoUsuario = new Usuario();
-        novoUsuario.nome = usuario.nome;
-        novoUsuario.email = usuario.email;
-        novoUsuario.senha = usuario.senha;
+        const novoUsuario = new Usuario(usuario);
 
         return this.usuarioRepository.save(novoUsuario);
     }

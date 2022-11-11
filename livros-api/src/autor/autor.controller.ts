@@ -24,7 +24,7 @@ export class AutorController {
             return await this.autorService.cadastraAutor(autor);
         } catch (error) {
             if (error instanceof QueryFailedError) {
-                throw new NotAcceptableException(`Autor informado inválido, deve ser {"nome": "nome do autor", "descricao": "descrição opcional, pode-se omitir"}. ERRO: ${error.message}`);
+                throw new NotAcceptableException(`Erro no banco de dados, JSON: {"nome": "nome do autor", "descricao": "descrição opcional, pode-se omitir"}. ERRO: ${error.message}`);
             } else if (error instanceof Error) {
                 throw new InternalServerErrorException(error.message);
             }
