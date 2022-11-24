@@ -1,9 +1,10 @@
 import { Autor } from "../autor/autor.entity";
 import { LivroUsuario } from "../livro-usuario/livro-usuario.entity";
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 // https://typeorm.io/entities
 @Entity()
+@Index(['titulo', 'autor'], { unique: true })
 export class Livro {
     @PrimaryGeneratedColumn()
     id: number;
