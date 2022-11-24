@@ -6,7 +6,6 @@ class CadastraLivroDto {
     })
     titulo: string;
 
-    @IsOptional()
     @IsPositive({
         message: 'ID do autor deve ser um número maior que 0'
     })
