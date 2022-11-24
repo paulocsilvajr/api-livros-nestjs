@@ -26,12 +26,9 @@ export class Livro {
     @OneToMany(() => LivroUsuario, (livrosusuarios) => livrosusuarios.livro)
     livrosUsuarios: LivroUsuario[];
 
-    // constructor(titulo: string, autor: Autor, resumo: string, numeroPagina: number, dataCompra: Date) {
-    //     this.titulo = titulo;
-    //     this.autor = autor;
-    //     this.numeroPaginas = numeroPagina;
-    //     this.dataCompra = dataCompra;
-    // }
+    constructor(partial: Partial<Livro>) {
+        Object.assign(this, partial);
+    }
 
     // altera(titulo: string, autor: Autor, numeroPagina: number, dataCompra: Date) {
     //     this.titulo = titulo;
