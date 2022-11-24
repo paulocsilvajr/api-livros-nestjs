@@ -26,8 +26,6 @@ export class LivroService {
 
         const autor = await this.autorService.buscaAutorPorId(livro.autor);
 
-        console.log(livro);
-
         const livroNovo = new Livro({
             titulo: livro.titulo,
             autor: autor,

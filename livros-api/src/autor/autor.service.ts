@@ -20,7 +20,7 @@ export class AutorService {
 
     public async buscaAutorPorId(id: number): Promise<Autor> {
         const autorBanco = await this.autorRepository.findOneBy({ id });
-        console.log(autorBanco);
+        
         if (!autorBanco)
             throw new NotFoundException(`Autor com ID(${id}) informado não existe`);
 
@@ -46,7 +46,5 @@ export class AutorService {
         const autorBanco = await this.buscaAutorPorId(id);
 
         const result = await this.autorRepository.delete({ id });
-        console.log(result);
     }
-
 }
