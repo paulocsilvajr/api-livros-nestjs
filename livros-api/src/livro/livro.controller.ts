@@ -1,4 +1,6 @@
-import { Body, Controller, Delete, Get, NotAcceptableException, NotFoundException, Param, Patch, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Patch, Post, Put } from "@nestjs/common";
+import { QueryFailedError } from "typeorm";
+import { CadastraLivroDto } from "./livro.dto";
 import { Livro } from "./livro.entity";
 import { LivroService } from "./livro.service";
 
@@ -25,10 +27,18 @@ export class LivroControler {
     //     return livro;
     // }
 
-    // @Post()
-    // public async cadastraLivro(@Body() livro: Livro): Promise<Livro> {
-    //     return this.livroService.cadastraLivro(livro);
-    // }
+    @Post()
+    public async cadastraLivro(@Body() livro: CadastraLivroDto): Promise<Livro> {
+        try {
+            return await this.livroService.cadastraLivro(livro);
+        } catch (error) {
+            if (error instanceof QueryFailedError) {
+                throw new NotAcceptableException(error.message);
+            } else if (error instanceof Error) {
+                throw new InternalServerErrorException(error.message);
+            }
+        }
+    }
 
     // @Put(':id')
     // public async alteraLivro(@Body() livro: Livro, @Param('id') idLivro: number): Promise<Livro> {

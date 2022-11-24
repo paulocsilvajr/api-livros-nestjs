@@ -1,13 +1,16 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+import { CadastraLivroDto } from "./livro.dto";
 import { Livro } from "./livro.entity";
+import { AutorService } from "../autor/autor.service";
 
 @Injectable()
 export class LivroService {
 
     constructor(
         @InjectRepository(Livro) private livroRepository: Repository<Livro>,
+        private autorService: AutorService,
     ) {}
     
     // public async buscaLivros(): Promise<Livro[]> {
@@ -18,12 +21,22 @@ export class LivroService {
     //     return this.livroRepository.findOneBy({ id: idLivro });
     // }
     
-    // public async cadastraLivro(livro: Livro): Promise<Livro> {
-    //     const dataCompraConvertida = new Date(livro.dataCompra);
-    //     const livroNovo = new Livro(livro.nome, livro.autor, livro.numeroPaginas, dataCompraConvertida, livro.lido);
+    public async cadastraLivro(livro: CadastraLivroDto): Promise<Livro> {
+        const dataCompraConvertida = new Date(livro.dataCompra);
+
+        const autor = await this.autorService.buscaAutorPorId(livro.autor);
+
+        console.log(livro);
+
+        const livroNovo = new Livro({
+            titulo: livro.titulo,
+            autor: autor,
+            resumo: livro.resumo,
+            numeroPaginas: livro.numeroPaginas,
+            dataCompra: dataCompraConvertida});
         
-    //     return this.livroRepository.save(livroNovo);
-    // }
+        return this.livroRepository.save(livroNovo);
+    }
     
     // public async alteraLivro(idLivro: number, livroAlterado: Livro): Promise<Livro> {
     //     const livroEncontrado = await this.buscaLivroPorId(idLivro);
