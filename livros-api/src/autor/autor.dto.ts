@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsNumber, MinLength } from 'class-validator';
 
 class CadastraAutorDto {
     @IsNotEmpty({
@@ -7,6 +7,9 @@ class CadastraAutorDto {
     nome: string;
 
     @IsOptional()
+    @MinLength(3, {
+        message: 'Descrição deve ter pelo menos 3 caracteres',
+    })
     descricao: string;
 }
 

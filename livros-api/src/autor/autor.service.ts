@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { timeStamp } from "console";
 import { Repository } from "typeorm";
 import { AlteraAutorDto, CadastraAutorDto } from "./autor.dto";
 import { Autor } from "./autor.entity";
