@@ -6,6 +6,9 @@ import { AutorService } from "./autor.service";
 
 @Module({
     imports: [TypeOrmModule.forFeature([Autor])],
+    exports: [
+        AutorService,
+    ],
     controllers: [
         AutorController,
     ],
