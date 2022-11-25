@@ -38,8 +38,7 @@ export class LivroService {
             .where({ id: idLivro });
         const livroBanco = await query.getOne();
 
-        if (!livroBanco)
-            throw new NotFoundException(`Livro com ID(${idLivro}) informado não existe`);
+        this.verificaLivro(livroBanco, idLivro);
         
         return livroBanco;
     }
@@ -62,8 +61,7 @@ export class LivroService {
     public async alteraLivro(idLivro: number, livro: AlteraLivroDto): Promise<Livro> {
         const livroBanco = await this.buscaLivroPorId(idLivro);
         
-        if (!livroBanco)
-            throw new NotFoundException(`Livro com ID(${idLivro}) informado não existe`)
+        this.verificaLivro(livroBanco, idLivro);
 
         const autor = await this.autorService.buscaAutorPorId(livro.autor);
 
@@ -81,9 +79,13 @@ export class LivroService {
     public async removeLivro(idLivro: number): Promise<void> {
         const livroBanco = await this.buscaLivroPorId(idLivro);
         
-        if (!livroBanco)
-            throw new NotFoundException(`Livro com ID(${idLivro}) informado não existe`)
+        this.verificaLivro(livroBanco, idLivro);
 
         await this.livroRepository.delete(idLivro);
+    }
+
+    private verificaLivro(livro: Livro, id: number) {
+        if (!livro)
+            throw new NotFoundException(`Livro com ID(${id}) informado não existe`)
     }
 }
