@@ -20,6 +20,16 @@ export class LivroService {
             }
         });
     }
+
+    public async buscaLivrosComAutor(): Promise<Livro[]> {
+        const query = this.livroRepository
+            .createQueryBuilder('l')
+            .orderBy()
+            .innerJoinAndSelect('l.autor', 'a');
+        const livros = query.getMany();
+
+        return livros;
+    }
     
     public async buscaLivroPorId(idLivro: number): Promise<Livro> {
         const query = this.livroRepository.createQueryBuilder('l')

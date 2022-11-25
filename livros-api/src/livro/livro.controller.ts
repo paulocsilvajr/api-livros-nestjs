@@ -12,10 +12,15 @@ export class LivroControler {
     @Get()
     public async buscaLivros(): Promise<Livro[]> {
         const livros = await this.livroService.buscaLivros();
-        if (livros.length > 0)
-            return livros
+
+        return this.verificaLivros(livros);
+    }
+
+    @Get('/autor')
+    public async buscaLivrosComAutor(): Promise<Livro[]> {
+        const livros = await this.livroService.buscaLivrosComAutor();
         
-        throw new NotFoundException('Não há livros cadastrados')
+        return this.verificaLivros(livros);
     }
     
     @Get(':id')
@@ -55,4 +60,11 @@ export class LivroControler {
     // public async removeLivro(@Param('id') idLivro: number) {
     //     return this.livroService.removeLivro(idLivro);
     // }
+
+    private verificaLivros(livros: Livro[]): Livro[] {
+        if (livros.length > 0)
+            return livros
+        
+        throw new NotFoundException('Não há livros cadastrados')
+    }
 }
