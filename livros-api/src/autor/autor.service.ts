@@ -36,6 +36,9 @@ export class AutorService {
     public async alteraAutor(id: number, autor: AlteraAutorDto): Promise<Autor> {
         const autorBanco = await this.buscaAutorPorId(id);
 
+        if (!autorBanco)
+            throw new NotFoundException(`Autor com ID(${id}) informado não existe`)
+
         autorBanco.nome = autor.nome;
         autorBanco.descricao = autor.descricao;
 
