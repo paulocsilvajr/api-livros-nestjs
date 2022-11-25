@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Patch, Post, Put } from "@nestjs/common";
 import { QueryFailedError } from "typeorm";
-import { CadastraLivroDto } from "./livro.dto";
+import { AlteraLivroDto, CadastraLivroDto } from "./livro.dto";
 import { Livro } from "./livro.entity";
 import { LivroService } from "./livro.service";
 
@@ -41,10 +41,10 @@ export class LivroControler {
         }
     }
 
-    // @Put(':id')
-    // public async alteraLivro(@Body() livro: Livro, @Param('id') idLivro: number): Promise<Livro> {
-    //     return this.livroService.alteraLivro(idLivro, livro);
-    // }
+    @Put(':id')
+    public async alteraLivro(@Body() livro: AlteraLivroDto, @Param('id') idLivro: number): Promise<Livro> {
+        return this.livroService.alteraLivro(idLivro, livro);
+    }
 
     // @Patch(':id')
     // public async alteraEstadoLivro(@Body() body, @Param('id') idLivro: number): Promise<Livro> {

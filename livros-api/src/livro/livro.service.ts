@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { CadastraLivroDto } from "./livro.dto";
+import { AlteraLivroDto, CadastraLivroDto } from "./livro.dto";
 import { Livro } from "./livro.entity";
 import { AutorService } from "../autor/autor.service";
 
@@ -26,15 +26,17 @@ export class LivroService {
             .createQueryBuilder('l')
             .orderBy()
             .innerJoinAndSelect('l.autor', 'a');
-        const livros = query.getMany();
+        const livros = await query.getMany();
 
         return livros;
     }
     
     public async buscaLivroPorId(idLivro: number): Promise<Livro> {
-        const query = this.livroRepository.createQueryBuilder('l')
-            .innerJoinAndSelect('l.autor', 'a');
-        const livroBanco = query.getOne();
+        const query = this.livroRepository
+            .createQueryBuilder('l')
+            .innerJoinAndSelect('l.autor', 'a')
+            .where({ id: idLivro });
+        const livroBanco = await query.getOne();
 
         if (!livroBanco)
             throw new NotFoundException(`Livro com ID(${idLivro}) informado não existe`);
@@ -57,16 +59,24 @@ export class LivroService {
         return this.livroRepository.save(livroNovo);
     }
     
-    // public async alteraLivro(idLivro: number, livroAlterado: Livro): Promise<Livro> {
-    //     const livroEncontrado = await this.buscaLivroPorId(idLivro);
+    public async alteraLivro(idLivro: number, livro: AlteraLivroDto): Promise<Livro> {
+        const livroBanco = await this.buscaLivroPorId(idLivro);
         
-    //     if (!livroEncontrado)
-    //         throw new NotFoundException(`Não existe um livro cadastrado com o id ${idLivro}`)
+        if (!livroBanco)
+            throw new NotFoundException(`Livro com ID(${idLivro}) informado não existe`)
 
-    //     livroEncontrado.altera(livroAlterado.nome, livroAlterado.autor, livroAlterado.numeroPaginas, livroAlterado.dataCompra, livroAlterado.lido);
+        const autor = await this.autorService.buscaAutorPorId(livro.autor);
 
-    //     return this.livroRepository.save(livroEncontrado);
-    // }
+        const dataCompraConvertida = new Date(livro.dataCompra);
+
+        livroBanco.titulo = livro.titulo;
+        livroBanco.autor = autor;
+        livroBanco.resumo = livro.resumo;
+        livroBanco.numeroPaginas = livro.numeroPaginas;
+        livroBanco.dataCompra = dataCompraConvertida;
+
+        return this.livroRepository.save(livroBanco);
+    }
 
     // public async removeLivro(idLivro: number): Promise<void> {
     //     const livro = await this.buscaLivroPorId(idLivro);
