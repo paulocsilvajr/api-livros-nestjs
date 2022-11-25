@@ -22,8 +22,9 @@ export class LivroService {
     }
     
     public async buscaLivroPorId(idLivro: number): Promise<Livro> {
-        const livroBanco = await this.livroRepository.findOneBy({ id: idLivro });
-        console.log('>>>', livroBanco);
+        const query = this.livroRepository.createQueryBuilder('l')
+            .innerJoinAndSelect('l.autor', 'a');
+        const livroBanco = query.getOne();
 
         if (!livroBanco)
             throw new NotFoundException(`Livro com ID(${idLivro}) informado não existe`);
