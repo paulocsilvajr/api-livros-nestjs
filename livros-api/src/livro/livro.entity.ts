@@ -30,11 +30,4 @@ export class Livro {
     constructor(partial: Partial<Livro>) {
         Object.assign(this, partial);
     }
-
-    // altera(titulo: string, autor: Autor, numeroPagina: number, dataCompra: Date) {
-    //     this.titulo = titulo;
-    //     this.autor = autor;
-    //     this.numeroPaginas = numeroPagina;
-    //     this.dataCompra = dataCompra;
-    // }
 }

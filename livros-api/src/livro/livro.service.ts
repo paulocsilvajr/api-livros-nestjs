@@ -78,18 +78,12 @@ export class LivroService {
         return this.livroRepository.save(livroBanco);
     }
 
-    // public async removeLivro(idLivro: number): Promise<void> {
-    //     const livro = await this.buscaLivroPorId(idLivro);
-    //     if (!livro)
-    //         throw new NotFoundException(`Não existe um livro cadastrado com o id ${idLivro}`)
+    public async removeLivro(idLivro: number): Promise<void> {
+        const livroBanco = await this.buscaLivroPorId(idLivro);
+        
+        if (!livroBanco)
+            throw new NotFoundException(`Livro com ID(${idLivro}) informado não existe`)
 
-    //     await this.livroRepository.delete(idLivro);
-    // }
-
-    // public async alteraEstadoLivro(idLivro: number, estado: boolean): Promise<Livro> {
-    //     var livroEncontrado = await this.buscaLivroPorId(idLivro);
-    //     livroEncontrado.lido = estado
-
-    //     return this.livroRepository.save(livroEncontrado);
-    // }
+        await this.livroRepository.delete(idLivro);
+    }
 }

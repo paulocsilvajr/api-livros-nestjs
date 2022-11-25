@@ -46,20 +46,10 @@ export class LivroControler {
         return this.livroService.alteraLivro(idLivro, livro);
     }
 
-    // @Patch(':id')
-    // public async alteraEstadoLivro(@Body() body, @Param('id') idLivro: number): Promise<Livro> {
-    //     if (typeof body.lido !== 'boolean')
-    //         throw new NotAcceptableException('JSON informado em corpo da requisição inválido')
-
-    //     const estado: boolean = body.lido;
-        
-    //     return this.livroService.alteraEstadoLivro(idLivro, estado);
-    // }
-
-    // @Delete(':id')
-    // public async removeLivro(@Param('id') idLivro: number) {
-    //     return this.livroService.removeLivro(idLivro);
-    // }
+    @Delete(':id')
+    public async removeLivro(@Param('id') idLivro: number) {
+        return this.livroService.removeLivro(idLivro);
+    }
 
     private verificaLivros(livros: Livro[]): Livro[] {
         if (livros.length > 0)
