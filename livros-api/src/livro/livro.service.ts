@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { CadastraLivroDto } from "./livro.dto";
@@ -13,13 +13,23 @@ export class LivroService {
         private autorService: AutorService,
     ) {}
     
-    // public async buscaLivros(): Promise<Livro[]> {
-    //     return this.livroRepository.find();
-    // }
+    public async buscaLivros(): Promise<Livro[]> {
+        return this.livroRepository.find({
+            order: {
+                id: 'ASC'
+            }
+        });
+    }
     
-    // public async buscaLivroPorId(idLivro: number): Promise<Livro> {
-    //     return this.livroRepository.findOneBy({ id: idLivro });
-    // }
+    public async buscaLivroPorId(idLivro: number): Promise<Livro> {
+        const livroBanco = await this.livroRepository.findOneBy({ id: idLivro });
+        console.log('>>>', livroBanco);
+
+        if (!livroBanco)
+            throw new NotFoundException(`Livro com ID(${idLivro}) informado não existe`);
+        
+        return livroBanco;
+    }
     
     public async cadastraLivro(livro: CadastraLivroDto): Promise<Livro> {
         const dataCompraConvertida = new Date(livro.dataCompra);

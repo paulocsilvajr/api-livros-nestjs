@@ -9,23 +9,19 @@ export class LivroControler {
     
     constructor(private livroService: LivroService) {}
     
-    // @Get()
-    // public async buscaLivros(): Promise<Livro[]> {
-    //     const livros = await this.livroService.buscaLivros();
-    //     if (livros.length > 0)
-    //         return livros
+    @Get()
+    public async buscaLivros(): Promise<Livro[]> {
+        const livros = await this.livroService.buscaLivros();
+        if (livros.length > 0)
+            return livros
         
-    //     throw new NotFoundException('Não há livros cadastrados')
-    // }
+        throw new NotFoundException('Não há livros cadastrados')
+    }
     
-    // @Get(':id')
-    // public async buscaLivroPorId(@Param('id') idLivro: number): Promise<Livro> {
-    //     const livro = await this.livroService.buscaLivroPorId(idLivro);
-    //     if (!livro)
-    //         throw new NotFoundException(`Não existe um livro cadastrado com o id ${idLivro}`)
-
-    //     return livro;
-    // }
+    @Get(':id')
+    public async buscaLivroPorId(@Param('id') idLivro: number): Promise<Livro> {
+        return this.livroService.buscaLivroPorId(idLivro);
+    }
 
     @Post()
     public async cadastraLivro(@Body() livro: CadastraLivroDto): Promise<Livro> {
