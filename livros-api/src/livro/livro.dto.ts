@@ -7,7 +7,7 @@ class CadastraLivroDto {
     titulo: string;
 
     @IsPositive({
-        message: 'ID do autor deve ser um número maior que 0'
+        message: 'ID do autor deve ser um número identificador maior que 0'
     })
     autor: number;
 
@@ -17,7 +17,9 @@ class CadastraLivroDto {
     })
     resumo: string;
 
-    @IsNumber()
+    @IsNumber({}, {
+        message: 'Número de páginas deve ser um número'
+    })
     @Min(1, {
         message: 'Número de páginas deve ser pelo menos 1 página',
     })
