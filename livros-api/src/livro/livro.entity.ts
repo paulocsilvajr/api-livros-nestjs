@@ -1,6 +1,6 @@
 import { Autor } from "../autor/autor.entity";
 import { LivroUsuario } from "../livro-usuario/livro-usuario.entity";
-import { Column, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 // https://typeorm.io/entities
 @Entity()
@@ -21,7 +21,7 @@ export class Livro {
     @Column({ default: 1 })
     numeroPaginas: number;
 
-    @Column({ default: new Date() })
+    @CreateDateColumn()
     dataCompra: Date;
 
     @OneToMany(() => LivroUsuario, (livrosusuarios) => livrosusuarios.livro)
