@@ -10,6 +10,9 @@ import { LivroService } from "./livro.service";
         AutorModule,
         TypeOrmModule.forFeature([Livro])
     ],
+    exports: [
+        LivroService,
+    ],
     controllers: [
         LivroControler,
     ],
