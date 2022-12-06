@@ -18,4 +18,8 @@ export class LivroUsuario {
 
     @Column({ nullable: true })
     dataFimLeitura: Date;
+
+    constructor(partial: Partial<LivroUsuario>) {
+        Object.assign(this, partial);
+    }
 }
