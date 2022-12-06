@@ -25,7 +25,7 @@ export class UsuarioController {
             return await this.usuarioService.cadastraUsuario(usuario);
         } catch (error) {
             if (error instanceof QueryFailedError) {
-                throw new NotAcceptableException(`Erro no banco de dados, JSON: {"nome": "nome do usuário", "email": "email do usuário", "senha": "senha do usuário"}. ERRO: ${error.message}`);
+                throw new NotAcceptableException(error.message);
             } else if (error instanceof Error) {
                 throw new InternalServerErrorException(error.message);
             }
