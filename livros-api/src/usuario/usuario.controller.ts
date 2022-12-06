@@ -1,4 +1,4 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Post, UseInterceptors } from "@nestjs/common";
+import { Body, ClassSerializerInterceptor, Controller, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Post, UseInterceptors } from "@nestjs/common";
 import { QueryFailedError } from "typeorm";
 import { CadastraUsuarioDto } from "./usuario.dto";
 import { Usuario } from "./usuario.entity";
@@ -30,5 +30,17 @@ export class UsuarioController {
                 throw new InternalServerErrorException(error.message);
             }
         }
+    }
+
+    @UseInterceptors(ClassSerializerInterceptor)
+    @Get(':nome')
+    public async buscaUsuarioPorNome(@Param('nome') nomeUsuario: string): Promise<Usuario> {
+        return this.usuarioService.buscaUsuarioPorNome(nomeUsuario);
+    }
+
+    @UseInterceptors(ClassSerializerInterceptor)
+    @Get('/email/:email')
+    public async buscaUsuarioPorEmail(@Param('email') emailUsuario: string): Promise<Usuario> {
+        return this.usuarioService.buscaUsuarioPorEmail(emailUsuario);
     }
 }

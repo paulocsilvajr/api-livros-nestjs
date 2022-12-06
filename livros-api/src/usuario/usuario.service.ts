@@ -23,4 +23,12 @@ export class UsuarioService {
 
         return this.usuarioRepository.save(novoUsuario);
     }
+
+    public async buscaUsuarioPorNome(nome: string): Promise<Usuario> {
+        return this.usuarioRepository.findOneBy({ 'nome': nome });
+    }
+
+    public async buscaUsuarioPorEmail(email: string): Promise<Usuario> {
+        return this.usuarioRepository.findOneBy({ 'email': email });
+    } 
 }
