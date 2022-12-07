@@ -13,10 +13,10 @@ export class LivroUsuario {
     @ManyToOne(() => Livro, (livro) => livro.livrosUsuarios)
     livro: Livro;
 
-    @Column()
+    @Column({ type: 'timestamptz' })
     dataInicioLeitura: Date;
 
-    @Column({ nullable: true })
+    @Column({ type: 'timestamptz', nullable: true })
     dataFimLeitura: Date;
 
     constructor(partial: Partial<LivroUsuario>) {

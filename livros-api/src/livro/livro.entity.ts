@@ -21,7 +21,7 @@ export class Livro {
     @Column({ default: 1 })
     numeroPaginas: number;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: 'timestamptz' })
     dataCompra: Date;
 
     @OneToMany(() => LivroUsuario, (livrosusuarios) => livrosusuarios.livro)
