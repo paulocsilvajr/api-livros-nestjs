@@ -19,8 +19,9 @@ export class LivroUsuarioService {
     }
 
     public async cadastraLivroUsuario(livroUsuario: CadastraLivroUsuarioDto): Promise<LivroUsuario> {
+        // const dataInicioLeitura = new Date(livroUsuario.dataInicioLeitura.toLocaleString('pt-BR', { timeZoneName: 'longOffset', timeZone: 'America/Sao_Paulo' }));
         const dataInicioLeitura = new Date(livroUsuario.dataInicioLeitura);
-        let dataFimLeitura: null | Date = null; 
+        let dataFimLeitura: null | Date = null;
         if (livroUsuario.dataFimLeitura) {
             dataFimLeitura = new Date(livroUsuario.dataFimLeitura);
         }
