@@ -1392,13 +1392,97 @@
 					"response": []
 				},
 				{
+					"name": "localhost:3000/api/livrosusuarios",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"livro\": 1,\n    \"usuario\": \"root\",\n    \"dataInicioLeitura\": \"2022-12-12\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "localhost:3000/api/livrosusuarios SEM data fim leitura",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"livro\": 3,\n    \"usuario\": \"admin\",\n    \"dataInicioLeitura\": \"2022-12-06\"\n}",
+							"raw": "{\n    \"livro\": 2,\n    \"usuario\": \"admin\",\n    \"dataInicioLeitura\": \"2022-12-06\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"livro\": 6,\n    \"usuario\": \"usuario02\",\n    \"dataInicioLeitura\": \"2022-01-02\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"livro\": 7,\n    \"usuario\": \"usuario02\",\n    \"dataInicioLeitura\": \"2022-02-02\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1477,6 +1561,405 @@
 								"api",
 								"livrosusuarios",
 								"detalhado"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios/1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios/999",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios/999",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios",
+								"999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios/livro/1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios/livro/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios",
+								"livro",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios/livro/999",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios/livro/999",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios",
+								"livro",
+								"999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios/usuario/admin",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios/usuario/admin",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios",
+								"usuario",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios/usuario/desconhecido",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios/usuario/desconhecido",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios",
+								"usuario",
+								"desconhecido"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios/4",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 4,\n    \"livro\": 6,\n    \"usuario\": \"usuario01\",\n    \"dataInicioLeitura\": \"2022-01-01\",\n    \"dataFimLeitura\": \"2022-02-01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios/4",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios/999",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 4,\n    \"livro\": 6,\n    \"usuario\": \"usuario01\",\n    \"dataInicioLeitura\": \"2022-01-01\",\n    \"dataFimLeitura\": \"2022-02-01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios/999",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios",
+								"999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios/4 livro 999",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 4,\n    \"livro\": 999,\n    \"usuario\": \"usuario01\",\n    \"dataInicioLeitura\": \"2022-01-01\",\n    \"dataFimLeitura\": \"2022-02-01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios/4",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios/4 usuario desconhecido",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 4,\n    \"livro\": 6,\n    \"usuario\": \"desconhecido\",\n    \"dataInicioLeitura\": \"2022-01-01\",\n    \"dataFimLeitura\": \"2022-02-01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios/4",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios/4 sem data",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 4,\n    \"livro\": 6,\n    \"usuario\": \"usuario01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios/4",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios/5",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios/5",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios/999",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios/999",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios",
+								"999"
 							]
 						}
 					},
