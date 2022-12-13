@@ -1,4 +1,4 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Post, UseInterceptors } from "@nestjs/common";
+import { Body, ClassSerializerInterceptor, Controller, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Post, UseInterceptors } from "@nestjs/common";
 import { QueryFailedError } from "typeorm";
 import { CadastraLivroUsuarioDto } from "./livro-usuario.dto";
 import { LivroUsuario } from "./livro-usuario.entity";
@@ -26,6 +26,12 @@ export class LivroUsuarioController {
             return livrosUsuarios;
         
         throw new NotFoundException('Não há livros associados a usuários cadastrados');
+    }
+
+    @UseInterceptors(ClassSerializerInterceptor)
+    @Get(':id')
+    public async buscaLivroUsuarioPorId(@Param('id') idLivroUsuario: number): Promise<LivroUsuario> {
+        return this.livroUsuarioService.buscaLivroUsuarioPorId(idLivroUsuario);
     }
 
     @UseInterceptors(ClassSerializerInterceptor)

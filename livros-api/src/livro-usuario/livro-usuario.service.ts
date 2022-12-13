@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { LivroService } from "src/livro/livro.service";
 import { UsuarioService } from "src/usuario/usuario.service";
@@ -30,6 +30,20 @@ export class LivroUsuarioService {
         return livrosUsuarios;
     }
 
+    public async buscaLivroUsuarioPorId(idLivroUsuario: number): Promise<LivroUsuario> {
+        const query = this.livroUsuarioRepository
+            .createQueryBuilder('lu')
+            .orderBy()
+            .innerJoinAndSelect('lu.usuario', 'u')
+            .innerJoinAndSelect('lu.livro', 'l')
+            .where({ id: idLivroUsuario });
+        const livroUsuario = await query.getOne();
+
+        this.verificaLivroUsuario(livroUsuario, idLivroUsuario);
+
+        return livroUsuario;
+    }
+
     public async cadastraLivroUsuario(livroUsuario: CadastraLivroUsuarioDto): Promise<LivroUsuario> {
         // const dataInicioLeitura = new Date(livroUsuario.dataInicioLeitura.toLocaleString('pt-BR', { timeZoneName: 'longOffset', timeZone: 'America/Sao_Paulo' }));
         const dataInicioLeitura = new Date(livroUsuario.dataInicioLeitura);
@@ -50,5 +64,10 @@ export class LivroUsuarioService {
         });
 
         return this.livroUsuarioRepository.save(livroUsuarioNovo);
+    }
+
+    private verificaLivroUsuario(livroUsuario: LivroUsuario, id: number) {
+        if (!livroUsuario)
+            throw new NotFoundException(`Livro associado a usuário com ID(${id}) informado não existe`)
     }
 }
