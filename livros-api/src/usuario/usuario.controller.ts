@@ -1,4 +1,5 @@
 import { Body, ClassSerializerInterceptor, Controller, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Post, UseInterceptors } from "@nestjs/common";
+import { verificaArray } from "src/util/verifica-entidade";
 import { QueryFailedError } from "typeorm";
 import { CadastraUsuarioDto } from "./usuario.dto";
 import { Usuario } from "./usuario.entity";
@@ -12,10 +13,10 @@ export class UsuarioController {
     @Get()
     public async buscaUsuarios(): Promise<Usuario[]> {
         const usuarios = await this.usuarioService.buscaUsuarios();
-        if (usuarios.length > 0)
-            return usuarios;
         
-        throw new NotFoundException('Não há usuários cadastrados');
+        verificaArray(usuarios, 'usuários');
+        
+        return usuarios;
     }
 
     @UseInterceptors(ClassSerializerInterceptor)

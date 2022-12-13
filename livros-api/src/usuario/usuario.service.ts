@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { verifica } from "src/util/verifica-entidade";
 import { Repository } from "typeorm";
 import { CadastraUsuarioDto } from "./usuario.dto";
 import { Usuario } from "./usuario.entity";
@@ -23,7 +24,7 @@ export class UsuarioService {
     public async buscaUsuarioPorNome(nome: string): Promise<Usuario> {
         const usuario = await this.usuarioRepository.findOneBy({ 'nome': nome });
 
-        this.verificaUsuario(usuario, nome);
+        verifica(usuario, nome, 'Usuario');
 
         return usuario;
     }
@@ -31,13 +32,8 @@ export class UsuarioService {
     public async buscaUsuarioPorEmail(email: string): Promise<Usuario> {
         const usuario = await this.usuarioRepository.findOneBy({ 'email': email });
 
-        this.verificaUsuario(usuario, email);
+        verifica(usuario, email, 'Usuario');
 
         return usuario;
     } 
-
-    private verificaUsuario(usuario: Usuario, identificacao: string) {
-        if (!usuario)
-            throw new NotFoundException(`Usuário com identificação(${identificacao}) informada não existe`);
-    }
 }

@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Post, Put } from "@nestjs/common";
+import { verificaArray } from "src/util/verifica-entidade";
 import { QueryFailedError } from "typeorm";
 import { AlteraAutorDto, CadastraAutorDto } from "./autor.dto";
 import { Autor } from "./autor.entity";
@@ -12,10 +13,10 @@ export class AutorController {
     @Get()
     public async buscaAutores(): Promise<Autor[]> {
         const autores = await this.autorService.buscaAutores();
-        if (autores.length > 0)
-            return autores;
 
-        throw new NotFoundException('Não há autores cadastrados');
+        verificaArray(autores, 'autores');
+
+        return autores;
     }
 
     @Get(':id')

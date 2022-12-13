@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Patch, Post, Put } from "@nestjs/common";
+import { verificaArray } from "src/util/verifica-entidade";
 import { QueryFailedError } from "typeorm";
 import { AlteraLivroDto, CadastraLivroDto } from "./livro.dto";
 import { Livro } from "./livro.entity";
@@ -13,14 +14,18 @@ export class LivroControler {
     public async buscaLivros(): Promise<Livro[]> {
         const livros = await this.livroService.buscaLivros();
 
-        return this.verificaLivros(livros);
+        verificaArray(livros, 'livros');
+
+        return livros;
     }
 
     @Get('/autor')
     public async buscaLivrosComAutor(): Promise<Livro[]> {
         const livros = await this.livroService.buscaLivrosComAutor();
         
-        return this.verificaLivros(livros);
+        verificaArray(livros, 'livros');
+
+        return livros;
     }
     
     @Get(':id')
@@ -49,12 +54,5 @@ export class LivroControler {
     @Delete(':id')
     public async removeLivro(@Param('id') idLivro: number) {
         return this.livroService.removeLivro(idLivro);
-    }
-
-    private verificaLivros(livros: Livro[]): Livro[] {
-        if (livros.length > 0)
-            return livros
-        
-        throw new NotFoundException('Não há livros cadastrados')
     }
 }

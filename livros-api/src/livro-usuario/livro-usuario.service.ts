@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { LivroService } from "src/livro/livro.service";
 import { UsuarioService } from "src/usuario/usuario.service";
+import { verifica } from "src/util/verifica-entidade";
 import { Repository } from "typeorm";
 import { CadastraLivroUsuarioDto } from "./livro-usuario.dto";
 import { LivroUsuario } from "./livro-usuario.entity";
@@ -39,7 +40,7 @@ export class LivroUsuarioService {
             .where({ id: idLivroUsuario });
         const livroUsuario = await query.getOne();
 
-        this.verificaLivroUsuario(livroUsuario, idLivroUsuario);
+        verifica(livroUsuario, idLivroUsuario, 'Livro associado a usuário');
 
         return livroUsuario;
     }
@@ -64,10 +65,5 @@ export class LivroUsuarioService {
         });
 
         return this.livroUsuarioRepository.save(livroUsuarioNovo);
-    }
-
-    private verificaLivroUsuario(livroUsuario: LivroUsuario, id: number) {
-        if (!livroUsuario)
-            throw new NotFoundException(`Livro associado a usuário com ID(${id}) informado não existe`)
     }
 }

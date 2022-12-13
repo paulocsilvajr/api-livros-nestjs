@@ -4,6 +4,7 @@ import { Repository } from "typeorm";
 import { AlteraLivroDto, CadastraLivroDto } from "./livro.dto";
 import { Livro } from "./livro.entity";
 import { AutorService } from "../autor/autor.service";
+import { verifica } from "src/util/verifica-entidade";
 
 @Injectable()
 export class LivroService {
@@ -38,7 +39,7 @@ export class LivroService {
             .where({ id: idLivro });
         const livroBanco = await query.getOne();
 
-        this.verificaLivro(livroBanco, idLivro);
+        verifica(livroBanco, idLivro, 'Livro');
         
         return livroBanco;
     }
@@ -61,7 +62,7 @@ export class LivroService {
     public async alteraLivro(idLivro: number, livro: AlteraLivroDto): Promise<Livro> {
         const livroBanco = await this.buscaLivroPorId(idLivro);
         
-        this.verificaLivro(livroBanco, idLivro);
+        verifica(livroBanco, idLivro, 'Livro');
 
         const autor = await this.autorService.buscaAutorPorId(livro.autor);
 
@@ -79,13 +80,8 @@ export class LivroService {
     public async removeLivro(idLivro: number): Promise<void> {
         const livroBanco = await this.buscaLivroPorId(idLivro);
         
-        this.verificaLivro(livroBanco, idLivro);
+        verifica(livroBanco, idLivro, 'Livro');
 
         await this.livroRepository.delete(idLivro);
-    }
-
-    private verificaLivro(livro: Livro, id: number) {
-        if (!livro)
-            throw new NotFoundException(`Livro com ID(${id}) informado não existe`)
     }
 }

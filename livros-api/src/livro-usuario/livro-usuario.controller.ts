@@ -1,4 +1,5 @@
 import { Body, ClassSerializerInterceptor, Controller, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Post, UseInterceptors } from "@nestjs/common";
+import { verificaArray } from "src/util/verifica-entidade";
 import { QueryFailedError } from "typeorm";
 import { CadastraLivroUsuarioDto } from "./livro-usuario.dto";
 import { LivroUsuario } from "./livro-usuario.entity";
@@ -12,20 +13,20 @@ export class LivroUsuarioController {
     @Get()
     public async buscaLivrosUsuarios(): Promise<LivroUsuario[]> {
         const livrosUsuarios = await this.livroUsuarioService.buscaLivrosUsuarios();
-        if (livrosUsuarios.length > 0)
-            return livrosUsuarios;
-        
-        throw new NotFoundException('Não há livros associados a usuários cadastrados');
+
+        verificaArray(livrosUsuarios, 'livros associados a usuários');
+
+        return livrosUsuarios;
     }
 
     @UseInterceptors(ClassSerializerInterceptor)
     @Get('/detalhado')
     public async buscaLivrosUsuariosDetalhado(): Promise<LivroUsuario[]> {
         const livrosUsuarios = await this.livroUsuarioService.buscaLivrosUsuariosDetalhado();
-        if (livrosUsuarios.length > 0)
-            return livrosUsuarios;
-        
-        throw new NotFoundException('Não há livros associados a usuários cadastrados');
+
+        verificaArray(livrosUsuarios, 'livros associados a usuários');
+
+        return livrosUsuarios;
     }
 
     @UseInterceptors(ClassSerializerInterceptor)

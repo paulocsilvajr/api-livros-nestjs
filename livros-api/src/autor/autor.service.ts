@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { verifica } from "src/util/verifica-entidade";
 import { Repository } from "typeorm";
 import { AlteraAutorDto, CadastraAutorDto } from "./autor.dto";
 import { Autor } from "./autor.entity";
@@ -21,8 +22,7 @@ export class AutorService {
     public async buscaAutorPorId(id: number): Promise<Autor> {
         const autorBanco = await this.autorRepository.findOneBy({ id });
         
-        if (!autorBanco)
-            throw new NotFoundException(`Autor com ID(${id}) informado não existe`);
+        verifica(autorBanco, id, 'Autor');
 
         return autorBanco;
     }
@@ -36,8 +36,7 @@ export class AutorService {
     public async alteraAutor(id: number, autor: AlteraAutorDto): Promise<Autor> {
         const autorBanco = await this.buscaAutorPorId(id);
 
-        if (!autorBanco)
-            throw new NotFoundException(`Autor com ID(${id}) informado não existe`)
+        verifica(autorBanco, id, 'Autor');
 
         autorBanco.nome = autor.nome;
         autorBanco.descricao = autor.descricao;
