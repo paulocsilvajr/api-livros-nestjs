@@ -62,8 +62,6 @@ export class LivroService {
     public async alteraLivro(idLivro: number, livro: AlteraLivroDto): Promise<Livro> {
         const livroBanco = await this.buscaLivroPorId(idLivro);
         
-        verifica(livroBanco, idLivro, 'Livro');
-
         const autor = await this.autorService.buscaAutorPorId(livro.autor);
 
         const dataCompraConvertida = new Date(livro.dataCompra);
@@ -80,8 +78,6 @@ export class LivroService {
     public async removeLivro(idLivro: number): Promise<void> {
         const livroBanco = await this.buscaLivroPorId(idLivro);
         
-        verifica(livroBanco, idLivro, 'Livro');
-
         await this.livroRepository.delete(idLivro);
     }
 }
