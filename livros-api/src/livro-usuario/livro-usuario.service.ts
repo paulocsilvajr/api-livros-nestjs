@@ -18,6 +18,18 @@ export class LivroUsuarioService {
         return this.livroUsuarioRepository.find();
     }
 
+    public async buscaLivrosUsuariosDetalhado(): Promise<LivroUsuario[]> {
+        const query = this.livroUsuarioRepository
+            .createQueryBuilder('lu')
+            .orderBy()
+            .innerJoinAndSelect('lu.usuario', 'u')
+            .innerJoinAndSelect('lu.livro', 'l');
+        
+        const livrosUsuarios = await query.getMany()
+
+        return livrosUsuarios;
+    }
+
     public async cadastraLivroUsuario(livroUsuario: CadastraLivroUsuarioDto): Promise<LivroUsuario> {
         // const dataInicioLeitura = new Date(livroUsuario.dataInicioLeitura.toLocaleString('pt-BR', { timeZoneName: 'longOffset', timeZone: 'America/Sao_Paulo' }));
         const dataInicioLeitura = new Date(livroUsuario.dataInicioLeitura);

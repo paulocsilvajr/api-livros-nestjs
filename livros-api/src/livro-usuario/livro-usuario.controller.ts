@@ -19,6 +19,16 @@ export class LivroUsuarioController {
     }
 
     @UseInterceptors(ClassSerializerInterceptor)
+    @Get('/detalhado')
+    public async buscaLivrosUsuariosDetalhado(): Promise<LivroUsuario[]> {
+        const livrosUsuarios = await this.livroUsuarioService.buscaLivrosUsuariosDetalhado();
+        if (livrosUsuarios.length > 0)
+            return livrosUsuarios;
+        
+        throw new NotFoundException('Não há livros associados a usuários cadastrados');
+    }
+
+    @UseInterceptors(ClassSerializerInterceptor)
     @Post()
     public async cadastraLivroUsuario(@Body() livrousuario: CadastraLivroUsuarioDto): Promise<LivroUsuario> {
         try {
