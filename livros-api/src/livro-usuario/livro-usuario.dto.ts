@@ -1,4 +1,4 @@
-import { IsDate, IsDateString, IsNotEmpty, IsOptional, IsPositive } from "class-validator";
+import { IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsPositive } from "class-validator";
 
 class CadastraLivroUsuarioDto {
     @IsNotEmpty({
@@ -23,4 +23,14 @@ class CadastraLivroUsuarioDto {
     dataFimLeitura: Date;
 }
 
-export { CadastraLivroUsuarioDto }
+class AlteraLivroUsuarioDto extends CadastraLivroUsuarioDto {
+    @IsNotEmpty({
+        message: 'ID deve ser informado',
+    })
+    @IsNumber({}, {
+        message: 'ID deve ser um número',
+    })
+    id: number;
+}
+
+export { CadastraLivroUsuarioDto, AlteraLivroUsuarioDto }

@@ -4,7 +4,7 @@ import { LivroService } from "src/livro/livro.service";
 import { UsuarioService } from "src/usuario/usuario.service";
 import { verifica } from "src/util/verifica-entidade";
 import { Repository } from "typeorm";
-import { CadastraLivroUsuarioDto } from "./livro-usuario.dto";
+import { AlteraLivroUsuarioDto, CadastraLivroUsuarioDto } from "./livro-usuario.dto";
 import { LivroUsuario } from "./livro-usuario.entity";
 
 @Injectable()
@@ -75,5 +75,32 @@ export class LivroUsuarioService {
         });
 
         return this.livroUsuarioRepository.save(livroUsuarioNovo);
+    }
+
+    public async alteraLivroUsuario(idLivroUsuario, livroUsuario: AlteraLivroUsuarioDto): Promise<LivroUsuario> {
+        const dataInicioLeitura = new Date(livroUsuario.dataInicioLeitura);
+        let dataFimLeitura: null | Date = null;
+        if (livroUsuario.dataFimLeitura) {
+            dataFimLeitura = new Date(livroUsuario.dataFimLeitura);
+        }
+
+        const livroUsuarioBanco = await this.buscaLivroUsuarioPorId(idLivroUsuario);
+
+        const livro = await this.livroService.buscaLivroPorId(livroUsuario.livro);
+
+        const usuario = await this.usuarioService.buscaUsuarioPorNome(livroUsuario.usuario);
+        
+        livroUsuarioBanco.livro = livro;
+        livroUsuarioBanco.usuario = usuario;
+        livroUsuarioBanco.dataInicioLeitura = dataInicioLeitura;
+        livroUsuarioBanco.dataFimLeitura = dataFimLeitura;
+        
+        return this.livroUsuarioRepository.save(livroUsuarioBanco);        
+    }
+
+    public async removeLivroUsuario(idLivroUsuario: number): Promise<void> {
+        const livroUsuarioBanco = await this.buscaLivroUsuarioPorId(idLivroUsuario);
+
+        await this.livroUsuarioRepository.delete(idLivroUsuario);
     }
 }

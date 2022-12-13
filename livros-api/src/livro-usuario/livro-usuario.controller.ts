@@ -1,7 +1,7 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Post, UseInterceptors } from "@nestjs/common";
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Post, Put, UseInterceptors } from "@nestjs/common";
 import { verificaArray } from "src/util/verifica-entidade";
 import { QueryFailedError } from "typeorm";
-import { CadastraLivroUsuarioDto } from "./livro-usuario.dto";
+import { AlteraLivroUsuarioDto, CadastraLivroUsuarioDto } from "./livro-usuario.dto";
 import { LivroUsuario } from "./livro-usuario.entity";
 import { LivroUsuarioService } from "./livro-usuario.service";
 
@@ -67,4 +67,14 @@ export class LivroUsuarioController {
         }
     }
 
+    @UseInterceptors(ClassSerializerInterceptor)
+    @Put(':id')
+    public async alteraLivroUsuario(@Body() livroUsuario: AlteraLivroUsuarioDto, @Param('id') idLivroUsuario: number): Promise<LivroUsuario> {
+        return this.livroUsuarioService.alteraLivroUsuario(idLivroUsuario, livroUsuario);
+    }
+
+    @Delete(':id')
+    public async removeLivroUsuario(@Param('id') idLivroUsuario: number) {
+        return this.livroUsuarioService.removeLivroUsuario(idLivroUsuario);
+    }
 }
