@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Stephen King\"\n}",
+							"raw": "{\n    \"nome\": \"Stephen King\",\n    \"descricao\": \"Autor dos Best Sellers O Iluminado, It e A espera de um milagre\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -101,6 +101,90 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"nome\": \"Daniel Kahneman\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/autores",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"autores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/autores \"Autor 01\"",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Autor 01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/autores",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"autores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/autores \"Autor 02\"",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Autor 02\",\n    \"descricao\": \"Descrição do Autor 02\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/autores",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"autores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/autores \"Autor 03\"",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Autor 03\",\n    \"descricao\": \"Descrição do Autor 03\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -273,13 +357,13 @@
 					"response": []
 				},
 				{
-					"name": "localhost:3000/api/autores \"Stephen King\"",
+					"name": "localhost:3000/api/autores/1",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 1,\n    \"nome\": \"Stephen King\",\n    \"descricao\": \"Autor dos best sellers O Iluminado, A coisa, A espera de um milagre, dentre tantos outros.\"\n}",
+							"raw": "{\n    \"id\": 1,\n    \"nome\": \"Stephen King\",\n    \"descricao\": \"Autor dos best sellers O Iluminado, A coisa(It), A espera de um milagre, dentre tantos outros.\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -302,7 +386,36 @@
 					"response": []
 				},
 				{
-					"name": "localhost:3000/api/autores/2",
+					"name": "localhost:3000/api/autores/5 Vazio",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/autores/5",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"autores",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/autores/5",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -316,7 +429,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/api/autores/2",
+							"raw": "localhost:3000/api/autores/5",
 							"host": [
 								"localhost"
 							],
@@ -324,7 +437,36 @@
 							"path": [
 								"api",
 								"autores",
-								"2"
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/autores/6",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/autores/6",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"autores",
+								"6"
 							]
 						}
 					},
@@ -371,7 +513,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"titulo\": \"O mundo de Sofia - Romance da História da Filosofia\",\n    \"autor\": 1,\n    \"resumo\": \"Sofia aprende a história da filosofia com discuções sobre os filósofos da antiguidade e modernidade através de seu professor Alberto\",\n    \"numeroPaginas\": 678,\n    \"dataCompra\": \"2020-02-07\"\n}",
+							"raw": "{\n    \"titulo\": \"O mundo de Sofia - Romance da História da Filosofia\",\n    \"autor\": 2,\n    \"resumo\": \"Sofia aprende a história da filosofia com discuções sobre os filósofos da antiguidade e modernidade através de seu professor Alberto\",\n    \"numeroPaginas\": 678,\n    \"dataCompra\": \"2020-02-07\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -449,13 +591,13 @@
 					"response": []
 				},
 				{
-					"name": "localhost:3000/api/livros \"1984\" outro autor",
+					"name": "localhost:3000/api/livros \"Rápido e devagar\"",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"titulo\": \"1984\",\n    \"autor\": 4,\n    \"numeroPaginas\": 482,\n    \"dataCompra\": \"2020-11-13\"\n}",
+							"raw": "{\n    \"titulo\": \"Rápido e devagar: Duas formas de pensar\",\n    \"autor\": 4,\n    \"numeroPaginas\": 746,\n    \"dataCompra\": \"2021-07-13\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -477,13 +619,69 @@
 					"response": []
 				},
 				{
-					"name": "localhost:3000/api/livros \"Rápido e devagar\"",
+					"name": "localhost:3000/api/livros \"Livro 03\"",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"titulo\": \"Rápido e devagar: Duas formas de pensar\",\n    \"autor\": 4,\n    \"numeroPaginas\": 746,\n    \"dataCompra\": \"2021-07-13\"\n}",
+							"raw": "{\n    \"titulo\": \"Livro 03\",\n    \"autor\": 7,\n    \"numeroPaginas\": 1003,\n    \"dataCompra\": \"2022-01-03\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livros",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livros"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livros \"Livro 04\"",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"titulo\": \"Livro 04\",\n    \"autor\": 7,\n    \"numeroPaginas\": 1004,\n    \"resumo\": \"Outro livro do Autor 03\",\n    \"dataCompra\": \"2021-02-04\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livros",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livros"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livros \"1984 - Autor 03\"",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"titulo\": \"1984\",\n    \"autor\": 7,\n    \"numeroPaginas\": 1005,\n    \"resumo\": \"A história do ano de 1984 pelo autor Autor 03\",\n    \"dataCompra\": \"2020-03-05\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -744,13 +942,13 @@
 					"response": []
 				},
 				{
-					"name": "localhost:3000/api/livros/1",
+					"name": "localhost:3000/api/livros/5",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 1,\n    \"titulo\": \"O mundo de Sofia\",\n    \"autor\": 3,\n    \"resumo\": \"História da Filosofia\",\n    \"numeroPaginas\": 678,\n    \"dataCompra\": \"2020-02-07\"\n}",
+							"raw": "{\n    \"id\": 5,\n    \"titulo\": \"O grande Livro 03\",\n    \"autor\": 7,\n    \"resumo\": \"Livro 03 - a história\",\n    \"numeroPaginas\": 3003,\n    \"dataCompra\": \"2020-03-03\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -758,7 +956,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/api/livros/1",
+							"raw": "localhost:3000/api/livros/5",
 							"host": [
 								"localhost"
 							],
@@ -766,7 +964,7 @@
 							"path": [
 								"api",
 								"livros",
-								"1"
+								"5"
 							]
 						}
 					},
@@ -779,7 +977,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 1,\n    \"titulo\": \"O mundo de Sofia\",\n    \"autor\": 3,\n    \"resumo\": \"História da Filosofia\",\n    \"numeroPaginas\": 678,\n    \"dataCompra\": \"2020-02-07\"\n}",
+							"raw": "{\n    \"id\": 999,\n    \"titulo\": \"Livro 999\",\n    \"autor\": 7,\n    \"resumo\": \"Livro antes do 1000\",\n    \"numeroPaginas\": 999,\n    \"dataCompra\": \"1999-09-09\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -802,12 +1000,12 @@
 					"response": []
 				},
 				{
-					"name": "localhost:3000/api/livros/1",
+					"name": "localhost:3000/api/livros/5",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/livros/1",
+							"raw": "localhost:3000/api/livros/5",
 							"host": [
 								"localhost"
 							],
@@ -815,7 +1013,7 @@
 							"path": [
 								"api",
 								"livros",
-								"1"
+								"5"
 							]
 						}
 					},
@@ -863,6 +1061,430 @@
 			]
 		},
 		{
+			"name": "localhost:3000/api/usuarios",
+			"item": [
+				{
+					"name": "localhost:3000/api/usuarios \"admin\"",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"admin\",\n    \"email\": \"admin@admin.com.br\",\n    \"senha\": \"ADMINinstrador@312\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/usuarios",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/usuarios \"root\"",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"root\",\n    \"email\": \"root@email.com.br\",\n    \"senha\": \"R00t$421207\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/usuarios",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/usuarios \"usuario01\"",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"usuario01\",\n    \"email\": \"usuario01@email.com.br\",\n    \"senha\": \"U5u4r10O1$421207\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/usuarios",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/usuarios \"usuario02\"",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"usuario02\",\n    \"email\": \"usuario02@email.com.br\",\n    \"senha\": \"U5u4r10O2$532318\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/usuarios",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/usuarios \"novo\" email repetido",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"novo\",\n    \"email\": \"root@email.com.br\",\n    \"senha\": \"N00vo$421207\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/usuarios",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/usuarios \"usuario01\" altera email ou senha",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"usuario01\",\n    \"email\": \"usuario01@gmail.com.br\",\n    \"senha\": \"ABCdef@321\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/usuarios",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/usuarios",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/usuarios",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/usuarios Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/usuarios",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/usuarios/admin",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/usuarios/admin",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"usuarios",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/usuarios/email/admin@admin.com.br",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/usuarios/email/admin@admin.com.br",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"usuarios",
+								"email",
+								"admin@admin.com.br"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "localhost:3000/api/livrosusuarios",
+			"item": [
+				{
+					"name": "localhost:3000/api/livrosusuarios",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"livro\": 1,\n    \"usuario\": \"admin\",\n    \"dataInicioLeitura\": \"2022-12-06\",\n    \"dataFimLeitura\": \"2022-12-31\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios SEM data fim leitura",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"livro\": 3,\n    \"usuario\": \"admin\",\n    \"dataInicioLeitura\": \"2022-12-06\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/livrosusuarios/detalhado",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/livrosusuarios/detalhado",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosusuarios",
+								"detalhado"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Hello World! NestJS",
 			"request": {
 				"method": "GET",
@@ -875,93 +1497,6 @@
 					"port": "3000",
 					"path": [
 						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "localhost:3000/api/usuarios",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:3000/api/usuarios",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"usuarios"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "localhost:3000/api/usuarios \"admin\"",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"nome\": \"admin\",\n    \"email\": \"admin@admin.com.br\",\n    \"senha\": \"4dm1n15tr4d0r\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:3000/api/usuarios",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"usuarios"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "localhost:3000/api/usuarios \"root\"",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"nome\": \"root\",\n    \"email\": \"root@email.com.br\",\n    \"senha\": \"r00t\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:3000/api/usuarios",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"usuarios"
 					]
 				}
 			},
