@@ -45,6 +45,16 @@ export class LivroUsuarioService {
         return livroUsuario;
     }
 
+    public async buscaLivrosUsuariosPorLivro(idLivro: number): Promise<LivroUsuario[]> {
+        return this.livroUsuarioRepository.find(
+            { where: { livroId: idLivro } });
+    }
+
+    public async buscaLivrosUsuariosPorUsuario(nomeUsuario: string): Promise<LivroUsuario[]> {
+        return this.livroUsuarioRepository.find(
+            { where: { usuarioNome: nomeUsuario } });
+    }
+
     public async cadastraLivroUsuario(livroUsuario: CadastraLivroUsuarioDto): Promise<LivroUsuario> {
         // const dataInicioLeitura = new Date(livroUsuario.dataInicioLeitura.toLocaleString('pt-BR', { timeZoneName: 'longOffset', timeZone: 'America/Sao_Paulo' }));
         const dataInicioLeitura = new Date(livroUsuario.dataInicioLeitura);

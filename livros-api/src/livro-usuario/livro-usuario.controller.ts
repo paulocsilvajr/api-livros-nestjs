@@ -35,6 +35,24 @@ export class LivroUsuarioController {
         return this.livroUsuarioService.buscaLivroUsuarioPorId(idLivroUsuario);
     }
 
+    @Get('/livro/:id')
+    public async buscaLivrosUsuariosPorLivro(@Param('id') idLivro: number): Promise<LivroUsuario[]> {
+        const livrosUsuarios = await this.livroUsuarioService.buscaLivrosUsuariosPorLivro(idLivro);
+
+        verificaArray(livrosUsuarios, 'livros associados a usuários');
+
+        return livrosUsuarios;
+    }
+
+    @Get('/usuario/:nome')
+    public async buscaLivrosUsuariosPorUsuario(@Param('nome') nomeUsuario: string): Promise<LivroUsuario[]> {
+        const livrosUsuarios = await this.livroUsuarioService.buscaLivrosUsuariosPorUsuario(nomeUsuario);
+
+        verificaArray(livrosUsuarios, 'livros associados a usuários');
+
+        return livrosUsuarios;
+    }
+
     @UseInterceptors(ClassSerializerInterceptor)
     @Post()
     public async cadastraLivroUsuario(@Body() livrousuario: CadastraLivroUsuarioDto): Promise<LivroUsuario> {
