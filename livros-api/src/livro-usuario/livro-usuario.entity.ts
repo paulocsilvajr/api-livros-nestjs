@@ -7,8 +7,14 @@ export class LivroUsuario {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column()
+    usuarioNome: string;
+
     @ManyToOne(() => Usuario, (usuario) => usuario.livrosUsuarios)
     usuario: Usuario;
+
+    @Column()
+    livroId: number;
 
     @ManyToOne(() => Livro, (livro) => livro.livrosUsuarios)
     livro: Livro;
