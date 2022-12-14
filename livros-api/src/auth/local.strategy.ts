@@ -7,8 +7,8 @@ import { AuthService } from "./auth.service";
 export class LocalStrategy extends PassportStrategy(Strategy) {
     constructor(private authService: AuthService) { 
         super({
-            usernameField: 'name',
-            passwordField: 'password',
+            usernameField: 'nome',
+            passwordField: 'senha',
         });
      }
 
