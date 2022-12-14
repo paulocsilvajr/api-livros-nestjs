@@ -1,4 +1,5 @@
-import { Body, ClassSerializerInterceptor, Controller, Delete, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Post, Put, UseInterceptors } from "@nestjs/common";
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Post, Put, UseGuards, UseInterceptors } from "@nestjs/common";
+import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { verificaArray } from "src/util/verifica-entidade";
 import { QueryFailedError } from "typeorm";
 import { AlteraLivroUsuarioDto, CadastraLivroUsuarioDto } from "./livro-usuario.dto";
@@ -10,6 +11,7 @@ export class LivroUsuarioController {
 
     constructor(private livroUsuarioService: LivroUsuarioService) {}
 
+    @UseGuards(JwtAuthGuard)
     @Get()
     public async buscaLivrosUsuarios(): Promise<LivroUsuario[]> {
         const livrosUsuarios = await this.livroUsuarioService.buscaLivrosUsuarios();
@@ -19,6 +21,7 @@ export class LivroUsuarioController {
         return livrosUsuarios;
     }
 
+    @UseGuards(JwtAuthGuard)
     @UseInterceptors(ClassSerializerInterceptor)
     @Get('/detalhado')
     public async buscaLivrosUsuariosDetalhado(): Promise<LivroUsuario[]> {
@@ -29,12 +32,14 @@ export class LivroUsuarioController {
         return livrosUsuarios;
     }
 
+    @UseGuards(JwtAuthGuard)
     @UseInterceptors(ClassSerializerInterceptor)
     @Get(':id')
     public async buscaLivroUsuarioPorId(@Param('id') idLivroUsuario: number): Promise<LivroUsuario> {
         return this.livroUsuarioService.buscaLivroUsuarioPorId(idLivroUsuario);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get('/livro/:id')
     public async buscaLivrosUsuariosPorLivro(@Param('id') idLivro: number): Promise<LivroUsuario[]> {
         const livrosUsuarios = await this.livroUsuarioService.buscaLivrosUsuariosPorLivro(idLivro);
@@ -44,6 +49,7 @@ export class LivroUsuarioController {
         return livrosUsuarios;
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get('/usuario/:nome')
     public async buscaLivrosUsuariosPorUsuario(@Param('nome') nomeUsuario: string): Promise<LivroUsuario[]> {
         const livrosUsuarios = await this.livroUsuarioService.buscaLivrosUsuariosPorUsuario(nomeUsuario);
@@ -53,6 +59,7 @@ export class LivroUsuarioController {
         return livrosUsuarios;
     }
 
+    @UseGuards(JwtAuthGuard)
     @UseInterceptors(ClassSerializerInterceptor)
     @Post()
     public async cadastraLivroUsuario(@Body() livrousuario: CadastraLivroUsuarioDto): Promise<LivroUsuario> {
@@ -67,12 +74,14 @@ export class LivroUsuarioController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @UseInterceptors(ClassSerializerInterceptor)
     @Put(':id')
     public async alteraLivroUsuario(@Body() livroUsuario: AlteraLivroUsuarioDto, @Param('id') idLivroUsuario: number): Promise<LivroUsuario> {
         return this.livroUsuarioService.alteraLivroUsuario(idLivroUsuario, livroUsuario);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     public async removeLivroUsuario(@Param('id') idLivroUsuario: number) {
         return this.livroUsuarioService.removeLivroUsuario(idLivroUsuario);

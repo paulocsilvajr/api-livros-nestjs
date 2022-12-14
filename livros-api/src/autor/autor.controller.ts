@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { verificaArray } from "src/util/verifica-entidade";
 import { QueryFailedError } from "typeorm";
 import { AlteraAutorDto, CadastraAutorDto } from "./autor.dto";
@@ -10,6 +11,7 @@ export class AutorController {
 
     constructor(private autorService: AutorService) {}
 
+    @UseGuards(JwtAuthGuard)
     @Get()
     public async buscaAutores(): Promise<Autor[]> {
         const autores = await this.autorService.buscaAutores();
@@ -19,11 +21,13 @@ export class AutorController {
         return autores;
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get(':id')
     public async buscaAutorPorId(@Param('id') idAutor: number): Promise<Autor> {
         return this.autorService.buscaAutorPorId(idAutor);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Post()
     public async cadastraAutor(@Body() autor: CadastraAutorDto): Promise<Autor> {
         try {
@@ -37,11 +41,13 @@ export class AutorController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Put(':id')
     public async alteraAutor(@Body() autor: AlteraAutorDto, @Param('id') idAutor: number): Promise<Autor> {
         return this.autorService.alteraAutor(idAutor, autor);
     }   
 
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     public async removeAutor(@Param('id') idAutor: number) {
         return this.autorService.removeAutor(idAutor);

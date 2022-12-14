@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Patch, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Patch, Post, Put, UseGuards } from "@nestjs/common";
+import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { verificaArray } from "src/util/verifica-entidade";
 import { QueryFailedError } from "typeorm";
 import { AlteraLivroDto, CadastraLivroDto } from "./livro.dto";
@@ -10,6 +11,7 @@ export class LivroControler {
     
     constructor(private livroService: LivroService) {}
     
+    @UseGuards(JwtAuthGuard)
     @Get()
     public async buscaLivros(): Promise<Livro[]> {
         const livros = await this.livroService.buscaLivros();
@@ -19,6 +21,7 @@ export class LivroControler {
         return livros;
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get('/autor')
     public async buscaLivrosComAutor(): Promise<Livro[]> {
         const livros = await this.livroService.buscaLivrosComAutor();
@@ -28,11 +31,13 @@ export class LivroControler {
         return livros;
     }
     
+    @UseGuards(JwtAuthGuard)
     @Get(':id')
     public async buscaLivroPorId(@Param('id') idLivro: number): Promise<Livro> {
         return this.livroService.buscaLivroPorId(idLivro);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Post()
     public async cadastraLivro(@Body() livro: CadastraLivroDto): Promise<Livro> {
         try {
@@ -46,11 +51,13 @@ export class LivroControler {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Put(':id')
     public async alteraLivro(@Body() livro: AlteraLivroDto, @Param('id') idLivro: number): Promise<Livro> {
         return this.livroService.alteraLivro(idLivro, livro);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     public async removeLivro(@Param('id') idLivro: number) {
         return this.livroService.removeLivro(idLivro);

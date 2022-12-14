@@ -1,4 +1,5 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Post, UseInterceptors } from "@nestjs/common";
+import { Body, ClassSerializerInterceptor, Controller, Get, InternalServerErrorException, NotAcceptableException, NotFoundException, Param, Post, UseGuards, UseInterceptors } from "@nestjs/common";
+import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { verificaArray } from "src/util/verifica-entidade";
 import { QueryFailedError } from "typeorm";
 import { CadastraUsuarioDto } from "./usuario.dto";
@@ -9,6 +10,7 @@ import { UsuarioService } from "./usuario.service";
 export class UsuarioController {
     constructor(private usuarioService: UsuarioService) {}
 
+    @UseGuards(JwtAuthGuard)
     @UseInterceptors(ClassSerializerInterceptor)
     @Get()
     public async buscaUsuarios(): Promise<Usuario[]> {
@@ -33,12 +35,14 @@ export class UsuarioController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @UseInterceptors(ClassSerializerInterceptor)
     @Get(':nome')
     public async buscaUsuarioPorNome(@Param('nome') nomeUsuario: string): Promise<Usuario> {
         return this.usuarioService.buscaUsuarioPorNome(nomeUsuario);
     }
 
+    @UseGuards(JwtAuthGuard)
     @UseInterceptors(ClassSerializerInterceptor)
     @Get('/email/:email')
     public async buscaUsuarioPorEmail(@Param('email') emailUsuario: string): Promise<Usuario> {
