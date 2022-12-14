@@ -1514,36 +1514,11 @@
 			"name": "localhost:3000/api/usuarios",
 			"item": [
 				{
-					"name": "localhost:3000/api/usuarios \"admin\"",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"nome\": \"admin\",\n    \"email\": \"admin@admin.com.br\",\n    \"senha\": \"ADMINinstrador@312\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:3000/api/usuarios",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"usuarios"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "localhost:3000/api/usuarios \"root\"",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -1572,6 +1547,9 @@
 				{
 					"name": "localhost:3000/api/usuarios \"usuario01\"",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -1600,6 +1578,9 @@
 				{
 					"name": "localhost:3000/api/usuarios \"usuario02\"",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -1628,6 +1609,9 @@
 				{
 					"name": "localhost:3000/api/usuarios \"novo\" email repetido",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -1656,6 +1640,9 @@
 				{
 					"name": "localhost:3000/api/usuarios \"usuario01\" altera email ou senha",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -2689,6 +2676,37 @@
 					"port": "3000",
 					"path": [
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/api/usuarios \"admin\"",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nome\": \"admin\",\n    \"email\": \"admin@admin.com.br\",\n    \"senha\": \"ADMINinstrador@312\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/usuarios",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios"
 					]
 				}
 			},
