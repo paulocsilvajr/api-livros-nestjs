@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import { Autor } from './autor/autor.entity';
 import { AutorModule } from './autor/autor.module';
 import { LivroUsuario } from './livro-usuario/livro-usuario.entity';
@@ -18,6 +19,7 @@ import { UsuarioModule } from './usuario/usuario.module';
     UsuarioModule,
     AutorModule,
     LivroUsuarioModule,
+    AuthModule,
     ConfigModule.forRoot(),
     // https://docs.nestjs.com/techniques/database
     TypeOrmModule.forRoot({
