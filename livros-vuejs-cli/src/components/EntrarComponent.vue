@@ -64,7 +64,7 @@ export default defineComponent({
     },
     methods: {
         alteraEstadoSenha() {
-            const inputSenha = this.$refs['inputSenha'] as any
+            const inputSenha = this.$refs['inputSenha'] as HTMLInputElement
             if (inputSenha.type === 'password')
                 inputSenha.type = 'text';
             else
