@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import CadastroLivros from '../components/CadastroLivros.vue'
+import CadastroLivros from '@/components/CadastroLivrosComponent.vue'
 
 export default {
     name: "CadastroLivrosView",

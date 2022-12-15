@@ -1,6 +1,5 @@
 <template>
 
-
     <div class="columns">
         <div class="column mt-6">
             <h1 class="title is-1 has-text-centered">{{ titulo }}</h1>
@@ -158,7 +157,7 @@ import Livro from '@/models/livro'
 import LivroService from '@/services/livro-service'
 
 export default defineComponent({
-    name: "CadastroLivros",
+    name: "CadastroLivrosComponent",
     components: {
 
     },
