@@ -74,6 +74,10 @@ export default defineComponent({
         },
         entra() {
             console.log(`Entrando em API com usuário '${this.usuario.nome}'...`);
+            
+            this.$store.state.nomeUsuario = this.usuario.nome;
+            this.$store.state.senha = this.usuario.senha;
+            console.log(this.$store.state);
 
             this.limparCampos();
         },
