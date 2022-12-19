@@ -11,17 +11,7 @@
                     </div>
                 </div>
                 <div class="mb-6">
-                    <label for="senha" class="label">Senha</label>
-                    <div class="field has-addons">
-                        <div class="control is-expanded">
-                            <input type="password" class="input" placeholder="Senha do usuário" id="senha" ref="inputSenha" v-model="usuario.senha">
-                        </div>
-                        <div class="control">
-                            <button class="button" @click="alteraEstadoSenha()">
-                                <i class="fas" :class="{ 'fa-eye-slash': exibePassword, 'fa-eye': !exibePassword }"></i>
-                            </button>
-                        </div>
-                    </div>
+                    <InputSenhaComponent v-model="usuario.senha"/>
                 </div>
 
                 <div class="notification" :class="mensagem.tipo" v-if="mensagem.ativa">
@@ -39,12 +29,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Usuario from '@/models/usuario'
+import Usuario from '@/models/usuario';
+import InputSenhaComponent from '@/components/InputSenhaComponent.vue';
 
 
 export default defineComponent({
     name: "EntrarComponent",
-    components: { },
+    components: { 
+        InputSenhaComponent,
+    },
     data() {
         return {
             mensagem: {
@@ -52,7 +45,6 @@ export default defineComponent({
                 tipo: 'is-danger',
                 ativa: true 
             },
-            exibePassword: true,
             usuario: new Usuario(),
         }
     },
@@ -63,21 +55,12 @@ export default defineComponent({
         }
     },
     methods: {
-        alteraEstadoSenha() {
-            const inputSenha = this.$refs['inputSenha'] as HTMLInputElement
-            if (inputSenha.type === 'password')
-                inputSenha.type = 'text';
-            else
-                inputSenha.type = 'password';
-            
-            this.exibePassword = !this.exibePassword;
-        },
         entra() {
             console.log(`Entrando em API com usuário '${this.usuario.nome}'...`);
             
             this.$store.state.nomeUsuario = this.usuario.nome;
             this.$store.state.senha = this.usuario.senha;
-            console.log(this.$store.state);
+            console.log(this.$store.state, this.usuario);
 
             this.limparCampos();
         },
