@@ -60,7 +60,6 @@ export default defineComponent({
             
             this.$store.state.nomeUsuario = this.usuario.nome;
             this.$store.state.senha = this.usuario.senha;
-            console.log(this.$store.state, this.usuario);
 
             this.limparCampos();
         },
