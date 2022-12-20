@@ -3,7 +3,6 @@
         <label for="senha" class="label">Senha</label>
         <div class="field has-addons">
             <div class="control is-expanded">
-                <!-- <input type="password" class="input" placeholder="Senha do usuário" id="senha" ref="inputSenha" v-model="usuario.senha"> -->
                 <input type="password" class="input" placeholder="Senha do usuário" id="senha" ref="inputSenha" :value="modelValue" @input="updateValue">
             </div>
             <div class="control">

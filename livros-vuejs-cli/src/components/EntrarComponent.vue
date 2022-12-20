@@ -14,10 +14,14 @@
                     <InputSenhaComponent v-model="usuario.senha"/>
                 </div>
 
-                <div class="notification" :class="mensagem.tipo" v-if="mensagem.ativa">
+                <!-- <div class="notification" :class="mensagem.tipo" v-if="mensagem.ativa">
                     <button class="delete" @click="fechaNotificacao()"></button>
                     {{ msgFormatada }}
-                </div>
+                </div> -->
+
+                <MensagemComponent tipo="sucesso" v-if="mensagem.length > 0">
+                    {{ mensagem }}
+                </MensagemComponent>
 
                 <button class="button is-primary is-fullwidth mb-5" @click="entra()">Entrar</button>
 
@@ -31,35 +35,29 @@
 import { defineComponent } from 'vue';
 import Usuario from '@/models/usuario';
 import InputSenhaComponent from '@/components/InputSenhaComponent.vue';
+import MensagemComponent from '@/components/MensagemComponent.vue';
 
 
 export default defineComponent({
     name: "EntrarComponent",
     components: { 
         InputSenhaComponent,
+        MensagemComponent,
     },
     data() {
         return {
-            mensagem: {
-                texto: 'mensagem',
-                tipo: 'is-danger',
-                ativa: true 
-            },
+            mensagem: "",
             usuario: new Usuario(),
-        }
-    },
-    computed: {
-        msgFormatada(): string {
-            // torna primeira letra maiúscula
-            return this.mensagem.texto.charAt(0).toUpperCase() + this.mensagem.texto.slice(1);
         }
     },
     methods: {
         entra() {
-            console.log(`Entrando em API com usuário '${this.usuario.nome}'...`);
+            console.log(`Entrando como usuário '${this.usuario.nome}'...`);
             
             this.$store.state.nomeUsuario = this.usuario.nome;
             this.$store.state.senha = this.usuario.senha;
+
+            this.mensagem = "Entrando..."
 
             this.limparCampos();
         },
@@ -67,9 +65,6 @@ export default defineComponent({
             this.usuario.nome = '';
             this.usuario.senha = '';
         },
-        fechaNotificacao() {
-            this.mensagem.ativa = false;
-        }
     },
     beforeMount() {
         console.log('método beforeMount');
