@@ -33,8 +33,9 @@ export default defineComponent({
         }
     },
     methods: {
-        updateValue(event) {
-            this.$emit('update:modelValue', event.target.value);
+        updateValue(event: Event) {
+            console.log(event, typeof event);
+            this.$emit('update:modelValue', (event.target as HTMLInputElement).value);
         },
         alteraEstadoSenha() {
             const inputSenha = this.$refs['inputSenha'] as HTMLInputElement;
