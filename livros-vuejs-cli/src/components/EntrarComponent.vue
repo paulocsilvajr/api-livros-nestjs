@@ -14,11 +14,6 @@
                     <InputSenhaComponent v-model="usuario.senha"/>
                 </div>
 
-                <!-- <div class="notification" :class="mensagem.tipo" v-if="mensagem.ativa">
-                    <button class="delete" @click="fechaNotificacao()"></button>
-                    {{ msgFormatada }}
-                </div> -->
-
                 <MensagemComponent tipo="sucesso" v-if="mensagem.length > 0">
                     {{ mensagem }}
                 </MensagemComponent>
