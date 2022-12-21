@@ -14,7 +14,9 @@
                     <InputSenhaComponent v-model="usuario.senha"/>
                 </div>
 
-                <MensagemComponent tipo="sucesso" :mensagem="mensagem" />
+                <MensagemComponent :tipo="msg.tipo" :mensagem="msg.mensagem">
+                    <button class="delete" @click="fechaMensagem()"></button>
+                </MensagemComponent>
 
                 <button class="button is-primary is-fullwidth mb-5" @click="entra()">Entrar</button>
 
@@ -29,6 +31,7 @@ import { defineComponent } from 'vue';
 import Usuario from '@/models/usuario';
 import InputSenhaComponent from '@/components/InputSenhaComponent.vue';
 import MensagemComponent from '@/components/MensagemComponent.vue';
+import ApiService from '@/services/api-service';
 
 
 export default defineComponent({
@@ -39,7 +42,11 @@ export default defineComponent({
     },
     data() {
         return {
-            mensagem: "",
+            apiService: new ApiService(),
+            msg: {
+                mensagem: "",
+                tipo: "perigo",
+            },
             usuario: new Usuario(),
         }
     },
@@ -50,7 +57,8 @@ export default defineComponent({
             this.$store.state.nomeUsuario = this.usuario.nome;
             this.$store.state.senha = this.usuario.senha;
 
-            this.mensagem = "Entrando..."
+            this.msg.mensagem = "Entrando...";
+            this.msg.tipo = "sucesso";
 
             this.limparCampos();
         },
@@ -58,9 +66,22 @@ export default defineComponent({
             this.usuario.nome = '';
             this.usuario.senha = '';
         },
+        async verificaAPI() {
+            if (await this.apiService.apiEstaOnline()) {
+                this.msg.mensagem = "API Online"
+                this.msg.tipo = "sucesso";
+
+                return
+            }
+
+            this.msg.mensagem = `Ocorreu algum problema ao tentar conectar na API '${this.apiService.getUrl()}'`
+        },
+        fechaMensagem() {
+            this.msg.mensagem = "";
+        }
     },
     beforeMount() {
-        console.log('método beforeMount');
+        this.verificaAPI();
     },
 })
 
