@@ -22,10 +22,16 @@ export default defineComponent({
     },
     computed: {
         tipoNotificacao(): string {
-            if (this.$props.tipo === 'sucesso')
-                return 'is-success'
-            
-            return 'is-danger'
+            switch (this.$props.tipo) {
+                case 'sucesso':
+                    return 'is-success';
+                case 'alerta':
+                    return 'is-warning';
+                case 'info':
+                    return 'is-info';
+                default:
+                    return 'is-danger';
+            }
         },
         temMensagem(): boolean {
             return this.mensagem.length > 0;
