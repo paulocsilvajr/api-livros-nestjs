@@ -1,6 +1,7 @@
 <template>
 
-<div class="notification" :class="tipoNotificacao">
+<div class="notification" :class="tipoNotificacao" v-if="temMensagem">
+    {{ mensagem }}
     <slot></slot>
 </div>
 
@@ -14,6 +15,10 @@ export default defineComponent({
     name: "MensagemComponent",
     props: {
         tipo: String,
+        mensagem: {
+            type: String,
+            default: "",
+        }
     },
     computed: {
         tipoNotificacao(): string {
@@ -22,6 +27,9 @@ export default defineComponent({
             
             return 'is-danger'
         },
+        temMensagem(): boolean {
+            return this.mensagem.length > 0;
+        }
     },
 })
 

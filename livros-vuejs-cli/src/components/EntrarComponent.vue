@@ -14,9 +14,7 @@
                     <InputSenhaComponent v-model="usuario.senha"/>
                 </div>
 
-                <MensagemComponent tipo="sucesso" v-if="mensagem.length > 0">
-                    {{ mensagem }}
-                </MensagemComponent>
+                <MensagemComponent tipo="sucesso" :mensagem="mensagem" />
 
                 <button class="button is-primary is-fullwidth mb-5" @click="entra()">Entrar</button>
 
