@@ -2,7 +2,7 @@ import LivroJson from "@/interfaces/livro-json"
 import Livro from "@/models/livro"
 
 export default class LivroService {
-    private url = 'http://localhost:3000/api/livros'
+    private url = `${process.env.API_URL}/api/livros`
 
     public async buscaLivros(livros: Array<Livro>): Promise<string> {
         try {
