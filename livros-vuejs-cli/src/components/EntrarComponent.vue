@@ -32,7 +32,8 @@ import Usuario from '@/models/usuario';
 import InputSenhaComponent from '@/components/InputSenhaComponent.vue';
 import MensagemComponent from '@/components/MensagemComponent.vue';
 import ApiService from '@/services/api-service';
-
+import EntrarService from '@/services/entrar-service';
+import { NaoAutorizadoError } from '@/errors/nao-autorizado-error'
 
 export default defineComponent({
     name: "EntrarComponent",
@@ -48,23 +49,49 @@ export default defineComponent({
                 tipo: "perigo",
             },
             usuario: new Usuario(),
+            entrarService: new EntrarService(),
         }
     },
     methods: {
-        entra() {
-            console.log(`Entrando como usuário '${this.usuario.nome}'...`);
-            
-            this.$store.state.nomeUsuario = this.usuario.nome;
-            this.$store.state.senha = this.usuario.senha;
+        async entra() {
+            if (!this.verificaLogin()) {
+                this.msg.mensagem = "Informe um usuário e senha"
+                this.msg.tipo = "perigo"
+                
+                return
+            }
 
-            this.msg.mensagem = "Entrando...";
-            this.msg.tipo = "sucesso";
+            try {
+                console.log(`Entrando como usuário '${this.usuario.nome}'...`)
 
-            this.limparCampos();
+                const token = await this.entrarService.entrar(this.usuario)
+                if (token) {
+                    this.$store.state.nomeUsuario = this.usuario.nome
+                    this.$store.state.senha = this.usuario.senha
+                    this.$store.state.token = token.access_token
+
+                    this.msg.mensagem = "Entrando..."
+                    this.msg.tipo = "sucesso"
+
+                    this.limpaCampos()
+
+                    this.$router.push({ name: "cadastro-livros" })
+                }
+            } catch (error) {
+                if (error instanceof NaoAutorizadoError) {
+                    this.msg.mensagem = `Usuário ou senha inválida`
+                    this.msg.tipo = "perigo"
+
+                    console.log(error.message)
+                }
+            }
         },
-        limparCampos() {
+        limpaCampos() {
             this.usuario.nome = '';
             this.usuario.senha = '';
+        },
+        verificaLogin() {
+            return this.usuario.nome.length > 0 && this.usuario.senha.length > 0
         },
         async verificaAPI() {
             if (await this.apiService.apiEstaOnline()) {
