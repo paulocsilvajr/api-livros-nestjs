@@ -6,7 +6,7 @@
                 <input type="password" class="input" placeholder="Senha do usuário" id="senha" ref="inputSenha" :value="modelValue" @input="updateValue" :required="required">
             </div>
             <div class="control">
-                <button class="button" @click="alteraEstadoSenha()">
+                <button class="button" @click.prevent="alteraEstadoSenha()">
                     <i class="fas" :class="{ 'fa-eye-slash': exibePassword, 'fa-eye': !exibePassword }"></i>
                 </button>
             </div>
