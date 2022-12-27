@@ -28,7 +28,7 @@ export default defineComponent({
     data() {
         return {
             content: this.value,
-            exibePassword: true,
+            exibePassword: false,
         }
     },
     methods: {
