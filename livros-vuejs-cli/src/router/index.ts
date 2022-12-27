@@ -6,7 +6,7 @@ import VariaveisAmbiente from '@/utils/variaveis-ambiente'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'home',
+    name: 'cadastro-livros',
     component: CadastroLivrosView
   },
   {
