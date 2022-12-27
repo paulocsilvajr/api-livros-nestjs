@@ -3,7 +3,7 @@
         <label for="senha" class="label">Senha</label>
         <div class="field has-addons">
             <div class="control is-expanded">
-                <input type="password" class="input" placeholder="Senha do usuário" id="senha" ref="inputSenha" :value="modelValue" @input="updateValue">
+                <input type="password" class="input" placeholder="Senha do usuário" id="senha" ref="inputSenha" :value="modelValue" @input="updateValue" :required="required">
             </div>
             <div class="control">
                 <button class="button" @click="alteraEstadoSenha()">
@@ -21,7 +21,11 @@ export default defineComponent({
     name: "InputSenhaComponent",
     components: { },
     props: {
-        modelValue: String
+        modelValue: String,
+        required: {
+            type: Boolean,
+            default: false
+        }
     },
     emits:
         ['update:modelValue'],

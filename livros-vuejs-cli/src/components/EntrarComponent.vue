@@ -3,25 +3,25 @@
     
     <div class="columns is-flex is-justify-content-center">
         <div class="column is-6 is-4-desktop">
-            <div class="box">
+            <form class="box" @submit.prevent="entra()">
                 <div class="field mb-5">
                     <label for="usuario" class="label">Usuário</label>
                     <div class="control">
-                        <input type="text" class="input" placeholder="Nome do usuário" id="usuario" v-model="usuario.nome">
+                        <input type="text" class="input" placeholder="Nome do usuário" id="usuario" v-model="usuario.nome" required>
                     </div>
                 </div>
                 <div class="mb-6">
-                    <InputSenhaComponent v-model="usuario.senha"/>
+                    <InputSenhaComponent v-model="usuario.senha" required/>
                 </div>
 
                 <MensagemComponent :tipo="msg.tipo" :mensagem="msg.mensagem">
                     <button class="delete" @click="fechaMensagem()"></button>
                 </MensagemComponent>
 
-                <button class="button is-primary is-fullwidth mb-5" @click="entra()">Entrar</button>
+                <button class="button is-primary is-fullwidth mb-5" type="submit">Entrar</button>
 
                 <a href="/cadastro-usuario">Cadastrar um novo usuário</a>
-            </div>
+            </form>
         </div>
     </div>
 </template>
