@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import CadastroLivrosView from '@/views/CadastroLivrosView.vue'
 import EntrarView from '@/views/EntrarView.vue'
+import VariaveisAmbiente from '@/utils/variaveis-ambiente'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -24,7 +25,7 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(VariaveisAmbiente.baseUrl),
   routes
 })
 

@@ -1,8 +1,9 @@
 import LivroJson from "@/interfaces/livro-json"
 import Livro from "@/models/livro"
+import VariaveisAmbiente from "@/utils/variaveis-ambiente"
 
 export default class LivroService {
-    private url = `${process.env.API_URL}/api/livros`
+    private url = `${VariaveisAmbiente.apiUrl}/api/livros`
 
     public async buscaLivros(livros: Array<Livro>): Promise<string> {
         try {

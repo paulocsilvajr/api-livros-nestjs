@@ -1,6 +1,7 @@
+import VariaveisAmbiente from "@/utils/variaveis-ambiente";
 
 export default class ApiService {
-    private url = process.env.API_URL
+    private url = VariaveisAmbiente.apiUrl
 
     public async apiEstaOnline(): Promise<boolean> {
         try {
