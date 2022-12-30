@@ -1,19 +1,49 @@
-import { createStore } from 'vuex'
+import { createStore, Store, useStore as vuexUseStore } from 'vuex'
+import { INotificacao } from '@/interfaces/INotificacoes'
+import { InjectionKey } from 'vue'
+import { LIMPAR_INFORMACOES_USUARIO, NOTIFICAR, REMOVER_NOTIFICACAO } from '@/store/tipos-mutacoes'
 
-export default createStore({
+interface InformacoesUsuario {
+  nomeUsuario: string,
+  senha: string,
+  token: string
+}
+
+interface Estado {
+  usuario: InformacoesUsuario,
+  notificacoes: INotificacao[],
+}
+
+export const key: InjectionKey<Store<Estado>> = Symbol()
+
+export const store = createStore<Estado>({
   state: {
-    nomeUsuario: '',
-    senha: '',
-    token: '',
+    usuario: {
+      nomeUsuario: '',
+      senha: '',
+      token: ''
+    },
+    notificacoes: [],
   },
   mutations: {
-    limpar(state) {
-      console.log('Limpado informações de usuário armazenadas');
-      
-      state.nomeUsuario = '';
-      state.senha = '';
-      state.token = '';
-    }
+    [LIMPAR_INFORMACOES_USUARIO](state) {
+      console.log('Limpando informações de usuário/token armazenadas');
+
+      state.usuario.nomeUsuario = '';
+      state.usuario.senha = '';
+      state.usuario.token = '';
+    },
+    [NOTIFICAR](state, novaNotificacao: INotificacao) {
+      novaNotificacao.id = new Date().getTime()
+      state.notificacoes.push(novaNotificacao)
+
+      setTimeout(() => {
+        state.notificacoes = state.notificacoes.filter(notificacao => notificacao.id != novaNotificacao.id)
+      }, 3000)
+    },
+    [REMOVER_NOTIFICACAO](state, notificacao: INotificacao) {
+      state.notificacoes = state.notificacoes.filter(n => n.id != notificacao.id)
+    },
   },
   getters: {
   },
@@ -22,3 +52,7 @@ export default createStore({
   modules: {
   }
 })
+
+export function useStore(): Store<Estado> {
+  return vuexUseStore(key)
+}

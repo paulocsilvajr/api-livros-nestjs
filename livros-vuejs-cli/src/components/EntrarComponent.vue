@@ -30,16 +30,17 @@
 import { defineComponent } from 'vue';
 import Usuario from '@/models/usuario';
 import InputSenhaComponent from '@/components/InputSenhaComponent.vue';
-import MensagemComponent from '@/components/MensagemComponent.vue';
+import NotificacaoComponent from '@/components/NotificacaoComponent.vue';
 import ApiService from '@/services/api-service';
 import EntrarService from '@/services/entrar-service';
 import { NaoAutorizadoError } from '@/errors/nao-autorizado-error'
+import { useStore } from '@/store';
 
 export default defineComponent({
     name: "EntrarComponent",
     components: { 
         InputSenhaComponent,
-        MensagemComponent,
+        NotificacaoComponent,
     },
     data() {
         return {
@@ -66,9 +67,10 @@ export default defineComponent({
 
                 const token = await this.entrarService.entrar(this.usuario)
                 if (token) {
-                    this.$store.state.nomeUsuario = this.usuario.nome
-                    this.$store.state.senha = this.usuario.senha
-                    this.$store.state.token = token.access_token
+                    this.store.state.usuario.nomeUsuario = this.usuario.nome
+                    this.store.state.usuario.senha = this.usuario.senha
+                    this.store.state.usuario.token = token.access_token
+                    console.log(this.store.state.usuario)
 
                     this.msg.mensagem = "Entrando..."
                     this.msg.tipo = "sucesso"
@@ -110,6 +112,12 @@ export default defineComponent({
     beforeMount() {
         this.verificaAPI();
     },
+    setup() {
+        const store = useStore()
+        return {
+            store
+        }
+    }
 })
 
 </script>
