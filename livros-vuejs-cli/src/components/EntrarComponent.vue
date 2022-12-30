@@ -1,22 +1,19 @@
 <template>
     <h1 class="title is-1 mt-3 mb-6">Login</h1>
-    
+
     <div class="columns is-flex is-justify-content-center">
         <div class="column is-6 is-4-desktop">
             <form class="box" @submit.prevent="entra()">
                 <div class="field mb-5">
                     <label for="usuario" class="label">Usuário</label>
                     <div class="control">
-                        <input type="text" class="input" placeholder="Nome do usuário" id="usuario" v-model="usuario.nome" required>
+                        <input type="text" class="input" placeholder="Nome do usuário" id="usuario"
+                            v-model="usuario.nome" required>
                     </div>
                 </div>
                 <div class="mb-6">
-                    <InputSenhaComponent v-model="usuario.senha" required/>
+                    <InputSenhaComponent v-model="usuario.senha" required />
                 </div>
-
-                <MensagemComponent :tipo="msg.tipo" :mensagem="msg.mensagem">
-                    <button class="delete" @click="fechaMensagem()"></button>
-                </MensagemComponent>
 
                 <button class="button is-primary is-fullwidth mb-5" type="submit">Entrar</button>
 
@@ -30,25 +27,21 @@
 import { defineComponent } from 'vue';
 import Usuario from '@/models/usuario';
 import InputSenhaComponent from '@/components/InputSenhaComponent.vue';
-import NotificacaoComponent from '@/components/NotificacaoComponent.vue';
 import ApiService from '@/services/api-service';
 import EntrarService from '@/services/entrar-service';
 import { NaoAutorizadoError } from '@/errors/nao-autorizado-error'
 import { useStore } from '@/store';
+import { NOTIFICAR } from '@/store/tipos-mutacoes';
+import { TipoNotificacao } from '@/interfaces/INotificacoes'
 
 export default defineComponent({
     name: "EntrarComponent",
-    components: { 
+    components: {
         InputSenhaComponent,
-        NotificacaoComponent,
     },
     data() {
         return {
             apiService: new ApiService(),
-            msg: {
-                mensagem: "",
-                tipo: "perigo",
-            },
             usuario: new Usuario(),
             entrarService: new EntrarService(),
         }
@@ -56,9 +49,11 @@ export default defineComponent({
     methods: {
         async entra() {
             if (!this.verificaLogin()) {
-                this.msg.mensagem = "Informe um usuário e senha"
-                this.msg.tipo = "perigo"
-                
+                this.store.commit(NOTIFICAR, {
+                    texto: "Informe um usuário e senha",
+                    tipo: TipoNotificacao.FALHA
+                })
+
                 return
             }
 
@@ -72,8 +67,10 @@ export default defineComponent({
                     this.store.state.usuario.token = token.access_token
                     console.log(this.store.state.usuario)
 
-                    this.msg.mensagem = "Entrando..."
-                    this.msg.tipo = "sucesso"
+                    this.store.commit(NOTIFICAR, {
+                        texto: "Entrando...",
+                        tipo: TipoNotificacao.SUCESSO
+                    })
 
                     this.limpaCampos()
 
@@ -81,8 +78,10 @@ export default defineComponent({
                 }
             } catch (error) {
                 if (error instanceof NaoAutorizadoError) {
-                    this.msg.mensagem = `Usuário ou senha inválida`
-                    this.msg.tipo = "perigo"
+                    this.store.commit(NOTIFICAR, {
+                        texto: "Usuário ou senha inválida",
+                        tipo: TipoNotificacao.FALHA
+                    })
 
                     console.log(error.message)
                 }
@@ -97,17 +96,19 @@ export default defineComponent({
         },
         async verificaAPI() {
             if (await this.apiService.apiEstaOnline()) {
-                this.msg.mensagem = "API Online"
-                this.msg.tipo = "sucesso";
+                this.store.commit(NOTIFICAR, {
+                    texto: "API Online",
+                    tipo: TipoNotificacao.SUCESSO
+                })
 
                 return
             }
 
-            this.msg.mensagem = `Ocorreu algum problema ao tentar conectar na API '${this.apiService.getUrl()}'`
+            this.store.commit(NOTIFICAR, {
+                texto: `Ocorreu algum problema ao tentar conectar na API '${this.apiService.getUrl()}'`,
+                tipo: TipoNotificacao.ATENCAO
+            })
         },
-        fechaMensagem() {
-            this.msg.mensagem = "";
-        }
     },
     beforeMount() {
         this.verificaAPI();

@@ -37,9 +37,11 @@ export const store = createStore<Estado>({
       novaNotificacao.id = new Date().getTime()
       state.notificacoes.push(novaNotificacao)
 
+      const segundos = 5
+      const tempoEmMilisegundos = segundos * 1000
       setTimeout(() => {
         state.notificacoes = state.notificacoes.filter(notificacao => notificacao.id != novaNotificacao.id)
-      }, 3000)
+      }, tempoEmMilisegundos)
     },
     [REMOVER_NOTIFICACAO](state, notificacao: INotificacao) {
       state.notificacoes = state.notificacoes.filter(n => n.id != notificacao.id)

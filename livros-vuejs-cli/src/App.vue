@@ -4,8 +4,21 @@
     <router-link to="/">Cadastro de Livros</router-link> |
     <router-link to="/about">About</router-link>
   </nav>
-  <router-view/>
+  <NotificacoesComponent></NotificacoesComponent>
+  <router-view />
 </template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import NotificacoesComponent from './components/NotificacoesComponent.vue'
+
+export default defineComponent({
+  name: 'App',
+  components: {
+    NotificacoesComponent
+  },
+});
+</script>
 
 <style>
 #app {
