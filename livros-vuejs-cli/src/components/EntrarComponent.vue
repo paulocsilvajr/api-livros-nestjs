@@ -31,8 +31,8 @@ import ApiService from '@/services/api-service';
 import EntrarService from '@/services/entrar-service';
 import { NaoAutorizadoError } from '@/errors/nao-autorizado-error'
 import { useStore } from '@/store';
-import { NOTIFICAR } from '@/store/tipos-mutacoes';
 import { TipoNotificacao } from '@/interfaces/INotificacoes'
+import useNotificador from '@/hooks/notificador'
 
 export default defineComponent({
     name: "EntrarComponent",
@@ -49,10 +49,7 @@ export default defineComponent({
     methods: {
         async entra() {
             if (!this.verificaLogin()) {
-                this.store.commit(NOTIFICAR, {
-                    texto: "Informe um usuário e senha",
-                    tipo: TipoNotificacao.FALHA
-                })
+                this.notificar("Informe um usuário e senha", TipoNotificacao.FALHA)
 
                 return
             }
@@ -67,10 +64,7 @@ export default defineComponent({
                     this.store.state.usuario.token = token.access_token
                     console.log(this.store.state.usuario)
 
-                    this.store.commit(NOTIFICAR, {
-                        texto: "Entrando...",
-                        tipo: TipoNotificacao.SUCESSO
-                    })
+                    this.notificar("Entrando...", TipoNotificacao.SUCESSO)
 
                     this.limpaCampos()
 
@@ -78,10 +72,7 @@ export default defineComponent({
                 }
             } catch (error) {
                 if (error instanceof NaoAutorizadoError) {
-                    this.store.commit(NOTIFICAR, {
-                        texto: "Usuário ou senha inválida",
-                        tipo: TipoNotificacao.FALHA
-                    })
+                    this.notificar("Usuário ou senha inválida", TipoNotificacao.FALHA)
 
                     console.log(error.message)
                 }
@@ -96,18 +87,12 @@ export default defineComponent({
         },
         async verificaAPI() {
             if (await this.apiService.apiEstaOnline()) {
-                this.store.commit(NOTIFICAR, {
-                    texto: "API Online",
-                    tipo: TipoNotificacao.SUCESSO
-                })
+                this.notificar("API Online", TipoNotificacao.SUCESSO)
 
                 return
             }
 
-            this.store.commit(NOTIFICAR, {
-                texto: `Ocorreu algum problema ao tentar conectar na API '${this.apiService.getUrl()}'`,
-                tipo: TipoNotificacao.ATENCAO
-            })
+            this.notificar(`Ocorreu algum problema ao tentar conectar na API '${this.apiService.getUrl()}'`, TipoNotificacao.ATENCAO)
         },
     },
     beforeMount() {
@@ -115,8 +100,11 @@ export default defineComponent({
     },
     setup() {
         const store = useStore()
+        const { notificar } = useNotificador()
+
         return {
-            store
+            store,
+            notificar,
         }
     }
 })
