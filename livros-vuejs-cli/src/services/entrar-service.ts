@@ -1,39 +1,23 @@
 import { NaoAutorizadoError } from "@/errors/nao-autorizado-error";
+import { IUsuarioParam } from "@/interfaces/IUsuarioParam";
 import TokenJson from "@/interfaces/token-json";
 import Usuario from "@/models/usuario";
-import VariaveisAmbiente from "@/utils/variaveis-ambiente";
+import { HttpAxiosService } from ".";
 
 export default class EntrarService {
-    private url = `${VariaveisAmbiente.apiUrl}/api/login`
+    private url = 'api/login'
+
+    constructor(private axios = new HttpAxiosService()) { }
 
     public async entrar(usuario: Usuario): Promise<TokenJson | undefined> {
-        const metodo = "GET"
-        const cabecalho = this.getCabecalhoJson()
-        const url = this.getUrlComParametrosDoUsuario(usuario)
+        const response = await this.axios.getComParametros<IUsuarioParam>(this.url, { nome: usuario.nome, senha: usuario.senha })
 
-        const response = await fetch(url.toString(), { method: metodo, headers: cabecalho})
-        
-        if (response.status === 401) {
-            throw new NaoAutorizadoError()
-        } else if (response.status === 200) {
-            const data: TokenJson = await response.json()
-    
+        if (response.status === 200) {
+            const data: TokenJson = response.data
+
             return data
+        } else if (response.status === 401) {
+            throw new NaoAutorizadoError()
         }
-    }
-
-    private getCabecalhoJson(): Headers {
-        const cabecalho = new Headers();
-        cabecalho.append("Content-Type", "application/json")
-
-        return cabecalho
-    }
-
-    private getUrlComParametrosDoUsuario(usuario: Usuario): URL {
-        const parametros = new URLSearchParams({ nome: usuario.nome, senha: usuario.senha })
-        const url = new URL(this.url)
-        url.search = parametros.toString()
-
-        return url
     }
 }

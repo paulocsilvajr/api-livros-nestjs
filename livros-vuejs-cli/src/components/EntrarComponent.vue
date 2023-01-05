@@ -55,16 +55,15 @@ export default defineComponent({
             }
 
             try {
-                console.log(`Entrando como usuário '${this.usuario.nome}'...`)
-
                 const token = await this.entrarService.entrar(this.usuario)
                 if (token) {
+                    console.log(`Entrando como usuário '${this.usuario.nome}'...`)
+
                     this.store.state.usuario.nomeUsuario = this.usuario.nome
                     this.store.state.usuario.senha = this.usuario.senha
                     this.store.state.usuario.token = token.access_token
-                    console.log(this.store.state.usuario)
 
-                    this.notificar("Entrando...", TipoNotificacao.SUCESSO)
+                    this.notificar(`Entrando como usuário ${this.store.state.usuario.nomeUsuario}...`, TipoNotificacao.SUCESSO)
 
                     this.limpaCampos()
 
@@ -74,7 +73,7 @@ export default defineComponent({
                 if (error instanceof NaoAutorizadoError) {
                     this.notificar("Usuário ou senha inválida", TipoNotificacao.FALHA)
 
-                    console.log(error.message)
+                    console.warn(error.message)
                 }
             }
         },
