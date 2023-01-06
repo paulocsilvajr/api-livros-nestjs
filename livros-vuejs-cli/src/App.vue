@@ -1,8 +1,8 @@
 <template>
   <nav v-if="exibirNavegacao">
-    <router-link to="/login">Login</router-link> |
     <router-link to="/">Cadastro de Livros</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/about">About</router-link> |
+    <router-link to="/login">Logout</router-link>
   </nav>
   <NotificacoesComponent></NotificacoesComponent>
   <router-view />

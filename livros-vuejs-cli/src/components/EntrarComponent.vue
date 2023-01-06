@@ -79,12 +79,12 @@ export default defineComponent({
                     console.warn(error.message)
                 }
 
-                this.store.commit(LIMPAR_INFORMACOES_USUARIO);
+                this.store.commit(LIMPAR_INFORMACOES_USUARIO)
             }
         },
         limpaCampos() {
-            this.usuario.nome = '';
-            this.usuario.senha = '';
+            this.usuario.nome = ''
+            this.usuario.senha = ''
         },
         verificaLogin() {
             return this.usuario.nome.length > 0 && this.usuario.senha.length > 0
@@ -100,7 +100,9 @@ export default defineComponent({
         },
     },
     beforeMount() {
-        this.verificaAPI();
+        this.store.commit(LIMPAR_INFORMACOES_USUARIO)
+
+        this.verificaAPI()
     },
     setup() {
         const store = useStore()
