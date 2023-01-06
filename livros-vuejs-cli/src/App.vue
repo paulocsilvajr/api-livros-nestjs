@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav v-if="exibirNavegacao">
     <router-link to="/login">Login</router-link> |
     <router-link to="/">Cadastro de Livros</router-link> |
     <router-link to="/about">About</router-link>
@@ -9,14 +9,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import NotificacoesComponent from './components/NotificacoesComponent.vue'
+import { useStore } from './store';
 
 export default defineComponent({
   name: 'App',
   components: {
     NotificacoesComponent
   },
+  setup() {
+    const store = useStore()
+
+    const exibirNavegacao = computed(() => !store.getters.semToken)
+
+    return {
+      exibirNavegacao
+    }
+  }
 });
 </script>
 

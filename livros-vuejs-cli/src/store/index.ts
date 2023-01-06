@@ -60,6 +60,9 @@ export const store = createStore<Estado>({
     },
   },
   getters: {
+    semToken(state) {
+      return state.usuario.token.length === 0
+    }
   },
   actions: {
   },

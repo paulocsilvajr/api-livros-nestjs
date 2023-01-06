@@ -1,5 +1,5 @@
 <template>
-    <h1 class="title is-1 mt-3 mb-6">Login</h1>
+    <h1 class="title is-1 mt-3 mt-6 mb-6">Login</h1>
 
     <div class="columns is-flex is-justify-content-center">
         <div class="column is-6 is-4-desktop">

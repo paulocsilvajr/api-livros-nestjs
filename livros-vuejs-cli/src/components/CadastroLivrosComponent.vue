@@ -46,7 +46,8 @@
                             <input type="number" min="1" class="input" placeholder="Número de páginas" id="npaginas"
                                 v-model="livro.numeroPaginas">
                         </div>
-                        <p class="help is-danger" v-if="validacaoCampos.numeroPaginas">Informe um número de páginas válido
+                        <p class="help is-danger" v-if="validacaoCampos.numeroPaginas">Informe um número de páginas
+                            válido
                         </p>
                     </div>
                 </div>
@@ -154,9 +155,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
 import Livro from '@/models/livro'
 import LivroService from '@/services/livro-service'
+import { useStore } from '@/store'
 
 export default defineComponent({
     name: "CadastroLivrosComponent",
@@ -214,9 +216,23 @@ export default defineComponent({
         },
     },
     beforeMount() {
+        if (this.semToken) {
+            this.$router.push({ name: "login" })
+
+            return
+        }
+
         this.defineLivroVazio()
         this.buscaLivros()
     },
+    setup() {
+        const store = useStore()
+        const semToken = computed(() => store.getters.semToken)
+
+        return {
+            semToken
+        }
+    }
 })
 </script>
 
