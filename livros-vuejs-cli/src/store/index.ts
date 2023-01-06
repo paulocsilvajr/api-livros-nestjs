@@ -1,7 +1,7 @@
 import { createStore, Store, useStore as vuexUseStore } from 'vuex'
 import { INotificacao } from '@/interfaces/INotificacoes'
 import { InjectionKey } from 'vue'
-import { LIMPAR_INFORMACOES_USUARIO, NOTIFICAR, REMOVER_NOTIFICACAO } from '@/store/tipos-mutacoes'
+import { SALVAR_INFORMACOES_USUARIO, LIMPAR_INFORMACOES_USUARIO, NOTIFICAR, REMOVER_NOTIFICACAO, ATUALIZAR_TOKEN } from '@/store/tipos-mutacoes'
 
 interface InformacoesUsuario {
   nomeUsuario: string,
@@ -27,11 +27,23 @@ export const store = createStore<Estado>({
   },
   mutations: {
     [LIMPAR_INFORMACOES_USUARIO](state) {
-      console.log('Limpando informações de usuário/token armazenadas');
+      console.log('Limpando informações de usuário/token armazenadas')
 
-      state.usuario.nomeUsuario = '';
-      state.usuario.senha = '';
-      state.usuario.token = '';
+      state.usuario.nomeUsuario = ''
+      state.usuario.senha = ''
+      state.usuario.token = ''
+    },
+    [SALVAR_INFORMACOES_USUARIO](state, usuario: InformacoesUsuario) {
+      console.log('Salvando informações de usuário e token')
+
+      state.usuario.nomeUsuario = usuario.nomeUsuario
+      state.usuario.senha = usuario.senha
+      state.usuario.token = usuario.token
+    },
+    [ATUALIZAR_TOKEN](state, token: string) {
+      console.log('Salvando token')
+
+      state.usuario.token = token
     },
     [NOTIFICAR](state, novaNotificacao: INotificacao) {
       novaNotificacao.id = new Date().getTime()

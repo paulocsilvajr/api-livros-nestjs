@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import Usuario from '@/models/usuario';
 import InputSenhaComponent from '@/components/InputSenhaComponent.vue';
 import ApiService from '@/services/api-service';
@@ -33,6 +33,7 @@ import { NaoAutorizadoError } from '@/errors/nao-autorizado-error'
 import { useStore } from '@/store';
 import { TipoNotificacao } from '@/interfaces/INotificacoes'
 import useNotificador from '@/hooks/notificador'
+import { SALVAR_INFORMACOES_USUARIO, LIMPAR_INFORMACOES_USUARIO } from '@/store/tipos-mutacoes';
 
 export default defineComponent({
     name: "EntrarComponent",
@@ -59,11 +60,13 @@ export default defineComponent({
                 if (token) {
                     console.log(`Entrando como usuário '${this.usuario.nome}'...`)
 
-                    this.store.state.usuario.nomeUsuario = this.usuario.nome
-                    this.store.state.usuario.senha = this.usuario.senha
-                    this.store.state.usuario.token = token.access_token
+                    this.store.commit(SALVAR_INFORMACOES_USUARIO, {
+                        nomeUsuario: this.usuario.nome,
+                        senha: this.usuario.senha,
+                        token: token.access_token,
+                    })
 
-                    this.notificar(`Entrando como usuário ${this.store.state.usuario.nomeUsuario}...`, TipoNotificacao.SUCESSO)
+                    this.notificar(`Entrando como usuário ${this.nomeUsuario}...`, TipoNotificacao.SUCESSO)
 
                     this.limpaCampos()
 
@@ -75,6 +78,8 @@ export default defineComponent({
 
                     console.warn(error.message)
                 }
+
+                this.store.commit(LIMPAR_INFORMACOES_USUARIO);
             }
         },
         limpaCampos() {
@@ -100,9 +105,11 @@ export default defineComponent({
     setup() {
         const store = useStore()
         const { notificar } = useNotificador()
+        const nomeUsuario = computed(() => store.state.usuario.nomeUsuario)
 
         return {
             store,
+            nomeUsuario,
             notificar,
         }
     }
