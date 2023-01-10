@@ -17,7 +17,7 @@
 
                 <button class="button is-primary is-fullwidth mb-5" type="submit">Entrar</button>
 
-                <a href="/cadastro-usuario">Cadastrar um novo usuário</a>
+                <a href="/usuarios">Cadastrar um novo usuário</a>
             </form>
         </div>
     </div>
