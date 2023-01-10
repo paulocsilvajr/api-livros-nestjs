@@ -5,9 +5,9 @@
         <div class="column is-6 is-4-desktop">
             <form class="box" @submit.prevent="entra()">
                 <div class="field mb-5">
-                    <label for="usuario" class="label">Usuário</label>
+                    <label for="username" class="label">Usuário</label>
                     <div class="control">
-                        <input type="text" class="input" placeholder="Nome do usuário" id="usuario"
+                        <input type="text" class="input" placeholder="Nome do usuário" id="username"
                             v-model="usuario.nome" required>
                     </div>
                 </div>

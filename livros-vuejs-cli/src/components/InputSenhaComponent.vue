@@ -1,9 +1,9 @@
 <template>
     <div>
-        <label for="senha" class="label">Senha</label>
+        <label for="password" class="label">Senha</label>
         <div class="field has-addons">
             <div class="control is-expanded">
-                <input type="password" class="input" placeholder="Senha do usuário" id="senha" ref="inputSenha" :value="modelValue" @input="updateValue" :required="required">
+                <input type="password" class="input" placeholder="Senha do usuário" id="password" ref="inputSenha" :value="modelValue" @input="updateValue" :required="required">
             </div>
             <div class="control">
                 <button class="button" @click.prevent="alteraEstadoSenha()">
