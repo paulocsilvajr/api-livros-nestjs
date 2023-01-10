@@ -43,7 +43,7 @@ class HttpAxiosService {
             });
     }
 
-    public async post<P>(url: string, token: string, dados: P): Promise<AxiosResponse> {
+    public async post<P>(url: string, dados: P): Promise<AxiosResponse> {
         return this.ax.post(url, JSON.stringify(dados))
             .then(response => {
                 return response
