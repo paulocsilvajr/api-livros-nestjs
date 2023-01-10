@@ -43,6 +43,16 @@ class HttpAxiosService {
             });
     }
 
+    public async post<P>(url: string, token: string, dados: P): Promise<AxiosResponse> {
+        return this.ax.post(url, JSON.stringify(dados))
+            .then(response => {
+                return response
+            })
+            .catch(err => {
+                return err.response as AxiosResponse
+            });
+    }
+
     public async postComToken<P>(url: string, token: string, dados: P): Promise<AxiosResponse> {
         return this.ax.post(url, JSON.stringify(dados), {
             headers: this.headerToken(token)
