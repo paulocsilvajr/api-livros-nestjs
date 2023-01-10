@@ -13,9 +13,9 @@
 
                 <div class="column">
                     <div class="field">
-                        <label for="nome">Nome</label>
+                        <label for="username">Nome</label>
                         <div class="control">
-                            <input type="text" class="input" placeholder="Nome do usuário" id="nome"
+                            <input type="text" class="input" placeholder="Nome do usuário" id="username"
                                 v-model.trim="usuario.nome">
                         </div>
                         <p class="help is-danger" v-if="validacaoCampos.nome">Informe um nome de usuário</p>
@@ -35,9 +35,9 @@
 
                 <div class="column">
                     <div class="field">
-                        <label for="senha">Senha</label>
+                        <label for="password">Senha</label>
                         <div class="control">
-                            <input type="password" class="input" placeholder="Senha do usuário" id="senha"
+                            <input type="password" class="input" placeholder="Senha do usuário" id="password"
                                 v-model.trim="usuario.senha">
                         </div>
                         <p class="help is-danger" v-if="validacaoCampos.senha">Informe uma senha para o usuário</p>
@@ -65,6 +65,14 @@
                                 <span>Limpar</span>
                             </button>
                         </div>
+                        <div class="column" v-if="exibirBotaoVoltar">
+                            <button class="button is-primary is-fullwidth" @click="voltaParaLogin">
+                                <span class="icon is-small">
+                                    <i class="fas fa-arrow-left"></i>
+                                </span>
+                                <span>Voltar</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,6 +86,10 @@
 import { defineComponent, computed } from 'vue'
 import { useStore } from '@/store'
 import Usuario from '@/models/usuario'
+import UsuarioService from '@/services/usuario-service'
+import { CadastrarError } from '@/errors/cadastrar-error'
+import useNotificador from '@/hooks/notificador'
+import { TipoNotificacao } from '@/interfaces/INotificacoes'
 
 export default defineComponent({
     name: "CadastroUsuariosComponent",
@@ -86,7 +98,7 @@ export default defineComponent({
     },
     data() {
         return {
-            // livroService: new LivroService(),
+            usuarioService: new UsuarioService(),
             titulo: "Cadastro de usuários",
             usuario: new Usuario(),
             msg: "",
@@ -98,7 +110,8 @@ export default defineComponent({
             this.usuario = new Usuario()
             this.validacaoCampos.nome = this.validacaoCampos.senha = this.validacaoCampos.email = false
         },
-        salvaUsuario() {
+        async salvaUsuario() {
+            try {
             this.validacaoCampos.nome = this.usuario.nome === ""
             this.validacaoCampos.senha = this.usuario.email === ""
             this.validacaoCampos.email = this.usuario.senha === ""
@@ -108,17 +121,31 @@ export default defineComponent({
                 this.validacaoCampos.senha) {
                 return
             }
-            // this.livroService.salvaLivro(this.livro, this.livros)
+            const usuarioCadastrado = await this.usuarioService.salvaUsuario(this.usuario)
+            
+            this.notificar(`Usuário '${this.usuario.nome}' cadastrado com sucesso`, TipoNotificacao.SUCESSO)
+            console.log("Usuário cadastrado: ", usuarioCadastrado);
 
             this.defineUsuarioVazio()
+            } catch (error) {
+                if (error instanceof CadastrarError) {
+                    this.notificar("Erro ao cadastrar usuário", TipoNotificacao.FALHA)
+                }
+            }
         },
+        voltaParaLogin() {
+            this.$router.push({ name: "login" })
+        }
     },
     setup() {
         const store = useStore()
-        const semToken = computed(() => store.getters.semToken)
+        const exibirBotaoVoltar = computed(() => store.getters.semToken)
+
+        const { notificar } = useNotificador()
 
         return {
-            semToken
+            exibirBotaoVoltar,
+            notificar
         }
     }
 })
