@@ -1,6 +1,6 @@
 import { CadastrarError } from "@/errors/cadastrar-error";
 import UsuarioJson from "@/interfaces/usuario-json";
-import Usuario from "@/models/usuario";
+import { Usuario } from "@/models/usuario";
 import { HttpAxiosService } from ".";
 
 export default class UsuarioService {

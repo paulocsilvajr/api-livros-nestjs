@@ -85,7 +85,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from '@/store'
-import Usuario from '@/models/usuario'
+import { Usuario } from '@/models/usuario'
 import UsuarioService from '@/services/usuario-service'
 import { CadastrarError } from '@/errors/cadastrar-error'
 import useNotificador from '@/hooks/notificador'
@@ -112,21 +112,21 @@ export default defineComponent({
         },
         async salvaUsuario() {
             try {
-            this.validacaoCampos.nome = this.usuario.nome === ""
-            this.validacaoCampos.senha = this.usuario.email === ""
-            this.validacaoCampos.email = this.usuario.senha === ""
+                this.validacaoCampos.nome = this.usuario.nome === ""
+                this.validacaoCampos.senha = this.usuario.email === ""
+                this.validacaoCampos.email = this.usuario.senha === ""
 
-            if (this.validacaoCampos.nome ||
-                this.validacaoCampos.email ||
-                this.validacaoCampos.senha) {
-                return
-            }
-            const usuarioCadastrado = await this.usuarioService.salvaUsuario(this.usuario)
-            
-            this.notificar(`Usuário '${this.usuario.nome}' cadastrado com sucesso`, TipoNotificacao.SUCESSO)
-            console.log("Usuário cadastrado: ", usuarioCadastrado);
+                if (this.validacaoCampos.nome ||
+                    this.validacaoCampos.email ||
+                    this.validacaoCampos.senha) {
+                    return
+                }
+                const usuarioCadastrado = await this.usuarioService.salvaUsuario(this.usuario)
 
-            this.defineUsuarioVazio()
+                this.notificar(`Usuário '${this.usuario.nome}' cadastrado com sucesso`, TipoNotificacao.SUCESSO)
+                console.log("Usuário cadastrado: ", usuarioCadastrado);
+
+                this.defineUsuarioVazio()
             } catch (error) {
                 if (error instanceof CadastrarError) {
                     this.notificar("Erro ao cadastrar usuário", TipoNotificacao.FALHA)

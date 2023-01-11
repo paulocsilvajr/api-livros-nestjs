@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
-import Usuario from '@/models/usuario';
+import { Usuario } from '@/models/usuario';
 import InputSenhaComponent from '@/components/InputSenhaComponent.vue';
 import ApiService from '@/services/api-service';
 import EntrarService from '@/services/entrar-service';
