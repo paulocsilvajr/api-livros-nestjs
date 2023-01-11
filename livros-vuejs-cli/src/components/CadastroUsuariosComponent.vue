@@ -85,11 +85,12 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from '@/store'
-import { Usuario } from '@/models/usuario'
+import { Usuario, verificarUsuario } from '@/models/usuario'
 import UsuarioService from '@/services/usuario-service'
 import { CadastrarError } from '@/errors/cadastrar-error'
 import useNotificador from '@/hooks/notificador'
 import { TipoNotificacao } from '@/interfaces/INotificacoes'
+import { TamanhoError } from '@/errors/tamanho-error'
 
 export default defineComponent({
     name: "CadastroUsuariosComponent",
@@ -121,6 +122,16 @@ export default defineComponent({
                     this.validacaoCampos.senha) {
                     return
                 }
+
+                try {
+                    verificarUsuario(this.usuario)
+                } catch (error) {
+                    if (error instanceof TamanhoError) {
+                        this.notificar(error.message, TipoNotificacao.FALHA)
+                    } 
+                    return                   
+                }
+
                 const usuarioCadastrado = await this.usuarioService.salvaUsuario(this.usuario)
 
                 this.notificar(`Usuário '${this.usuario.nome}' cadastrado com sucesso`, TipoNotificacao.SUCESSO)
