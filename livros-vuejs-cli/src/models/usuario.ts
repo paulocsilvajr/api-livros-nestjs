@@ -26,7 +26,7 @@ function verificarEmailUsuario(usuario: Usuario): boolean {
     const minimo = 6
     const nomeAtributo = 'Email do usuário'
 
-    return verificaTamanhoMinimoAtributo(nomeAtributo, usuario.nome, minimo)
+    return verificaTamanhoMinimoAtributo(nomeAtributo, usuario.email, minimo)
 }
 
 export { Usuario, verificarUsuario }
