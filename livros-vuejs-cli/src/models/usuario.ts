@@ -10,7 +10,8 @@ class Usuario {
 
 function verificarUsuario(usuario: Usuario): boolean {
     return verificarNomeUsuario(usuario) &&
-        verificarEmailUsuario(usuario)
+        verificarEmailUsuario(usuario) &&
+        verificarSenhaUsuario(usuario)
 }
 
 function verificarNomeUsuario(usuario: Usuario) {
@@ -27,6 +28,13 @@ function verificarEmailUsuario(usuario: Usuario): boolean {
     const nomeAtributo = 'Email do usuário'
 
     return verificaTamanhoMinimoAtributo(nomeAtributo, usuario.email, minimo)
+}
+
+function verificarSenhaUsuario(usuario: Usuario): boolean {
+    const minimo = 8
+    const nomeAtributo = 'Senha do usuário'
+
+    return verificaTamanhoMinimoAtributo(nomeAtributo, usuario.senha, minimo)
 }
 
 export { Usuario, verificarUsuario }
