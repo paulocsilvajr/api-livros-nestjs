@@ -7,7 +7,7 @@
             </div>
         </div>
 
-        <div class="box">
+        <form class="box" @submit.prevent="salvaUsuario">
 
             <div class="columns">
 
@@ -16,7 +16,7 @@
                         <label for="username">Nome</label>
                         <div class="control">
                             <input type="text" class="input" placeholder="Nome do usuário" id="username"
-                                v-model.trim="usuario.nome">
+                                v-model.trim="usuario.nome" required>
                         </div>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                         <label for="email">Email</label>
                         <div class="control">
                             <input type="email" class="input" placeholder="Email do usuário" id="email"
-                                v-model.trim="usuario.email">
+                                v-model.trim="usuario.email" required>
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                         <label for="password">Senha</label>
                         <div class="control">
                             <input type="password" class="input" placeholder="Senha do usuário" id="password"
-                                v-model.trim="usuario.senha">
+                                v-model.trim="usuario.senha" required>
                         </div>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                 <div class="column is-half">
                     <div class="columns">
                         <div class="column">
-                            <button class="button is-success is-fullwidth" @click="salvaUsuario">
+                            <button type="submit" class="button is-success is-fullwidth">
                                 <span class="icon is-small">
                                     <i class="fas fa-check"></i>
                                 </span>
@@ -74,7 +74,7 @@
                 </div>
             </div>
 
-        </div>
+        </form>
 
     </div>
 </template>
