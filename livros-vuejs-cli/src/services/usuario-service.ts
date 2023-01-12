@@ -16,7 +16,7 @@ export default class UsuarioService {
             const data: UsuarioJson = response.data
 
             return data
-        } else if (response.status === 400) {
+        } else if ([ 400, 406 ].includes(response.status) ) {
             throw new APIError(response)
         } else {
             throw new CadastrarError('usuário')
