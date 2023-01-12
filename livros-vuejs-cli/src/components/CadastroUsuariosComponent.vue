@@ -18,7 +18,6 @@
                             <input type="text" class="input" placeholder="Nome do usuário" id="username"
                                 v-model.trim="usuario.nome">
                         </div>
-                        <p class="help is-danger" v-if="validacaoCampos.nome">Informe um nome de usuário</p>
                     </div>
                 </div>
 
@@ -29,7 +28,6 @@
                             <input type="email" class="input" placeholder="Email do usuário" id="email"
                                 v-model.trim="usuario.email">
                         </div>
-                        <p class="help is-danger" v-if="validacaoCampos.email">Informe um email para o usuário</p>
                     </div>
                 </div>
 
@@ -40,7 +38,6 @@
                             <input type="password" class="input" placeholder="Senha do usuário" id="password"
                                 v-model.trim="usuario.senha">
                         </div>
-                        <p class="help is-danger" v-if="validacaoCampos.senha">Informe uma senha para o usuário</p>
                     </div>
                 </div>
 
@@ -88,6 +85,7 @@ import { useStore } from '@/store'
 import { Usuario, verificarUsuario } from '@/models/usuario'
 import UsuarioService from '@/services/usuario-service'
 import { CadastrarError } from '@/errors/cadastrar-error'
+import { APIError } from '@/errors/api-error'
 import useNotificador from '@/hooks/notificador'
 import { TipoNotificacao } from '@/interfaces/INotificacoes'
 import { TamanhoError } from '@/errors/tamanho-error'
@@ -103,43 +101,28 @@ export default defineComponent({
             titulo: "Cadastro de usuários",
             usuario: new Usuario(),
             msg: "",
-            validacaoCampos: { nome: false, senha: false, email: false },
         }
     },
     methods: {
         defineUsuarioVazio() {
             this.usuario = new Usuario()
-            this.validacaoCampos.nome = this.validacaoCampos.senha = this.validacaoCampos.email = false
         },
         async salvaUsuario() {
             try {
-                this.validacaoCampos.nome = this.usuario.nome === ""
-                this.validacaoCampos.senha = this.usuario.email === ""
-                this.validacaoCampos.email = this.usuario.senha === ""
+                if (verificarUsuario(this.usuario)) {
+                    const usuarioCadastrado = await this.usuarioService.salvaUsuario(this.usuario)
 
-                if (this.validacaoCampos.nome ||
-                    this.validacaoCampos.email ||
-                    this.validacaoCampos.senha) {
-                    return
+                    this.notificar(`Usuário '${this.usuario.nome}' cadastrado com sucesso`, TipoNotificacao.SUCESSO)
+                    console.log("Usuário cadastrado: ", usuarioCadastrado);
+
+                    this.defineUsuarioVazio()
                 }
-
-                try {
-                    verificarUsuario(this.usuario)
-                } catch (error) {
-                    if (error instanceof TamanhoError) {
-                        this.notificar(error.message, TipoNotificacao.FALHA)
-                    } 
-                    return                   
-                }
-
-                const usuarioCadastrado = await this.usuarioService.salvaUsuario(this.usuario)
-
-                this.notificar(`Usuário '${this.usuario.nome}' cadastrado com sucesso`, TipoNotificacao.SUCESSO)
-                console.log("Usuário cadastrado: ", usuarioCadastrado);
-
-                this.defineUsuarioVazio()
             } catch (error) {
-                if (error instanceof CadastrarError) {
+                if (error instanceof APIError) {
+                    this.notificar(error.message, TipoNotificacao.FALHA)
+                } else if (error instanceof TamanhoError) {
+                    this.notificar(error.message, TipoNotificacao.FALHA)
+                } else if (error instanceof CadastrarError) {
                     this.notificar("Erro ao cadastrar usuário", TipoNotificacao.FALHA)
                 }
             }
