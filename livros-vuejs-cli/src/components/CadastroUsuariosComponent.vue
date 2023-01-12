@@ -1,11 +1,7 @@
 <template>
     <div class="container">
 
-        <div class="columns">
-            <div class="column mt-6">
-                <h1 class="title is-1 has-text-centered">{{ titulo }}</h1>
-            </div>
-        </div>
+        <h1 class="title is-1 has-text-centered mt-6 mb-6">{{ titulo }}</h1>
 
         <form class="box" @submit.prevent="salvaUsuario">
 
