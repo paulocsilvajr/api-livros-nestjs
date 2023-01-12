@@ -1,3 +1,4 @@
+import { APIError } from "@/errors/api-error";
 import { CadastrarError } from "@/errors/cadastrar-error";
 import UsuarioJson from "@/interfaces/usuario-json";
 import { Usuario } from "@/models/usuario";
@@ -15,6 +16,8 @@ export default class UsuarioService {
             const data: UsuarioJson = response.data
 
             return data
+        } else if (response.status === 400) {
+            throw new APIError(response)
         } else {
             throw new CadastrarError('usuário')
         }
