@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotAcceptableException, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { verifica } from "src/util/verifica-entidade";
 import { Repository } from "typeorm";
@@ -16,6 +16,11 @@ export class UsuarioService {
     }
 
     public async cadastraUsuario(usuario: CadastraUsuarioDto): Promise<Usuario> {
+        const usuarioBanco = await this.buscaUsuarioPorNome(usuario.nome)
+        if (usuarioBanco) {
+            throw new NotAcceptableException(`Usuário '${usuario.nome}' já existe`);
+        }
+        
         const novoUsuario = await new Usuario(usuario).geraHashSenha();
 
         return this.usuarioRepository.save(novoUsuario);

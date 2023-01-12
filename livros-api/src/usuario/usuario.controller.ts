@@ -29,6 +29,8 @@ export class UsuarioController {
         } catch (error) {
             if (error instanceof QueryFailedError) {
                 throw new NotAcceptableException(error.message);
+            } else if (error instanceof NotAcceptableException) {
+                throw new NotAcceptableException(error.message);
             } else if (error instanceof Error) {
                 throw new InternalServerErrorException(error.message);
             }
