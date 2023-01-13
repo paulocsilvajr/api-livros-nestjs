@@ -1,7 +1,8 @@
 <template>
   <nav v-if="exibirNavegacao">
-    <router-link to="/">Cadastro de Livros</router-link> |
-    <router-link to="/usuarios">Cadastro de Usuários</router-link> |
+    <router-link to="/">Livros</router-link> |
+    <router-link to="/autores">Autores</router-link> |
+    <router-link to="/usuarios">Usuários</router-link> |
     <router-link to="/about">About</router-link> |
     <router-link to="/login">Logout</router-link>
   </nav>
