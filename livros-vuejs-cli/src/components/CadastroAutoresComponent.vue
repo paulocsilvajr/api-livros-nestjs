@@ -74,14 +74,14 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    <tr v-for="a in autores" :key="a.id">
+                    <tr v-for="a in autores" :key="a.id" :class=" autor.id == a.id?'is-selected':'' ">
                         <th class="is-vcentered">{{ a.id }}</th>
                         <td class="has-text-left is-vcentered" style="width: 20%;">{{ a.nome }}</td>
                         <td class="has-text-left is-vcentered">{{ a.descricao }}</td>
                         <td class="is-vcentered">
                             <div class="field is-grouped">
                                 <p class="control">
-                                    <button class="button is-primary is-small">
+                                    <button class="button is-primary is-small" @click="alteraAutor(a)">
                                         <span class="icon is-small">
                                             <i class="fas fa-pencil"></i>
                                         </span>
@@ -160,6 +160,9 @@ export default defineComponent({
                 }
             }
 
+        },
+        alteraAutor(autor: Autor) {
+            this.autor = autor;
         },
         async buscaAutores() {
             const autoresBanco = await this.autorService.buscaAutores(this.token)
