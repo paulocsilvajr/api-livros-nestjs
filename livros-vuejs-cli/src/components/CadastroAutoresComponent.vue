@@ -32,7 +32,7 @@
             </div>
 
             <div class="colums is-desktop">
-                <div class="column is-half">
+                <div class="column is-half p-0">
                     <div class="columns">
                         <div class="column">
                             <button type="submit" class="button is-success is-fullwidth">
@@ -71,6 +71,8 @@
                     <tr>
                         <th>Total</th>
                         <th>{{ totalAutores }}</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </tfoot>
                 <tbody>
@@ -108,7 +110,7 @@ export default defineComponent({
         }
     },
     computed: {
-        totalAutores() {
+        totalAutores(): number {
             return this.autores.length
         }
     },
@@ -126,7 +128,7 @@ export default defineComponent({
             const autoresBanco = await this.autorService.buscaAutores(token)
 
             if (autoresBanco) {
-                this.autores = autoresBanco;
+                this.autores = autoresBanco
             }
         }
     },

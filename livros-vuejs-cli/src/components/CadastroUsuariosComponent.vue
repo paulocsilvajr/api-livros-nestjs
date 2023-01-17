@@ -40,7 +40,7 @@
             </div>
 
             <div class="colums is-desktop">
-                <div class="column is-half">
+                <div class="column is-half p-0">
                     <div class="columns">
                         <div class="column">
                             <button type="submit" class="button is-success is-fullwidth">
