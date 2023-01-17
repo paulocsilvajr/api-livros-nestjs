@@ -14,7 +14,7 @@
                         <label for="nome">Nome do autor</label>
                         <div class="control">
                             <input type="text" class="input" placeholder="Nome do autor" id="nome"
-                                v-model.trim="autor.nome">
+                                v-model.trim="autor.nome" required>
                         </div>
                     </div>
                 </div>
@@ -24,7 +24,7 @@
                         <label for="descricao">Descrição do autor</label>
                         <div class="control">
                             <input type="text" class="input" placeholder="Descrição do autor" id="descricao"
-                                v-model.trim="autor.descricao">
+                                v-model.trim="autor.descricao" required>
                         </div>
                     </div>
                 </div>
@@ -95,6 +95,10 @@ import { defineComponent, computed } from 'vue'
 import { useStore } from '@/store'
 import { Autor } from '@/models/autor'
 import AutorService from '@/services/autor-service'
+import useNotificador from '@/hooks/notificador'
+import { TipoNotificacao } from '@/interfaces/INotificacoes'
+import { APIError } from '@/errors/api-error'
+import { CadastrarError } from '@/errors/cadastrar-error'
 
 export default defineComponent({
     name: "CadastroAutoresComponent",
@@ -118,14 +122,30 @@ export default defineComponent({
         defineAutorVazio() {
             this.autor = new Autor()
         },
-        salvaAutor() {
-            console.log('Não implementado')
+        async salvaAutor() {
+            try {
+                const autorCadastrado = await this.autorService.salvaAutor(this.autor, this.token)
 
-            this.defineAutorVazio()
+                if (autorCadastrado) {
+                    this.autores.push(autorCadastrado)
+    
+                    const msg = `Autor '${autorCadastrado.nome}' cadastrado com sucesso`
+                    this.notificar(msg, TipoNotificacao.SUCESSO)
+                    console.log(msg)
+    
+                    this.defineAutorVazio()
+                }
+            } catch (error) {
+                if (error instanceof APIError) {
+                    this.notificar(error.message, TipoNotificacao.FALHA)
+                } else if (error instanceof CadastrarError) {
+                    this.notificar(error.message, TipoNotificacao.FALHA)
+                }
+            }
+
         },
         async buscaAutores() {
-            const token = this.store.state.usuario.token
-            const autoresBanco = await this.autorService.buscaAutores(token)
+            const autoresBanco = await this.autorService.buscaAutores(this.token)
 
             if (autoresBanco) {
                 this.autores = autoresBanco
@@ -144,10 +164,15 @@ export default defineComponent({
     setup() {
         const store = useStore()
         const semToken = computed(() => store.getters.semToken)
+        const token = computed(() => store.state.usuario.token)
+        
+
+        const { notificar } = useNotificador()
 
         return {
-            store,
-            semToken
+            semToken,
+            notificar,
+            token
         }
     }
 })
