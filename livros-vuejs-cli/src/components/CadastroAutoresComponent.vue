@@ -24,7 +24,7 @@
                         <label for="descricao">Descrição do autor</label>
                         <div class="control">
                             <input type="text" class="input" placeholder="Descrição do autor" id="descricao"
-                                v-model.trim="autor.descricao" required>
+                                v-model.trim="autor.descricao">
                         </div>
                     </div>
                 </div>
