@@ -52,13 +52,13 @@
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
 
         </form>
 
         <div class="table-container mt-6">
 
-            <table class="table is-hoverable is-fullwidth">
+            <table class="table is-hoverable is-fullwidth is-striped">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -69,18 +69,35 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Total</th>
-                        <th>{{ totalAutores }}</th>
-                        <th></th>
-                        <th></th>
+                        <th colspan="2">Total</th>
+                        <th colspan="2">{{ totalAutores }}</th>
                     </tr>
                 </tfoot>
                 <tbody>
                     <tr v-for="a in autores" :key="a.id">
-                        <th>{{ a.id }}</th>
-                        <td>{{ a.nome }}</td>
-                        <td>{{ a.descricao }}</td>
-                        <td></td>
+                        <th class="is-vcentered">{{ a.id }}</th>
+                        <td class="has-text-left is-vcentered" style="width: 20%;">{{ a.nome }}</td>
+                        <td class="has-text-left is-vcentered">{{ a.descricao }}</td>
+                        <td class="is-vcentered">
+                            <div class="field is-grouped">
+                                <p class="control">
+                                    <button class="button is-primary is-small">
+                                        <span class="icon is-small">
+                                            <i class="fas fa-pencil"></i>
+                                        </span>
+                                        <span>Alterar</span>
+                                    </button>
+                                </p>
+                                <p class="control">
+                                    <button class="button is-danger is-small">
+                                        <span>Excluir</span>
+                                        <span class="icon is-small">
+                                            <i class="fas fa-times"></i>
+                                        </span>
+                                    </button>
+                                </p>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -128,11 +145,11 @@ export default defineComponent({
 
                 if (autorCadastrado) {
                     this.autores.push(autorCadastrado)
-    
+
                     const msg = `Autor '${autorCadastrado.nome}' cadastrado com sucesso`
                     this.notificar(msg, TipoNotificacao.SUCESSO)
                     console.log(msg)
-    
+
                     this.defineAutorVazio()
                 }
             } catch (error) {
@@ -165,7 +182,7 @@ export default defineComponent({
         const store = useStore()
         const semToken = computed(() => store.getters.semToken)
         const token = computed(() => store.state.usuario.token)
-        
+
 
         const { notificar } = useNotificador()
 
