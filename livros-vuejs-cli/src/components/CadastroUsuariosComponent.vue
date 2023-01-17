@@ -108,10 +108,13 @@ export default defineComponent({
                 if (verificarUsuario(this.usuario)) {
                     const usuarioCadastrado = await this.usuarioService.salvaUsuario(this.usuario)
 
-                    this.notificar(`Usuário '${this.usuario.nome}' cadastrado com sucesso`, TipoNotificacao.SUCESSO)
-                    console.log("Usuário cadastrado: ", usuarioCadastrado);
-
-                    this.defineUsuarioVazio()
+                    if (usuarioCadastrado) {
+                        const msg = `Usuário '${usuarioCadastrado.nome}' cadastrado com sucesso`
+                        this.notificar(msg, TipoNotificacao.SUCESSO)
+                        console.log(msg);
+    
+                        this.defineUsuarioVazio()
+                    }
                 }
             } catch (error) {
                 if (error instanceof APIError) {
