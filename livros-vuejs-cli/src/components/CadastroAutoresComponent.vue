@@ -74,7 +74,7 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    <tr v-for="a in autores" :key="a.id" :class=" autor.id == a.id?'is-selected':'' ">
+                    <tr v-for="a in autores" :key="a.id" :class="autor.id == a.id ? 'is-selected' : ''">
                         <th class="is-vcentered">{{ a.id }}</th>
                         <td class="has-text-left is-vcentered" style="width: 20%;">{{ a.nome }}</td>
                         <td class="has-text-left is-vcentered">{{ a.descricao }}</td>
@@ -89,7 +89,7 @@
                                     </button>
                                 </p>
                                 <p class="control">
-                                    <button class="button is-danger is-small">
+                                    <button class="button is-danger is-small" @click="exibeModalExclusao(a)">
                                         <span>Excluir</span>
                                         <span class="icon is-small">
                                             <i class="fas fa-times"></i>
@@ -104,6 +104,22 @@
 
         </div>
 
+    </div>
+    <div class="modal" :class=" exibeModal?'is-active':'' ">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Confirmar exclusão de autor</p>
+                <button class="delete" aria-label="close" @click="fechaModal"></button>
+            </header>
+            <section class="modal-card-body">
+                <p>Deseja realmente excluir o autor '{{ autor.nome }}'</p>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-danger" @click="excluiAutor">Excluir</button>
+                <button class="button" @click="fechaModal">Cancelar</button>
+            </footer>
+        </div>
     </div>
 </template>
 
@@ -128,6 +144,7 @@ export default defineComponent({
             autores: [] as Autor[],
             autor: new Autor(),
             autorService: new AutorService(),
+            exibeModal: false,
         }
     },
     computed: {
@@ -144,9 +161,14 @@ export default defineComponent({
                 const autorCadastrado = await this.autorService.salvaAutor(this.autor, this.token)
 
                 if (autorCadastrado) {
-                    this.autores.push(autorCadastrado)
+                    let msg: string
+                    if (this.autor.id) {
+                        msg = `Autor '${autorCadastrado.nome}' alterado com sucesso`
+                    } else {
+                        this.autores.push(autorCadastrado)
+                        msg = `Autor '${autorCadastrado.nome}' cadastrado com sucesso`
+                    }
 
-                    const msg = `Autor '${autorCadastrado.nome}' cadastrado com sucesso`
                     this.notificar(msg, TipoNotificacao.SUCESSO)
                     console.log(msg)
 
@@ -164,12 +186,31 @@ export default defineComponent({
         alteraAutor(autor: Autor) {
             this.autor = autor;
         },
+        async excluiAutor() {
+            if (await this.autorService.excluiAutor(this.autor, this.token)) {
+                this.notificar(`Excluído autor '${this.autor.nome}'`, TipoNotificacao.SUCESSO)
+
+                this.autores = this.autores.filter((a) => a.id != this.autor.id)
+            } else {
+                this.notificar(`Ocorreu algum problema na exclusão do autor '${this.autor.nome}'`, TipoNotificacao.FALHA)
+            }
+
+            this.fechaModal()
+        },
         async buscaAutores() {
             const autoresBanco = await this.autorService.buscaAutores(this.token)
 
             if (autoresBanco) {
                 this.autores = autoresBanco
             }
+        },
+        exibeModalExclusao(autor: Autor) {
+            this.exibeModal = true;
+            this.autor = autor;
+        },        
+        fechaModal() {
+            this.exibeModal = false
+            this.defineAutorVazio()
         }
     },
     beforeMount() {
