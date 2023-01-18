@@ -45,4 +45,15 @@ export default class AutorService {
             throw new CadastrarError('autor')
         }
     }
+
+    public async excluiAutor(autor: Autor, token: string): Promise<boolean> {
+        const response = await this.axios.deleteComToken(this.url, token, autor)
+    
+        if (response.status === 200) {
+            return true
+        } else {
+            throw new APIError(response)
+        }
+    }
+
 }

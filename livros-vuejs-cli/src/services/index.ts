@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios"
 import VariaveisAmbiente from "@/utils/variaveis-ambiente"
+import { IEntidadeComID } from "@/interfaces/IEntidadeComID";
 
 class HttpAxiosService {
     private ax: AxiosInstance
@@ -77,7 +78,8 @@ class HttpAxiosService {
             });
     }
 
-    public async deleteComToken(url: string, token: string): Promise<AxiosResponse> {
+    public async deleteComToken(url: string, token: string, dados: IEntidadeComID): Promise<AxiosResponse> {
+        url = `${url}/${dados.id}`
         return this.ax.delete(url, {
             headers: this.headerToken(token)
         })
