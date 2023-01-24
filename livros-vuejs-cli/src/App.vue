@@ -1,5 +1,5 @@
 <template>
-  <nav class="breadcrumb is-centered top" aria-label="breadcrumbs" v-if="exibirNavegacao">
+  <nav class="breadcrumb has-dot-separator is-centered top" aria-label="breadcrumbs" v-if="exibirNavegacao">
     <ul>
       <li>
         <router-link to="/">
