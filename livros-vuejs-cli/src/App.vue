@@ -1,13 +1,48 @@
 <template>
-  <nav v-if="exibirNavegacao">
-    <router-link to="/">Livros</router-link> |
-    <router-link to="/autores">Autores</router-link> |
-    <router-link to="/usuarios">Usuários</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/login">Logout</router-link>
+  <nav class="breadcrumb is-centered top" aria-label="breadcrumbs" v-if="exibirNavegacao">
+    <ul>
+      <li>
+        <router-link to="/">
+          <span class="icon is-small">
+            <i class="fas fa-home" aria-hidden="true"></i>
+          </span>
+          <span>Livros</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/autores">
+          <span class="icon is-small">
+            <i class="fas fa-book" aria-hidden="true"></i>
+          </span>
+          <span>Autores</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/usuarios">
+          <span class="icon is-small">
+            <i class="fas fa-user" aria-hidden="true"></i>
+          </span>
+          <span>Usuários</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/about">About</router-link>
+      </li>
+      <li>
+        <router-link to="/login">
+          <span class="icon is-small">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </span>
+          <span>Logout</span>
+        </router-link>
+      </li>
+    </ul>
   </nav>
-  <NotificacoesComponent></NotificacoesComponent>
-  <router-view />
+
+  <div class="cabecalho">
+    <NotificacoesComponent></NotificacoesComponent>
+    <router-view/>
+  </div>
 </template>
 
 <script lang="ts">
@@ -43,6 +78,7 @@ export default defineComponent({
 
 nav {
   padding: 30px;
+  background-color: white;
 }
 
 nav a {
@@ -52,5 +88,16 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.top {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 100;
+}
+
+.cabecalho {
+  padding-top: 3rem;
 }
 </style>
