@@ -3,7 +3,16 @@
 
         <h1 class="title is-1 has-text-centered mt-6 mb-6">{{ titulo }}</h1>
 
-        <form class="box" @submit.prevent="salvaAutor">
+        <div class="tabs is-boxed">
+            <ul>
+                <li :class="guiaAtiva == guiaCadastro ? 'is-active' : ''" @click="defineGuiaAtiva(guiaCadastro)"><a>Novo
+                        cadastro</a></li>
+                <li :class="guiaAtiva == guiaListagem ? 'is-active' : ''" @click="defineGuiaAtiva(guiaListagem)">
+                    <a>Listagem</a></li>
+            </ul>
+        </div>
+
+        <form class="box" @submit.prevent="salvaAutor" v-if="guiaAtiva == guiaCadastro">
 
             <div class="columns">
 
@@ -56,7 +65,7 @@
 
         </form>
 
-        <div class="table-container mt-6">
+        <div class="table-container mt-6" v-if="guiaAtiva == guiaListagem">
 
             <table class="table is-hoverable is-fullwidth is-striped">
                 <thead>
@@ -105,7 +114,7 @@
         </div>
 
     </div>
-    <div class="modal" :class=" exibeModal?'is-active':'' ">
+    <div class="modal" :class="exibeModal ? 'is-active' : ''">
         <div class="modal-background"></div>
         <div class="modal-card">
             <header class="modal-card-head">
@@ -132,6 +141,7 @@ import useNotificador from '@/hooks/notificador'
 import { TipoNotificacao } from '@/interfaces/INotificacoes'
 import { APIError } from '@/errors/api-error'
 import { CadastrarError } from '@/errors/cadastrar-error'
+import { Guias } from '@/enums/Guias'
 
 export default defineComponent({
     name: "CadastroAutoresComponent",
@@ -145,6 +155,9 @@ export default defineComponent({
             autor: new Autor(),
             autorService: new AutorService(),
             exibeModal: false,
+            guiaAtiva: Guias.Cadastro,
+            guiaCadastro: Guias.Cadastro,
+            guiaListagem: Guias.Listagem
         }
     },
     computed: {
@@ -184,7 +197,9 @@ export default defineComponent({
 
         },
         alteraAutor(autor: Autor) {
-            this.autor = autor;
+            this.autor = autor
+
+            this.guiaAtiva = this.guiaCadastro
         },
         async excluiAutor() {
             if (await this.autorService.excluiAutor(this.autor, this.token)) {
@@ -207,10 +222,13 @@ export default defineComponent({
         exibeModalExclusao(autor: Autor) {
             this.exibeModal = true;
             this.autor = autor;
-        },        
+        },
         fechaModal() {
             this.exibeModal = false
             this.defineAutorVazio()
+        },
+        defineGuiaAtiva(nomeGuia: Guias) {
+            this.guiaAtiva = nomeGuia
         }
     },
     beforeMount() {
