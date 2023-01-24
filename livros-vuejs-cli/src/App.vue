@@ -100,4 +100,10 @@ nav a.router-link-exact-active {
 .cabecalho {
   padding-top: 3rem;
 }
+
+@media only screen and (max-width: 600px) {
+  .cabecalho {
+    padding-top: 6rem;
+  }
+}
 </style>
