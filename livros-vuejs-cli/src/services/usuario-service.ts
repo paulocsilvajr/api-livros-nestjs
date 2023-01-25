@@ -19,6 +19,7 @@ export default class UsuarioService {
         } else if ([ 400, 406 ].includes(response.status) ) {
             throw new APIError(response)
         } else {
+            console.warn(response.data.message.toString())
             throw new CadastrarError('usuário')
         }
     }

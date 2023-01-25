@@ -39,7 +39,8 @@
                         <div class="column is-half p-0">
                             <div class="columns">
                                 <div class="column">
-                                    <button type="submit" class="button is-success is-fullwidth">
+                                    <button type="submit" class="button is-success is-fullwidth"
+                                        :class="carregando.salvar ? 'is-loading' : ''">
                                         <span class="icon is-small">
                                             <i class="fas fa-check"></i>
                                         </span>
@@ -87,7 +88,7 @@
                                 <td class="has-text-left is-vcentered" style="width: 20%;">{{ a.nome }}</td>
                                 <td class="has-text-left is-vcentered">{{ a.descricao }}</td>
                                 <td class="is-vcentered">
-                                    <div class="field is-grouped">
+                                    <div class="field has-addons">
                                         <p class="control">
                                             <button class="button is-primary is-small" @click="alteraAutor(a)">
                                                 <span class="icon is-small">
@@ -128,7 +129,7 @@
                 <p>Deseja realmente excluir o autor '{{ autor.nome }}'</p>
             </section>
             <footer class="modal-card-foot">
-                <button class="button is-danger" @click="excluiAutor">Excluir</button>
+                <button class="button is-danger" :class="carregando.excluir ? 'is-loading' : ''" @click="excluiAutor">Excluir</button>
                 <button class="button" @click="fechaModal">Cancelar</button>
             </footer>
         </div>
@@ -160,6 +161,10 @@ export default defineComponent({
             autor: new Autor(),
             autorService: new AutorService(),
             exibeModal: false,
+            carregando: {
+                salvar: false,
+                excluir: false
+            },
         }
     },
     computed: {
@@ -172,6 +177,8 @@ export default defineComponent({
             this.autor = new Autor()
         },
         async salvaAutor() {
+            this.carregando.salvar = true
+
             try {
                 const autorCadastrado = await this.autorService.salvaAutor(this.autor, this.token)
 
@@ -197,6 +204,7 @@ export default defineComponent({
                 }
             }
 
+            this.carregando.salvar = false
         },
         alteraAutor(autor: Autor) {
             this.autor = autor
@@ -204,6 +212,8 @@ export default defineComponent({
             this.definirGuiaAtiva(Guias.Cadastro)
         },
         async excluiAutor() {
+            this.carregando.excluir = true
+
             if (await this.autorService.excluiAutor(this.autor, this.token)) {
                 this.notificar(`Excluído autor '${this.autor.nome}'`, TipoNotificacao.SUCESSO)
 
@@ -211,6 +221,8 @@ export default defineComponent({
             } else {
                 this.notificar(`Ocorreu algum problema na exclusão do autor '${this.autor.nome}'`, TipoNotificacao.FALHA)
             }
+
+            this.carregando.excluir = false
 
             this.fechaModal()
         },

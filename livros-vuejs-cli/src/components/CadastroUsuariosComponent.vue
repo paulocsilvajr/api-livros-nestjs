@@ -43,7 +43,7 @@
                 <div class="column is-half p-0">
                     <div class="columns">
                         <div class="column">
-                            <button type="submit" class="button is-success is-fullwidth">
+                            <button type="submit" class="button is-success is-fullwidth" :class="carregando.salvar ? 'is-loading' : ''">
                                 <span class="icon is-small">
                                     <i class="fas fa-check"></i>
                                 </span>
@@ -97,6 +97,9 @@ export default defineComponent({
             titulo: "Cadastro de usuários",
             usuario: new Usuario(),
             msg: "",
+            carregando: {
+                salvar: false
+            }
         }
     },
     methods: {
@@ -104,6 +107,8 @@ export default defineComponent({
             this.usuario = new Usuario()
         },
         async salvaUsuario() {
+            this.carregando.salvar = true
+
             try {
                 if (verificarUsuario(this.usuario)) {
                     const usuarioCadastrado = await this.usuarioService.salvaUsuario(this.usuario)
@@ -125,6 +130,8 @@ export default defineComponent({
                     this.notificar("Erro ao cadastrar usuário", TipoNotificacao.FALHA)
                 }
             }
+
+            this.carregando.salvar = false
         },
         voltaParaLogin() {
             this.$router.push({ name: "login" })

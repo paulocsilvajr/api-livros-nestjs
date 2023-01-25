@@ -15,7 +15,7 @@
                     <InputSenhaComponent v-model="usuario.senha" required />
                 </div>
 
-                <button class="button is-primary is-fullwidth mb-5" type="submit">Entrar</button>
+                <button class="button is-primary is-fullwidth mb-5" :class="carregando.entrar ? 'is-loading' : ''" type="submit">Entrar</button>
 
                 <a href="/usuarios">Cadastrar um novo usuário</a>
             </form>
@@ -45,6 +45,9 @@ export default defineComponent({
             apiService: new ApiService(),
             usuario: new Usuario(),
             entrarService: new EntrarService(),
+            carregando: {
+                entrar: false
+            }
         }
     },
     methods: {
@@ -54,6 +57,8 @@ export default defineComponent({
 
                 return
             }
+
+            this.carregando.entrar = true
 
             try {
                 const token = await this.entrarService.entrar(this.usuario)
@@ -81,6 +86,8 @@ export default defineComponent({
 
                 this.store.commit(LIMPAR_INFORMACOES_USUARIO)
             }
+            
+            this.carregando.entrar = false
         },
         limpaCampos() {
             this.usuario.nome = ''
