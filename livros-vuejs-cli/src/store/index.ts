@@ -1,7 +1,8 @@
 import { createStore, Store, useStore as vuexUseStore } from 'vuex'
 import { INotificacao } from '@/interfaces/INotificacoes'
 import { InjectionKey } from 'vue'
-import { SALVAR_INFORMACOES_USUARIO, LIMPAR_INFORMACOES_USUARIO, NOTIFICAR, REMOVER_NOTIFICACAO, ATUALIZAR_TOKEN } from '@/store/tipos-mutacoes'
+import { SALVAR_INFORMACOES_USUARIO, LIMPAR_INFORMACOES_USUARIO, NOTIFICAR, REMOVER_NOTIFICACAO, ATUALIZAR_TOKEN, DEFINIR_GUIA_ATIVA } from '@/store/tipos-mutacoes'
+import { Guias } from '@/enums/Guias'
 
 interface InformacoesUsuario {
   nomeUsuario: string,
@@ -12,6 +13,7 @@ interface InformacoesUsuario {
 interface Estado {
   usuario: InformacoesUsuario,
   notificacoes: INotificacao[],
+  guiaAtiva: Guias,
 }
 
 export const key: InjectionKey<Store<Estado>> = Symbol()
@@ -24,6 +26,7 @@ export const store = createStore<Estado>({
       token: ''
     },
     notificacoes: [],
+    guiaAtiva: Guias.Cadastro,
   },
   mutations: {
     [LIMPAR_INFORMACOES_USUARIO](state) {
@@ -57,6 +60,9 @@ export const store = createStore<Estado>({
     },
     [REMOVER_NOTIFICACAO](state, notificacao: INotificacao) {
       state.notificacoes = state.notificacoes.filter(n => n.id != notificacao.id)
+    },
+    [DEFINIR_GUIA_ATIVA](state, guia: Guias) {
+      state.guiaAtiva = guia
     },
   },
   getters: {
