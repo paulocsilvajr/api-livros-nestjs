@@ -1,6 +1,6 @@
 import { APIError } from "@/errors/api-error"
 import LivroJson from "@/interfaces/livro-json"
-import Livro from "@/models/livro"
+import { Livro } from "@/models/livro"
 import { HttpAxiosService } from "."
 
 export default class LivroService {

@@ -1,7 +1,7 @@
 export default interface LivroJson {
     id: number;
-    nome: string;
-    autor: string;
+    titulo: string;
+    autorId: number;
     numeroPaginas: number;
     dataCompra: string;
     lido: boolean

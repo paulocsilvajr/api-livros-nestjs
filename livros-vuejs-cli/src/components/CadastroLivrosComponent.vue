@@ -18,7 +18,7 @@
                                 <label for="nome">Título</label>
                                 <div class="control">
                                     <input type="text" class="input" placeholder="Título do livro" id="nome"
-                                        v-model.trim="livro.nome" required>
+                                        v-model.trim="livro.titulo" required>
                                 </div>
                             </div>
                         </div>
@@ -28,7 +28,7 @@
                                 <label for="autor">Autor</label>
                                 <div class="control">
                                     <div class="select">
-                                        <select v-model="livro.autor" required>
+                                        <select v-model="livro.autorId" required>
                                             <option v-for="a in autores" :key="a.id">{{ a.nome }}</option>
                                         </select>
                                     </div>
@@ -125,8 +125,8 @@
                         <tbody>
                             <tr v-for="l in livros" :key="l.id">
                                 <th>{{ l.id }}</th>
-                                <td>{{ l.nome }}</td>
-                                <td>{{ l.autor }}</td>
+                                <td>{{ l.titulo }}</td>
+                                <td>{{ l.autorId }}</td>
                                 <td>{{ l.numeroPaginas }}</td>
                                 <td>{{ formataDataBR(l.dataCompra) }}</td>
                                 <td>
@@ -136,9 +136,9 @@
                                 <td>
                                     <div class="buttons is-centered">
                                         <button class="button is-info is-small is-outlined"
-                                            @click="alteraLivro(l.id)">Alterar</button>
+                                            @click="alteraLivro">Alterar</button>
                                         <button class="button is-danger is-small is-outlined"
-                                            @click="removeLivro(l.id, l.nome)">Remover</button>
+                                            @click="excluiLivro">Remover</button>
                                     </div>
                                 </td>
                             </tr>
@@ -157,12 +157,12 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
-import Livro from '@/models/livro'
 import LivroService from '@/services/livro-service'
 import { useStore } from '@/store'
 import GuiasComponent from '@/components/GuiasComponent.vue'
 import { Autor } from '@/models/autor'
 import AutorService from '@/services/autor-service'
+import { Livro } from '@/models/livro'
 
 export default defineComponent({
     name: "CadastroLivrosComponent",
@@ -174,7 +174,7 @@ export default defineComponent({
             titulo: "Cadastro de livros",
             livroService: new LivroService(),
             livro: new Livro(),
-            livros: new Array<Livro>(),
+            livros: [] as Livro[],
             autorService: new AutorService(),
             autores: [] as Autor[],
         }
@@ -196,16 +196,25 @@ export default defineComponent({
             }
         },
         async buscaLivros() {
-            // this.msg = await this.livroService.buscaLivros(this.livros)
+            const livrosBanco = await this.livroService.buscaLivros(this.token)
+            
+            if (livrosBanco) {
+                this.livros = [] as Livro[]
+
+                livrosBanco.forEach(livroJson => {
+                    this.livros.push(Livro.fromJson(livroJson))
+                })
+            }
         },
         salvaLivro() {
+            console.log('salvaLivro')
             console.log(this.livro)
         },
-        alteraLivro(id: number) {
-            console.log(this.livro)
+        alteraLivro() {
+            console.log('alteraLivro')
         },
-        removeLivro(id: number, titulo: string) {
-            console.log(this.livro)
+        excluiLivro() {
+            console.log('excluiLivro')
         },
         formataDataBR(data: Date) {
             return data.toLocaleDateString("pt-BR", { timeZone: "UTC" })
