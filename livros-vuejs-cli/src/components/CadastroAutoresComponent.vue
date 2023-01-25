@@ -141,11 +141,11 @@ import { useStore } from '@/store'
 import { Autor } from '@/models/autor'
 import AutorService from '@/services/autor-service'
 import useNotificador from '@/hooks/notificador'
+import useDefinidorGuiaAtiva from '@/hooks/definidorGuiaAtiva'
 import { TipoNotificacao } from '@/interfaces/INotificacoes'
 import { APIError } from '@/errors/api-error'
 import { CadastrarError } from '@/errors/cadastrar-error'
 import GuiasComponent from '@/components/GuiasComponent.vue'
-import { DEFINIR_GUIA_ATIVA } from '@/store/tipos-mutacoes'
 import { Guias } from '@/enums/Guias'
 
 export default defineComponent({
@@ -201,7 +201,7 @@ export default defineComponent({
         alteraAutor(autor: Autor) {
             this.autor = autor
 
-            this.store.commit(DEFINIR_GUIA_ATIVA, Guias.Cadastro)
+            this.definirGuiaAtiva(Guias.Cadastro)
         },
         async excluiAutor() {
             if (await this.autorService.excluiAutor(this.autor, this.token)) {
@@ -244,14 +244,14 @@ export default defineComponent({
         const semToken = computed(() => store.getters.semToken)
         const token = computed(() => store.state.usuario.token)
 
-
         const { notificar } = useNotificador()
+        const { definirGuiaAtiva } = useDefinidorGuiaAtiva()
 
         return {
             semToken,
             notificar,
             token,
-            store
+            definirGuiaAtiva
         }
     }
 })
