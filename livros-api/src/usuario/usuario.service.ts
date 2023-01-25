@@ -16,7 +16,7 @@ export class UsuarioService {
     }
 
     public async cadastraUsuario(usuario: CadastraUsuarioDto): Promise<Usuario> {
-        const usuarioBanco = await this.buscaUsuarioPorNome(usuario.nome)
+        const usuarioBanco = await this.buscaUsuarioPorNomeSemVerificacao(usuario.nome)
         if (usuarioBanco) {
             throw new NotAcceptableException(`Usuário '${usuario.nome}' já existe`);
         }
@@ -26,8 +26,12 @@ export class UsuarioService {
         return this.usuarioRepository.save(novoUsuario);
     }
 
+    public buscaUsuarioPorNomeSemVerificacao(nome: string): Promise<Usuario> {
+        return this.usuarioRepository.findOneBy({ 'nome': nome });
+    }
+
     public async buscaUsuarioPorNome(nome: string): Promise<Usuario> {
-        const usuario = await this.usuarioRepository.findOneBy({ 'nome': nome });
+        const usuario = await this.buscaUsuarioPorNomeSemVerificacao(nome);
 
         verifica(usuario, nome, 'Usuario');
 
