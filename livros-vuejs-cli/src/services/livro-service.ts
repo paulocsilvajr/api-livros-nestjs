@@ -1,67 +1,42 @@
+import { APIError } from "@/errors/api-error"
 import LivroJson from "@/interfaces/livro-json"
 import Livro from "@/models/livro"
-import VariaveisAmbiente from "@/utils/variaveis-ambiente"
+import { HttpAxiosService } from "."
 
 export default class LivroService {
-    private url = `${VariaveisAmbiente.apiUrl}/api/livros`
+    private url = 'api/livros'
 
-    public async buscaLivros(livros: Array<Livro>): Promise<string> {
-        try {
-            const response = await fetch(this.url)
-            const data = await response.json()
+    constructor(private axios = new HttpAxiosService()) { }
 
-            livros.splice(0, livros.length)
-            if (response.status == 200) {
-                data.forEach((livroJson: LivroJson) => {
-                    const livro = Livro.fromJson(livroJson)
+    public async buscaLivros(token: string): Promise<LivroJson[] | undefined> {
+        const response = await this.axios.getComToken(this.url, token)
 
-                    livros.push(livro)
-                });
-            }
-            return ''
-        } catch (err) {
-            return `Erro na conexão com a API '${this.url}'`
+        if (response.status === 200) {
+            const data: LivroJson[] = response.data
+
+            return data
         }
     }
 
-    public async salvaLivro(livro: Livro, livros: Array<Livro>) {
-        let response = new Response()
-        if (this.ehNovoLivro(livro)) {
-            console.log("Salvar livro ID:", livro.id)
-
-            response = await fetch(this.url, { method: "POST", headers: { 'Content-Type': 'application/json' }, body: Livro.toJson(livro) })
-        } else {
-            console.log("Alterar livro ID:", livro.id)
-
-            response = await fetch(`${this.url}/${livro.id}`, { method: "PUT", headers: { 'Content-Type': 'application/json' }, body: Livro.toJson(livro) })
-        }
-
-        const livroJson: LivroJson = await response.json()
-        console.log("Livro(JSON) retornado após salvar/alterar:", livroJson)
+    public async salvaLivro(livro: Livro, token: string): Promise<LivroJson> {
+        const response = await this.axios.postComToken<Livro>(this.url, token, livro)
 
         if (response.status == 201) {
-            const livroSalvo = Livro.fromJson(livroJson)
+            const data: LivroJson = response.data
 
-            livros.push(livroSalvo)
-        } else if (response.status == 200) {
-            const indice = livros.findIndex(liv => liv.id === livroJson.id)
-            const livroAlterado = Livro.fromJson(livroJson)
-
-            livros[indice] = livroAlterado
+            return data            
+        } else {
+            throw new APIError(response)
         }
     }
 
-    public async removeLivro(id: number, livros: Array<Livro>) {
-        const response = await fetch(`${this.url}/${id}`, { method: "DELETE" })
+    public async excluiLivro(livro: Livro, token: string): Promise<boolean> {
+        const response = await this.axios.deleteComToken(this.url, token, livro)
 
-        if (response.status == 200) {
-            const indice = livros.findIndex(l => l.id === id)
-            livros.splice(indice, 1)
+        if (response.status === 200) {
+            return true
+        } else {
+            throw new APIError(response)
         }
-    }
-
-    private ehNovoLivro(livro: Livro) {
-        // NOVO livro, id == 0, senão ALTERAR livro
-        return livro.id === 0
     }
 }
