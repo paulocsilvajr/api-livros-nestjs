@@ -3,115 +3,118 @@
 
         <h1 class="title is-1 has-text-centered mt-6 mb-6">{{ titulo }}</h1>
 
-        <div class="tabs is-boxed">
-            <ul>
-                <li :class="guiaAtiva == guiaCadastro ? 'is-active' : ''" @click="defineGuiaAtiva(guiaCadastro)"><a>Novo
-                        cadastro</a></li>
-                <li :class="guiaAtiva == guiaListagem ? 'is-active' : ''" @click="defineGuiaAtiva(guiaListagem)">
-                    <a>Listagem</a></li>
-            </ul>
-        </div>
+        <GuiasComponent>
 
-        <form class="box" @submit.prevent="salvaAutor" v-if="guiaAtiva == guiaCadastro">
+            <template v-slot:guia01>
 
-            <div class="columns">
+                <form class="box" @submit.prevent="salvaAutor">
 
-                <input type="text" id="id" hidden v-model="autor.id">
-
-                <div class="column">
-                    <div class="field">
-                        <label for="nome">Nome do autor</label>
-                        <div class="control">
-                            <input type="text" class="input" placeholder="Nome do autor" id="nome"
-                                v-model.trim="autor.nome" required>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="column is-two-thirds">
-                    <div class="field">
-                        <label for="descricao">Descrição do autor</label>
-                        <div class="control">
-                            <input type="text" class="input" placeholder="Descrição do autor" id="descricao"
-                                v-model.trim="autor.descricao">
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="colums is-desktop">
-                <div class="column is-half p-0">
                     <div class="columns">
+
+                        <input type="text" id="id" hidden v-model="autor.id">
+
                         <div class="column">
-                            <button type="submit" class="button is-success is-fullwidth">
-                                <span class="icon is-small">
-                                    <i class="fas fa-check"></i>
-                                </span>
-                                <span>Salvar</span>
-                            </button>
+                            <div class="field">
+                                <label for="nome">Nome do autor</label>
+                                <div class="control">
+                                    <input type="text" class="input" placeholder="Nome do autor" id="nome"
+                                        v-model.trim="autor.nome" required>
+                                </div>
+                            </div>
                         </div>
-                        <div class="column">
-                            <button class="button is-warning is-fullwidth" @click="defineAutorVazio">
-                                <span class="icon is-small">
-                                    <i class="fas fa-times"></i>
-                                </span>
-                                <span>Limpar</span>
-                            </button>
+
+                        <div class="column is-two-thirds">
+                            <div class="field">
+                                <label for="descricao">Descrição do autor</label>
+                                <div class="control">
+                                    <input type="text" class="input" placeholder="Descrição do autor" id="descricao"
+                                        v-model.trim="autor.descricao">
+                                </div>
+                            </div>
                         </div>
+
                     </div>
-                </div>
-            </div>
 
-        </form>
-
-        <div class="table-container mt-6" v-if="guiaAtiva == guiaListagem">
-
-            <table class="table is-hoverable is-fullwidth is-striped">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nome</th>
-                        <th>Descrição</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                        <th colspan="2">Total</th>
-                        <th colspan="2">{{ totalAutores }}</th>
-                    </tr>
-                </tfoot>
-                <tbody>
-                    <tr v-for="a in autores" :key="a.id" :class="autor.id == a.id ? 'is-selected' : ''">
-                        <th class="is-vcentered">{{ a.id }}</th>
-                        <td class="has-text-left is-vcentered" style="width: 20%;">{{ a.nome }}</td>
-                        <td class="has-text-left is-vcentered">{{ a.descricao }}</td>
-                        <td class="is-vcentered">
-                            <div class="field is-grouped">
-                                <p class="control">
-                                    <button class="button is-primary is-small" @click="alteraAutor(a)">
+                    <div class="colums is-desktop">
+                        <div class="column is-half p-0">
+                            <div class="columns">
+                                <div class="column">
+                                    <button type="submit" class="button is-success is-fullwidth">
                                         <span class="icon is-small">
-                                            <i class="fas fa-pencil"></i>
+                                            <i class="fas fa-check"></i>
                                         </span>
-                                        <span>Alterar</span>
+                                        <span>Salvar</span>
                                     </button>
-                                </p>
-                                <p class="control">
-                                    <button class="button is-danger is-small" @click="exibeModalExclusao(a)">
-                                        <span>Excluir</span>
+                                </div>
+                                <div class="column">
+                                    <button class="button is-warning is-fullwidth" @click="defineAutorVazio">
                                         <span class="icon is-small">
                                             <i class="fas fa-times"></i>
                                         </span>
+                                        <span>Limpar</span>
                                     </button>
-                                </p>
+                                </div>
                             </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        </div>
+                    </div>
 
-        </div>
+                </form>
+
+            </template>
+
+            <template v-slot:guia02>
+
+                <div class="table-container mt-6">
+
+                    <table class="table is-hoverable is-fullwidth is-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nome</th>
+                                <th>Descrição</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th colspan="2">Total</th>
+                                <th colspan="2">{{ totalAutores }}</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <tr v-for="a in autores" :key="a.id" :class="autor.id == a.id ? 'is-selected' : ''">
+                                <th class="is-vcentered">{{ a.id }}</th>
+                                <td class="has-text-left is-vcentered" style="width: 20%;">{{ a.nome }}</td>
+                                <td class="has-text-left is-vcentered">{{ a.descricao }}</td>
+                                <td class="is-vcentered">
+                                    <div class="field is-grouped">
+                                        <p class="control">
+                                            <button class="button is-primary is-small" @click="alteraAutor(a)">
+                                                <span class="icon is-small">
+                                                    <i class="fas fa-pencil"></i>
+                                                </span>
+                                                <span>Alterar</span>
+                                            </button>
+                                        </p>
+                                        <p class="control">
+                                            <button class="button is-danger is-small" @click="exibeModalExclusao(a)">
+                                                <span>Excluir</span>
+                                                <span class="icon is-small">
+                                                    <i class="fas fa-times"></i>
+                                                </span>
+                                            </button>
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </template>
+
+        </GuiasComponent>
 
     </div>
     <div class="modal" :class="exibeModal ? 'is-active' : ''">
@@ -141,12 +144,14 @@ import useNotificador from '@/hooks/notificador'
 import { TipoNotificacao } from '@/interfaces/INotificacoes'
 import { APIError } from '@/errors/api-error'
 import { CadastrarError } from '@/errors/cadastrar-error'
+import GuiasComponent from '@/components/GuiasComponent.vue'
+import { DEFINIR_GUIA_ATIVA } from '@/store/tipos-mutacoes'
 import { Guias } from '@/enums/Guias'
 
 export default defineComponent({
     name: "CadastroAutoresComponent",
     components: {
-
+        GuiasComponent
     },
     data() {
         return {
@@ -155,9 +160,6 @@ export default defineComponent({
             autor: new Autor(),
             autorService: new AutorService(),
             exibeModal: false,
-            guiaAtiva: Guias.Cadastro,
-            guiaCadastro: Guias.Cadastro,
-            guiaListagem: Guias.Listagem
         }
     },
     computed: {
@@ -199,7 +201,7 @@ export default defineComponent({
         alteraAutor(autor: Autor) {
             this.autor = autor
 
-            this.guiaAtiva = this.guiaCadastro
+            this.store.commit(DEFINIR_GUIA_ATIVA, Guias.Cadastro)
         },
         async excluiAutor() {
             if (await this.autorService.excluiAutor(this.autor, this.token)) {
@@ -227,9 +229,6 @@ export default defineComponent({
             this.exibeModal = false
             this.defineAutorVazio()
         },
-        defineGuiaAtiva(nomeGuia: Guias) {
-            this.guiaAtiva = nomeGuia
-        }
     },
     beforeMount() {
         if (this.semToken) {
@@ -251,7 +250,8 @@ export default defineComponent({
         return {
             semToken,
             notificar,
-            token
+            token,
+            store
         }
     }
 })
