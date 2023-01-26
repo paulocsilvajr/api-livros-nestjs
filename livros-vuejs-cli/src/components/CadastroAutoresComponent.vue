@@ -70,7 +70,7 @@
                     <table class="table is-hoverable is-fullwidth is-striped">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th>Cód.</th>
                                 <th>Nome</th>
                                 <th>Descrição</th>
                                 <th></th>

@@ -28,7 +28,7 @@
                                 <label for="autor">Autor</label>
                                 <div class="control">
                                     <div class="select">
-                                        <select v-model="livro.autorId" required>
+                                        <select v-model="livro.autorId" id="autor" required>
                                             <option v-for="a in autores" :key="a.id" :value="a.id">{{ a.nome }}</option>
                                         </select>
                                     </div>
@@ -60,13 +60,16 @@
                             </div>
                         </div>
 
-                        <div class="column is-one-quarter">
+                    </div>
+
+                    <div class="columns is-vcentered">
+                       
+                        <div class="column">
                             <div class="field">
+                                <label for="resumo">Resumo</label>
                                 <div class="control">
-                                    <label class="checkbox" for="lido">
-                                        <input type="checkbox" id="lido" v-model="livro.lido">
-                                        Lido
-                                    </label>
+                                    <textarea class="textarea" placeholder="Resumo da obra" id="resumo"
+                                        v-model="livro.resumo"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -104,15 +107,15 @@
 
                 <div class="table-container mt-6">
 
-                    <table class="table is-hoverable is-fullwidth">
+                    <table class="table is-hoverable is-fullwidth  is-striped">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th>Cód.</th>
                                 <th>Título</th>
                                 <th>Autor</th>
                                 <th>N° páginas</th>
                                 <th>Compra</th>
-                                <th>Lido</th>
+                                <th>Resumo</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -124,21 +127,32 @@
                         </tfoot>
                         <tbody>
                             <tr v-for="l in livros" :key="l.id">
-                                <th>{{ l.id }}</th>
-                                <td>{{ l.titulo }}</td>
-                                <td>{{ l.autorId }}</td>
-                                <td>{{ l.numeroPaginas }}</td>
-                                <td>{{ formataDataBR(l.dataCompra) }}</td>
-                                <td>
-                                    <strong v-if="l.lido">SIM</strong>
-                                    <span v-else>não</span>
-                                </td>
-                                <td>
-                                    <div class="buttons is-centered">
-                                        <button class="button is-info is-small is-outlined"
-                                            @click="alteraLivro">Alterar</button>
-                                        <button class="button is-danger is-small is-outlined"
-                                            @click="excluiLivro">Remover</button>
+                                <th class="is-vcentered">{{ l.id }}</th>
+                                <td class="has-text-left is-vcentered">{{ l.titulo }}</td>
+                                <td class="has-text-left is-vcentered">{{ retornaNomeAutor(l.autorId) }}</td>
+                                <td class="has-text-left is-vcentered">{{ l.numeroPaginas }}</td>
+                                <td class="has-text-left is-vcentered">{{ formataDataBR(l.dataCompra) }}</td>
+                                <td class="has-text-left is-vcentered">{{ l.resumo }}</td>
+                                <td class="is-vcentered">
+                                    <div class="field has-addons">
+                                        <p class="control">
+                                            <button class="button is-info is-small"
+                                                @click="alteraLivro(l)">
+                                                <span class="icon is-small">
+                                                    <i class="fas fa-pencil"></i>
+                                                </span>
+                                                <span>Alterar</span>
+                                            </button>
+                                        </p>
+                                        <p class="control">
+                                            <button class="button is-danger is-small"
+                                                @click="excluiLivro(l)">
+                                                <span>Excluir</span>
+                                                <span class="icon is-small">
+                                                    <i class="fas fa-times"></i>
+                                                </span>
+                                            </button>
+                                        </p>
                                     </div>
                                 </td>
                             </tr>
@@ -197,7 +211,7 @@ export default defineComponent({
         },
         async buscaLivros() {
             const livrosBanco = await this.livroService.buscaLivros(this.token)
-            
+
             if (livrosBanco) {
                 this.livros = [] as Livro[]
 
@@ -207,18 +221,21 @@ export default defineComponent({
             }
         },
         salvaLivro() {
-            console.log('salvaLivro')
-            console.log(this.livro)
+            console.log('salvaLivro', this.livro)
         },
-        alteraLivro() {
-            console.log('alteraLivro')
+        alteraLivro(livro: Livro) {
+            console.log('alteraLivro', livro)
         },
-        excluiLivro() {
-            console.log('excluiLivro')
+        excluiLivro(livro: Livro) {
+            console.log('excluiLivro', livro)
         },
         formataDataBR(data: Date) {
             return data.toLocaleDateString("pt-BR", { timeZone: "UTC" })
         },
+        retornaNomeAutor(id: number) {
+            const autorEncontrado = this.autores.find(autor => autor.id === id)
+            return autorEncontrado?.nome
+        }
     },
     beforeMount() {
         if (this.semToken) {
