@@ -5,9 +5,9 @@ class Livro {
         public id: number = 0,
         public titulo: string = '',
         public autorId: number = 0,
+        public resumo: string = '',
         public numeroPaginas: number = 1,
         public dataCompra: Date = new Date(),
-        public lido: boolean = false
     ) { }
 
     public get dataCompraInput(): string {
@@ -23,9 +23,10 @@ class Livro {
             livro.id,
             livro.titulo,
             livro.autorId,
+            livro.resumo,
             livro.numeroPaginas,
-            new Date(livro.dataCompra),
-            livro.lido)
+            new Date(livro.dataCompra)
+        )
     }
 }
 
