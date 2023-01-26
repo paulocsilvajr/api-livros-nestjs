@@ -22,6 +22,7 @@ export default class AutorService {
 
     public async salvaAutor(autor: Autor, token: string): Promise<AutorJson> {
         let response: AxiosResponse
+        console.warn(autor)
         if (autor.descricao.length === 0) {
             const autorSemDescricao = {
                 id: autor.id,

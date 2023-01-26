@@ -26,7 +26,7 @@ export const store = createStore<Estado>({
       token: ''
     },
     notificacoes: [],
-    guiaAtiva: Guias.Cadastro,
+    guiaAtiva: Guias.Listagem,
   },
   mutations: {
     [LIMPAR_INFORMACOES_USUARIO](state) {

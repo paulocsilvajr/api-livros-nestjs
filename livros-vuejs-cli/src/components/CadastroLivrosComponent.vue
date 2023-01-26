@@ -69,7 +69,7 @@
                                 <label for="resumo">Resumo</label>
                                 <div class="control">
                                     <textarea class="textarea" placeholder="Resumo da obra" id="resumo"
-                                        v-model="livro.resumo"></textarea>
+                                        v-model="livro.resumo" rows="2"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -80,7 +80,7 @@
                         <div class="column is-half p-0">
                             <div class="columns">
                                 <div class="column">
-                                    <button type="submit" class="button is-success is-fullwidth">
+                                    <button type="submit" class="button is-success is-fullwidth" :class="carregando.salvar ? 'is-loading' : ''">
                                         <span class="icon is-small">
                                             <i class="fas fa-check"></i>
                                         </span>
@@ -177,6 +177,10 @@ import GuiasComponent from '@/components/GuiasComponent.vue'
 import { Autor } from '@/models/autor'
 import AutorService from '@/services/autor-service'
 import { Livro } from '@/models/livro'
+import { TipoNotificacao } from '@/interfaces/INotificacoes'
+import useNotificador from '@/hooks/notificador'
+import { APIError } from '@/errors/api-error'
+import { CadastrarError } from '@/errors/cadastrar-error'
 
 export default defineComponent({
     name: "CadastroLivrosComponent",
@@ -191,6 +195,9 @@ export default defineComponent({
             livros: [] as Livro[],
             autorService: new AutorService(),
             autores: [] as Autor[],
+            carregando: {
+                salvar: false,
+            },
         }
     },
     computed: {
@@ -220,8 +227,36 @@ export default defineComponent({
                 })
             }
         },
-        salvaLivro() {
-            console.log('salvaLivro', this.livro)
+        async salvaLivro() {
+            this.carregando.salvar = true
+            
+            try {
+                // console.log('salvaLivro', this.livro)
+                const livroCadastrado = await this.livroService.salvaLivro(this.livro, this.token)
+
+                if (livroCadastrado) {
+                    let msg: string
+                    if (this.livro.id) {
+                        msg = `Livro '${livroCadastrado.titulo}' alterado com sucesso`
+                    } else {
+                        this.livros.push(Livro.fromJson(livroCadastrado))
+                        msg = `Livro '${livroCadastrado.titulo}' cadastrado com sucesso`
+                    }
+
+                    this.notificar(msg, TipoNotificacao.SUCESSO)
+                    console.log(msg)
+
+                    this.defineLivroVazio()
+                }
+            } catch (error) {
+                if (error instanceof APIError) {
+                    this.notificar(error.message, TipoNotificacao.FALHA)
+                } else if (error instanceof CadastrarError) {
+                    this.notificar(error.message, TipoNotificacao.FALHA)
+                }
+            }
+
+            this.carregando.salvar = false
         },
         alteraLivro(livro: Livro) {
             console.log('alteraLivro', livro)
@@ -246,17 +281,20 @@ export default defineComponent({
 
         this.defineLivroVazio()
 
-        this.buscaLivros()
         this.buscaAutores()
+        this.buscaLivros()
     },
     setup() {
         const store = useStore()
         const semToken = computed(() => store.getters.semToken)
         const token = computed(() => store.state.usuario.token)
 
+        const { notificar } = useNotificador()
+
         return {
             semToken,
-            token
+            token,
+            notificar,
         }
     }
 })

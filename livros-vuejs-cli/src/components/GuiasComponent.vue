@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="mb-6">
         <div class="tabs is-boxed">
             <ul>
                 <li :class="guiaAtiva == guiaCadastro ? 'is-active' : ''" @click="defineGuia(guiaCadastro)"><a>Novo

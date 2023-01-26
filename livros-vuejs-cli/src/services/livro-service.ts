@@ -1,4 +1,6 @@
 import { APIError } from "@/errors/api-error"
+import { CadastrarError } from "@/errors/cadastrar-error"
+import LivroCadastro from "@/interfaces/livro-cadastro"
 import LivroJson from "@/interfaces/livro-json"
 import { Livro } from "@/models/livro"
 import { HttpAxiosService } from "."
@@ -19,12 +21,23 @@ export default class LivroService {
     }
 
     public async salvaLivro(livro: Livro, token: string): Promise<LivroJson> {
-        const response = await this.axios.postComToken<Livro>(this.url, token, livro)
+        const livroCadastro: LivroCadastro = {
+            titulo: livro.titulo,
+            autor: livro.autorId,
+            resumo: livro.resumo,
+            numeroPaginas: livro.numeroPaginas,
+            dataCompra: livro.dataCompra.toISOString(),
+        }
+        const response = await this.axios.postComToken(this.url, token, livroCadastro)
 
         if (response.status == 201) {
             const data: LivroJson = response.data
 
-            return data            
+            return data  
+        } else if (response.status === 400) {
+            throw new APIError(response)
+        } else if (response.status === 406){
+            throw new CadastrarError('livro', 'Livro com nome informado já cadastrado')
         } else {
             throw new APIError(response)
         }
