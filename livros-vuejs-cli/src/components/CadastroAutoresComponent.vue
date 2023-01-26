@@ -118,22 +118,11 @@
         </GuiasComponent>
 
     </div>
-    <div class="modal" :class="exibeModal ? 'is-active' : ''">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head">
-                <p class="modal-card-title">Confirmar exclusão de autor</p>
-                <button class="delete" aria-label="close" @click="fechaModal"></button>
-            </header>
-            <section class="modal-card-body">
-                <p>Deseja realmente excluir o autor '{{ autor.nome }}'</p>
-            </section>
-            <footer class="modal-card-foot">
-                <button class="button is-danger" :class="carregando.excluir ? 'is-loading' : ''" @click="excluiAutor">Excluir</button>
-                <button class="button" @click="fechaModal">Cancelar</button>
-            </footer>
-        </div>
-    </div>
+
+    <ModalConfirmacaoComponent titulo="Confirmar exclusão de autor"
+        :mensagem="'Deseja realmente excluir o autor ' + autor.nome " texto-botao="Excluir"
+        @ao-clicar-confirmacao="excluiAutor" @ao-fechar-modal="fechaModal" v-if="exibeModal">
+    </ModalConfirmacaoComponent>
 </template>
 
 <script lang="ts">
@@ -148,11 +137,13 @@ import { APIError } from '@/errors/api-error'
 import { CadastrarError } from '@/errors/cadastrar-error'
 import GuiasComponent from '@/components/GuiasComponent.vue'
 import { Guias } from '@/enums/Guias'
+import ModalConfirmacaoComponent from './ModalConfirmacaoComponent.vue'
 
 export default defineComponent({
     name: "CadastroAutoresComponent",
     components: {
-        GuiasComponent
+        GuiasComponent,
+        ModalConfirmacaoComponent,
     },
     data() {
         return {
@@ -163,7 +154,6 @@ export default defineComponent({
             exibeModal: false,
             carregando: {
                 salvar: false,
-                excluir: false
             },
         }
     },
@@ -212,17 +202,17 @@ export default defineComponent({
             this.definirGuiaAtiva(Guias.Cadastro)
         },
         async excluiAutor() {
-            this.carregando.excluir = true
+            try {
+                if (await this.autorService.excluiAutor(this.autor, this.token)) {
+                    this.notificar(`Excluído autor '${this.autor.nome}'`, TipoNotificacao.SUCESSO)
 
-            if (await this.autorService.excluiAutor(this.autor, this.token)) {
-                this.notificar(`Excluído autor '${this.autor.nome}'`, TipoNotificacao.SUCESSO)
-
-                this.autores = this.autores.filter((a) => a.id != this.autor.id)
-            } else {
-                this.notificar(`Ocorreu algum problema na exclusão do autor '${this.autor.nome}'`, TipoNotificacao.FALHA)
+                    this.autores = this.autores.filter((a) => a.id != this.autor.id)
+                }
+            } catch (error) {
+                if (error instanceof Error) {
+                    this.notificar(`Autor '${this.autor.nome}' não pode ser excluído. Verifique se há livros associados com esse autor`, TipoNotificacao.FALHA)
+                }
             }
-
-            this.carregando.excluir = false
 
             this.fechaModal()
         },
