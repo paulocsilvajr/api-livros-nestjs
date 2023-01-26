@@ -29,7 +29,7 @@
                                 <div class="control">
                                     <div class="select">
                                         <select v-model="livro.autorId" required>
-                                            <option v-for="a in autores" :key="a.id">{{ a.nome }}</option>
+                                            <option v-for="a in autores" :key="a.id" :value="a.id">{{ a.nome }}</option>
                                         </select>
                                     </div>
                                 </div>
