@@ -3,6 +3,7 @@ import CadastroLivrosView from '@/views/CadastroLivrosView.vue'
 import EntrarView from '@/views/EntrarView.vue'
 import CadastroUsuariosView from '@/views/CadastroUsuariosView.vue'
 import CadastroAutoresView from '@/views/CadastroAutoresView.vue'
+import EmprestimoLivrosView from '@/views/EmprestimoLivrosView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -26,13 +27,20 @@ const routes: Array<RouteRecordRaw> = [
     component: EntrarView
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/emprestimo',
+    name: 'emprestimo',
+    component: EmprestimoLivrosView
   },
+  
+  // MODELO de importação de VIEW com LAZY-LOAD
+  // {
+  //   path: '/about',
+  //   name: 'about',
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+  // },
 ]
 
 const router = createRouter({

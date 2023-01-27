@@ -4,7 +4,7 @@
       <li>
         <router-link to="/">
           <span class="icon is-small">
-            <i class="fas fa-home" aria-hidden="true"></i>
+            <i class="fas fa-book" aria-hidden="true"></i>
           </span>
           <span>Livros</span>
         </router-link>
@@ -12,7 +12,7 @@
       <li>
         <router-link to="/autores">
           <span class="icon is-small">
-            <i class="fas fa-book" aria-hidden="true"></i>
+            <i class="fas fa-user-tie" aria-hidden="true"></i>
           </span>
           <span>Autores</span>
         </router-link>
@@ -26,7 +26,12 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/about">About</router-link>
+        <router-link to="/emprestimo">
+          <span class="icon is-small">
+            <i class="fas fa-book-open-reader" aria-hidden="true"></i>
+          </span>
+          <span>Emprestimo</span>
+        </router-link>
       </li>
       <li>
         <router-link to="/login">
@@ -41,7 +46,7 @@
 
   <div class="cabecalho">
     <NotificacoesComponent></NotificacoesComponent>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
