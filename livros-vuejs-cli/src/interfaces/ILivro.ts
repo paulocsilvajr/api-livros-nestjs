@@ -7,7 +7,8 @@ interface LivroJson {
     dataCompra: string;
 }
 
-interface LivroCadastro {
+interface LivroCadastroAlteracao {
+    id: number,
     titulo: string,
     autor: number,
     resumo: string,
@@ -15,4 +16,4 @@ interface LivroCadastro {
     dataCompra: string,
 }
 
-export { LivroJson, LivroCadastro }
+export { LivroJson, LivroCadastroAlteracao }

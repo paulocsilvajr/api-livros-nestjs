@@ -1,6 +1,6 @@
 import { APIError } from "@/errors/api-error"
 import { CadastrarError } from "@/errors/cadastrar-error"
-import { LivroJson, LivroCadastro} from "@/interfaces/ILivro"
+import { LivroJson, LivroCadastroAlteracao } from "@/interfaces/ILivro"
 import { Livro } from "@/models/livro"
 import { HttpAxiosService } from "."
 
@@ -20,7 +20,8 @@ export default class LivroService {
     }
 
     public async salvaLivro(livro: Livro, token: string): Promise<LivroJson> {
-        const livroCadastro: LivroCadastro = {
+        const livroCadastro: LivroCadastroAlteracao = {
+            id: livro.id,
             titulo: livro.titulo,
             autor: livro.autorId,
             resumo: livro.resumo,

@@ -126,7 +126,7 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                            <tr v-for="l in livros" :key="l.id">
+                            <tr v-for="l in livros" :key="l.id"  :class="livro.id == l.id ? 'is-selected' : ''">
                                 <th class="is-vcentered">{{ l.id }}</th>
                                 <td class="has-text-left is-vcentered">{{ l.titulo }}</td>
                                 <td class="has-text-left is-vcentered">{{ retornaNomeAutor(l.autorId) }}</td>
@@ -136,7 +136,7 @@
                                 <td class="is-vcentered">
                                     <div class="field has-addons">
                                         <p class="control">
-                                            <button class="button is-info is-small"
+                                            <button class="button is-primary is-small"
                                                 @click="alteraLivro(l)">
                                                 <span class="icon is-small">
                                                     <i class="fas fa-pencil"></i>
@@ -181,6 +181,8 @@ import { TipoNotificacao } from '@/interfaces/INotificacoes'
 import useNotificador from '@/hooks/notificador'
 import { APIError } from '@/errors/api-error'
 import { CadastrarError } from '@/errors/cadastrar-error'
+import useDefinidorGuiaAtiva from '@/hooks/definidorGuiaAtiva'
+import { Guias } from '@/enums/Guias'
 
 export default defineComponent({
     name: "CadastroLivrosComponent",
@@ -231,7 +233,6 @@ export default defineComponent({
             this.carregando.salvar = true
             
             try {
-                // console.log('salvaLivro', this.livro)
                 const livroCadastrado = await this.livroService.salvaLivro(this.livro, this.token)
 
                 if (livroCadastrado) {
@@ -259,7 +260,9 @@ export default defineComponent({
             this.carregando.salvar = false
         },
         alteraLivro(livro: Livro) {
-            console.log('alteraLivro', livro)
+            this.livro = livro
+
+            this.definirGuiaAtiva(Guias.Cadastro)
         },
         excluiLivro(livro: Livro) {
             console.log('excluiLivro', livro)
@@ -288,6 +291,7 @@ export default defineComponent({
         const store = useStore()
         const semToken = computed(() => store.getters.semToken)
         const token = computed(() => store.state.usuario.token)
+        const { definirGuiaAtiva } = useDefinidorGuiaAtiva()
 
         const { notificar } = useNotificador()
 
@@ -295,6 +299,7 @@ export default defineComponent({
             semToken,
             token,
             notificar,
+            definirGuiaAtiva,
         }
     }
 })
