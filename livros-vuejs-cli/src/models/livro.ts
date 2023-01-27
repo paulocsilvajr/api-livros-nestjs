@@ -18,6 +18,10 @@ class Livro {
         }
     }
 
+    public set dataCompraInput(data: string) {
+        this.dataCompra = new Date(data)
+    }
+
     static fromJson(livro: LivroJson): Livro {
         return new Livro(
             livro.id,
