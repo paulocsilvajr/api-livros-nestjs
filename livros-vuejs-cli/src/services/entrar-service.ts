@@ -1,6 +1,6 @@
 import { NaoAutorizadoError } from "@/errors/nao-autorizado-error";
 import { IUsuarioParam } from "@/interfaces/IUsuarioParam";
-import TokenJson from "@/interfaces/token-json";
+import TokenJson from "@/interfaces/IToken";
 import { Usuario } from "@/models/usuario";
 import { HttpAxiosService } from ".";
 

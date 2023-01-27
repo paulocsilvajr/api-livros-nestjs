@@ -1,6 +1,6 @@
 import { APIError } from "@/errors/api-error";
 import { CadastrarError } from "@/errors/cadastrar-error";
-import UsuarioJson from "@/interfaces/usuario-json";
+import UsuarioJson from "@/interfaces/IUsuario";
 import { Usuario } from "@/models/usuario";
 import { HttpAxiosService } from ".";
 

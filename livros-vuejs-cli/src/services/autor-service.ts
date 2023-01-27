@@ -1,6 +1,6 @@
 import { APIError } from "@/errors/api-error";
 import { CadastrarError } from "@/errors/cadastrar-error";
-import AutorJson from "@/interfaces/autor-json";
+import AutorJson from "@/interfaces/IAutor";
 import { Autor } from "@/models/autor";
 import { AxiosResponse } from "axios";
 import { HttpAxiosService } from ".";

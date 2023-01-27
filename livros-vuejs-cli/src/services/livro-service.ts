@@ -1,7 +1,6 @@
 import { APIError } from "@/errors/api-error"
 import { CadastrarError } from "@/errors/cadastrar-error"
-import LivroCadastro from "@/interfaces/livro-cadastro"
-import LivroJson from "@/interfaces/livro-json"
+import { LivroJson, LivroCadastro} from "@/interfaces/ILivro"
 import { Livro } from "@/models/livro"
 import { HttpAxiosService } from "."
 

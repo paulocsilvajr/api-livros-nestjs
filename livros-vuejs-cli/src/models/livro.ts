@@ -1,4 +1,4 @@
-import LivroJson from "@/interfaces/livro-json"
+import { LivroJson } from "@/interfaces/ILivro"
 
 class Livro {
     constructor(
@@ -31,24 +31,3 @@ class Livro {
 }
 
 export { Livro }
-
-// import LivroJson from "@/interfaces/livro-json"
-
-// public set dataCompraInput(data: string) {
-//     this.dataCompra = new Date(data)
-// }
-
-// public copia(): Livro {
-//     return new Livro(
-//         this.id,
-//         this.nome,
-//         this.autor,
-//         this.numeroPaginas,
-//         this.dataCompra,
-//         this.lido
-//         )
-// }
-
-// static toJson(livro: Livro): string {
-//     return JSON.stringify(livro)
-// }
