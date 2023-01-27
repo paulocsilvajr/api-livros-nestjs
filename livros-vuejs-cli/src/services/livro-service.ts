@@ -20,15 +20,14 @@ export default class LivroService {
     }
 
     public async salvaLivro(livro: Livro, token: string): Promise<LivroJson> {
-        const livroCadastro: LivroCadastroAlteracao = {
-            id: livro.id,
+        const livroCadastrado: LivroCadastroAlteracao = {
             titulo: livro.titulo,
             autor: livro.autorId,
             resumo: livro.resumo,
             numeroPaginas: livro.numeroPaginas,
             dataCompra: livro.dataCompra.toISOString(),
         }
-        const response = await this.axios.postComToken(this.url, token, livroCadastro)
+        const response = await this.axios.postComToken(this.url, token, livroCadastrado)
 
         if (response.status == 201) {
             const data: LivroJson = response.data
@@ -38,6 +37,28 @@ export default class LivroService {
             throw new APIError(response)
         } else if (response.status === 406){
             throw new CadastrarError('livro', 'Livro com nome informado já cadastrado')
+        } else {
+            throw new APIError(response)
+        }
+    }
+
+    public async alteraLivro(livro: Livro, token: string): Promise<LivroJson> {
+        const livroAlterado: LivroCadastroAlteracao = {
+            id: livro.id,
+            titulo: livro.titulo,
+            autor: livro.autorId,
+            resumo: livro.resumo,
+            numeroPaginas: livro.numeroPaginas,
+            dataCompra: livro.dataCompra.toISOString(),
+        }
+        const response = await this.axios.putComToken(`${this.url}/${livro.id}`, token, livroAlterado)
+
+        if (response.status == 200) {
+            const data: LivroJson = response.data
+
+            return data  
+        } else if (response.status === 400) {
+            throw new APIError(response)
         } else {
             throw new APIError(response)
         }

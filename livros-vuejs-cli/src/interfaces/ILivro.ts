@@ -8,7 +8,7 @@ interface LivroJson {
 }
 
 interface LivroCadastroAlteracao {
-    id: number,
+    id?: number,
     titulo: string,
     autor: number,
     resumo: string,

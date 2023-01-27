@@ -146,7 +146,7 @@
                                         </p>
                                         <p class="control">
                                             <button class="button is-danger is-small"
-                                                @click="excluiLivro(l)">
+                                                @click="exibeModalExclusao(l)">
                                                 <span>Excluir</span>
                                                 <span class="icon is-small">
                                                     <i class="fas fa-times"></i>
@@ -167,6 +167,12 @@
         </GuiasComponent>
 
     </div>
+
+    <ModalConfirmacaoComponent titulo="Confirmar exclusão de livro"
+        :mensagem="'Deseja realmente excluir o autor ' + livro.titulo " texto-botao="Excluir"
+        @ao-clicar-confirmacao="excluiLivro" @ao-fechar-modal="fechaModal" v-if="exibeModal">
+    </ModalConfirmacaoComponent>
+
 </template>
 
 <script lang="ts">
@@ -183,11 +189,14 @@ import { APIError } from '@/errors/api-error'
 import { CadastrarError } from '@/errors/cadastrar-error'
 import useDefinidorGuiaAtiva from '@/hooks/definidorGuiaAtiva'
 import { Guias } from '@/enums/Guias'
+import ModalConfirmacaoComponent from '@/components/ModalConfirmacaoComponent.vue'
+import { LivroJson } from '@/interfaces/ILivro'
 
 export default defineComponent({
     name: "CadastroLivrosComponent",
     components: {
         GuiasComponent,
+        ModalConfirmacaoComponent,
     },
     data() {
         return {
@@ -200,6 +209,7 @@ export default defineComponent({
             carregando: {
                 salvar: false,
             },
+            exibeModal: false,
         }
     },
     computed: {
@@ -233,15 +243,20 @@ export default defineComponent({
             this.carregando.salvar = true
             
             try {
-                const livroCadastrado = await this.livroService.salvaLivro(this.livro, this.token)
+                let livro: LivroJson
+                let msg: string
 
-                if (livroCadastrado) {
-                    let msg: string
-                    if (this.livro.id) {
-                        msg = `Livro '${livroCadastrado.titulo}' alterado com sucesso`
-                    } else {
-                        this.livros.push(Livro.fromJson(livroCadastrado))
-                        msg = `Livro '${livroCadastrado.titulo}' cadastrado com sucesso`
+                if (this.livro.id === 0) {
+                    livro = await this.livroService.salvaLivro(this.livro, this.token)
+                    msg = `Livro '${livro.titulo}' cadastrado com sucesso`
+                } else {
+                    livro = await this.livroService.alteraLivro(this.livro, this.token)
+                    msg = `Livro '${livro.titulo}' alterado com sucesso`
+                }
+
+                if (livro) {
+                    if (!this.livro.id) {
+                        this.livros.push(Livro.fromJson(livro))
                     }
 
                     this.notificar(msg, TipoNotificacao.SUCESSO)
@@ -264,8 +279,20 @@ export default defineComponent({
 
             this.definirGuiaAtiva(Guias.Cadastro)
         },
-        excluiLivro(livro: Livro) {
-            console.log('excluiLivro', livro)
+        async excluiLivro() {
+            try {
+                if (await this.livroService.excluiLivro(this.livro, this.token)) {
+                    this.notificar(`Excluído livro '${this.livro.titulo}'`, TipoNotificacao.SUCESSO)
+
+                    this.livros = this.livros.filter((l) => l.id != this.livro.id)
+                }
+            } catch (error) {
+                if (error instanceof Error) {
+                    this.notificar(`Livro '${this.livro.titulo}' não pode ser excluído. Verifique se o livro foi emprestado`, TipoNotificacao.FALHA)
+                }
+            }
+
+            this.fechaModal()
         },
         formataDataBR(data: Date) {
             return data.toLocaleDateString("pt-BR", { timeZone: "UTC" })
@@ -273,7 +300,15 @@ export default defineComponent({
         retornaNomeAutor(id: number) {
             const autorEncontrado = this.autores.find(autor => autor.id === id)
             return autorEncontrado?.nome
-        }
+        },
+        exibeModalExclusao(livro: Livro) {
+            this.exibeModal = true;
+            this.livro = livro;
+        },
+        fechaModal() {
+            this.exibeModal = false
+            this.defineLivroVazio()
+        },
     },
     beforeMount() {
         if (this.semToken) {
