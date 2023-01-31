@@ -63,7 +63,7 @@
                     </div>
 
                     <div class="columns is-vcentered">
-                       
+
                         <div class="column">
                             <div class="field">
                                 <label for="resumo">Resumo</label>
@@ -80,7 +80,8 @@
                         <div class="column is-half p-0">
                             <div class="columns">
                                 <div class="column">
-                                    <button type="submit" class="button is-success is-fullwidth" :class="carregando.salvar ? 'is-loading' : ''">
+                                    <button type="submit" class="button is-success is-fullwidth"
+                                        :class="carregando.salvar ? 'is-loading' : ''">
                                         <span class="icon is-small">
                                             <i class="fas fa-check"></i>
                                         </span>
@@ -88,7 +89,7 @@
                                     </button>
                                 </div>
                                 <div class="column">
-                                    <button class="button is-warning is-fullwidth" @click="defineLivroVazio">
+                                    <button class="button is-warning is-fullwidth" @click="defineLivroEPesquisaVazia">
                                         <span class="icon is-small">
                                             <i class="fas fa-times"></i>
                                         </span>
@@ -104,8 +105,19 @@
             </template>
 
             <template v-slot:guia02>
+                <div class="columns">
+                    <div class="column">
+                        <div class="control has-icons-left">
+                            <input class="input" type="text" placeholder="Search" v-model="pesquisa"
+                                v-on:keyup.enter="filtraLivros">
+                            <span class="icon is-left">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
 
-                <div class="table-container mt-6">
+                <div class="table-container mt-1">
 
                     <table class="table is-hoverable is-fullwidth  is-striped">
                         <thead>
@@ -126,7 +138,7 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                            <tr v-for="l in livros" :key="l.id"  :class="livro.id == l.id ? 'is-selected' : ''">
+                            <tr v-for="l in livros" :key="l.id" :class="livro.id == l.id ? 'is-selected' : ''">
                                 <th class="is-vcentered">{{ l.id }}</th>
                                 <td class="has-text-left is-vcentered">{{ l.titulo }}</td>
                                 <td class="has-text-left is-vcentered">{{ retornaNomeAutor(l.autorId) }}</td>
@@ -136,8 +148,7 @@
                                 <td class="is-vcentered">
                                     <div class="field has-addons">
                                         <p class="control">
-                                            <button class="button is-primary is-small"
-                                                @click="alteraLivro(l)">
+                                            <button class="button is-primary is-small" @click="alteraLivro(l)">
                                                 <span class="icon is-small">
                                                     <i class="fas fa-pencil"></i>
                                                 </span>
@@ -145,8 +156,7 @@
                                             </button>
                                         </p>
                                         <p class="control">
-                                            <button class="button is-danger is-small"
-                                                @click="exibeModalExclusao(l)">
+                                            <button class="button is-danger is-small" @click="exibeModalExclusao(l)">
                                                 <span>Excluir</span>
                                                 <span class="icon is-small">
                                                     <i class="fas fa-times"></i>
@@ -210,6 +220,7 @@ export default defineComponent({
                 salvar: false,
             },
             exibeModal: false,
+            pesquisa: "",
         }
     },
     computed: {
@@ -218,8 +229,9 @@ export default defineComponent({
         }
     },
     methods: {
-        defineLivroVazio() {
+        defineLivroEPesquisaVazia() {
             this.livro = new Livro()
+            this.pesquisa = ""
         },
         async buscaAutores() {
             const autoresBanco = await this.autorService.buscaAutores(this.token)
@@ -241,7 +253,7 @@ export default defineComponent({
         },
         async salvaLivro() {
             this.carregando.salvar = true
-            
+
             try {
                 let livro: LivroJson
                 let msg: string
@@ -262,7 +274,7 @@ export default defineComponent({
                     this.notificar(msg, TipoNotificacao.SUCESSO)
                     console.log(msg)
 
-                    this.defineLivroVazio()
+                    this.defineLivroEPesquisaVazia()
                 }
             } catch (error) {
                 if (error instanceof APIError) {
@@ -294,6 +306,20 @@ export default defineComponent({
 
             this.fechaModal()
         },
+        filtraLivros() {
+            this.buscaLivros().then(() => {
+                if (this.pesquisa) {
+                    const pesquisaSemAcentos = this.pesquisa.toLocaleLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, "")
+                    console.log("Filtrando livros que contém:", pesquisaSemAcentos)
+                    
+                    this.livros = this.livros.filter(
+                        livro =>
+                            livro.titulo.toLocaleLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, "").includes(pesquisaSemAcentos)
+                    )
+                }
+            })
+
+        },
         formataDataBR(data: Date) {
             return data.toLocaleDateString("pt-BR", { timeZone: "UTC" })
         },
@@ -307,7 +333,7 @@ export default defineComponent({
         },
         fechaModal() {
             this.exibeModal = false
-            this.defineLivroVazio()
+            this.defineLivroEPesquisaVazia()
         },
     },
     beforeMount() {
@@ -317,7 +343,7 @@ export default defineComponent({
             return
         }
 
-        this.defineLivroVazio()
+        this.defineLivroEPesquisaVazia()
 
         this.buscaAutores()
         this.buscaLivros()
