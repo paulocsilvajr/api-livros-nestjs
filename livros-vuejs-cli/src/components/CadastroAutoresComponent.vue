@@ -77,7 +77,7 @@
                     </div>
                 </div>
 
-                <div class="table-container mt-6">
+                <div class="table-container mt-1">
 
                     <table class="table is-hoverable is-fullwidth is-striped">
                         <thead>
@@ -231,6 +231,7 @@ export default defineComponent({
             this.fechaModal()
         },
         async buscaAutores() {
+            console.log("Buscando autores em API")
             const autoresBanco = await this.autorService.buscaAutores(this.token)
 
             if (autoresBanco) {

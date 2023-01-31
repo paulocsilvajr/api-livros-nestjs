@@ -236,6 +236,7 @@ export default defineComponent({
             this.pesquisa = ""
         },
         async buscaAutores() {
+            console.log("Buscando autores em API")
             const autoresBanco = await this.autorService.buscaAutores(this.token)
 
             if (autoresBanco) {
@@ -243,6 +244,7 @@ export default defineComponent({
             }
         },
         async buscaLivros() {
+            console.log("Buscando livros em API")
             const livrosBanco = await this.livroService.buscaLivros(this.token)
 
             if (livrosBanco) {
