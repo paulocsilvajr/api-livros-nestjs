@@ -2,10 +2,11 @@
     <div class="mb-6">
         <div class="tabs is-boxed">
             <ul>
-                <li :class="guiaAtiva == guiaCadastro ? 'is-active' : ''" @click="defineGuia(guiaCadastro)"><a>Novo
-                        cadastro</a></li>
+                <li :class="guiaAtiva == guiaCadastro ? 'is-active' : ''" @click="defineGuia(guiaCadastro)">
+                    <a>{{ nomeGuia01? nomeGuia01: 'Novo cadastro' }}</a>
+                </li>
                 <li :class="guiaAtiva == guiaListagem ? 'is-active' : ''" @click="defineGuia(guiaListagem)">
-                    <a>Listagem</a>
+                    <a>{{ nomeGuia02? nomeGuia02: 'Listagem' }}</a>
                 </li>
             </ul>
         </div>
@@ -29,6 +30,14 @@ import { DEFINIR_GUIA_ATIVA } from '@/store/tipos-mutacoes'
 
 export default defineComponent({
     name: 'GuiasComponent',
+    props: {
+        nomeGuia01: {
+            type: String,
+        },
+        nomeGuia02: {
+            type: String,
+        },
+    },
     data() {
         return {
             guiaCadastro: Guias.Cadastro,
