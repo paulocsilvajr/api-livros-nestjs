@@ -65,6 +65,18 @@
 
             <template v-slot:guia02>
 
+                <div class="columns">
+                    <div class="column">
+                        <div class="control has-icons-left">
+                            <input class="input" type="text" placeholder="Search" v-model="pesquisa"
+                                v-on:keyup.enter="filtraAutores">
+                            <span class="icon is-left">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="table-container mt-6">
 
                     <table class="table is-hoverable is-fullwidth is-striped">
@@ -138,6 +150,7 @@ import { CadastrarError } from '@/errors/cadastrar-error'
 import GuiasComponent from '@/components/GuiasComponent.vue'
 import { Guias } from '@/enums/Guias'
 import ModalConfirmacaoComponent from './ModalConfirmacaoComponent.vue'
+import { filtraLista } from '@/utils/filtra-lista'
 
 export default defineComponent({
     name: "CadastroAutoresComponent",
@@ -155,6 +168,7 @@ export default defineComponent({
             carregando: {
                 salvar: false,
             },
+            pesquisa: "",
         }
     },
     computed: {
@@ -222,6 +236,13 @@ export default defineComponent({
             if (autoresBanco) {
                 this.autores = autoresBanco
             }
+        },
+        filtraAutores() {
+            this.buscaAutores().then(() => {
+                if (this.pesquisa) {
+                    this.autores = filtraLista<Autor>(this.autores, 'nome', this.pesquisa)
+                }
+            })
         },
         exibeModalExclusao(autor: Autor) {
             this.exibeModal = true;

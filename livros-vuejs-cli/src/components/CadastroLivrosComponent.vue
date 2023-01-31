@@ -105,6 +105,7 @@
             </template>
 
             <template v-slot:guia02>
+
                 <div class="columns">
                     <div class="column">
                         <div class="control has-icons-left">
@@ -313,7 +314,6 @@ export default defineComponent({
                     this.livros = filtraLista<Livro>(this.livros, 'titulo', this.pesquisa)
                 }
             })
-
         },
         formataDataBR(data: Date) {
             return data.toLocaleDateString("pt-BR", { timeZone: "UTC" })
