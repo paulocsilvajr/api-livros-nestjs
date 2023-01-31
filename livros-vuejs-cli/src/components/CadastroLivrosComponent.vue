@@ -201,6 +201,7 @@ import useDefinidorGuiaAtiva from '@/hooks/definidorGuiaAtiva'
 import { Guias } from '@/enums/Guias'
 import ModalConfirmacaoComponent from '@/components/ModalConfirmacaoComponent.vue'
 import { LivroJson } from '@/interfaces/ILivro'
+import { filtraLista } from '@/utils/filtra-lista'
 
 export default defineComponent({
     name: "CadastroLivrosComponent",
@@ -309,13 +310,7 @@ export default defineComponent({
         filtraLivros() {
             this.buscaLivros().then(() => {
                 if (this.pesquisa) {
-                    const pesquisaSemAcentos = this.pesquisa.toLocaleLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, "")
-                    console.log("Filtrando livros que contém:", pesquisaSemAcentos)
-                    
-                    this.livros = this.livros.filter(
-                        livro =>
-                            livro.titulo.toLocaleLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, "").includes(pesquisaSemAcentos)
-                    )
+                    this.livros = filtraLista<Livro>(this.livros, 'titulo', this.pesquisa)
                 }
             })
 
