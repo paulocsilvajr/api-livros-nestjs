@@ -240,7 +240,11 @@ export default defineComponent({
             const autoresBanco = await this.autorService.buscaAutores(this.token)
 
             if (autoresBanco) {
-                this.autores = autoresBanco
+                this.autores = [] as Autor[]
+
+                autoresBanco.forEach(autorJson => {
+                    this.autores.push(Autor.fromJson(autorJson))
+                })
             }
         },
         async buscaLivros() {
@@ -313,7 +317,7 @@ export default defineComponent({
         filtraLivros() {
             this.buscaLivros().then(() => {
                 if (this.pesquisa) {
-                    this.livros = filtraLista<Livro>(this.livros, 'titulo', this.pesquisa)
+                    this.livros = filtraLista(this.livros, this.pesquisa) as Livro[]
                 }
             })
         },

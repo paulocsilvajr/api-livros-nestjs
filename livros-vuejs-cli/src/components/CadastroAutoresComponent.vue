@@ -191,7 +191,7 @@ export default defineComponent({
                     if (this.autor.id) {
                         msg = `Autor '${autorCadastrado.nome}' alterado com sucesso`
                     } else {
-                        this.autores.push(autorCadastrado)
+                        this.autores.push(Autor.fromJson(autorCadastrado))
                         msg = `Autor '${autorCadastrado.nome}' cadastrado com sucesso`
                     }
 
@@ -235,13 +235,17 @@ export default defineComponent({
             const autoresBanco = await this.autorService.buscaAutores(this.token)
 
             if (autoresBanco) {
-                this.autores = autoresBanco
+                this.autores = [] as Autor[]
+
+                autoresBanco.forEach(autorJson => {
+                    this.autores.push(Autor.fromJson(autorJson))
+                })
             }
         },
         filtraAutores() {
             this.buscaAutores().then(() => {
                 if (this.pesquisa) {
-                    this.autores = filtraLista<Autor>(this.autores, 'nome', this.pesquisa)
+                    this.autores = filtraLista(this.autores, this.pesquisa) as Autor[]
                 }
             })
         },
