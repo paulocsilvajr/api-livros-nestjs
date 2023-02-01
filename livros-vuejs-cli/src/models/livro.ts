@@ -1,6 +1,7 @@
+import { IFiltro } from "@/interfaces/IFiltro"
 import { LivroJson } from "@/interfaces/ILivro"
 
-class Livro {
+class Livro implements IFiltro {
     constructor(
         public id: number = 0,
         public titulo: string = '',
@@ -9,6 +10,10 @@ class Livro {
         public numeroPaginas: number = 1,
         public dataCompra: Date = new Date(),
     ) { }
+
+    get filtro(): string {
+        return this.titulo
+    }
 
     public get dataCompraInput(): string {
         try {
