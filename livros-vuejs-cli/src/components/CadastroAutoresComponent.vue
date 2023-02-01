@@ -151,6 +151,7 @@ import GuiasComponent from '@/components/GuiasComponent.vue'
 import { Guias } from '@/enums/Guias'
 import ModalConfirmacaoComponent from './ModalConfirmacaoComponent.vue'
 import { filtraLista } from '@/utils/filtra-lista'
+import { Autores } from '@/models/autores'
 
 export default defineComponent({
     name: "CadastroAutoresComponent",
@@ -235,11 +236,7 @@ export default defineComponent({
             const autoresBanco = await this.autorService.buscaAutores(this.token)
 
             if (autoresBanco) {
-                this.autores = [] as Autor[]
-
-                autoresBanco.forEach(autorJson => {
-                    this.autores.push(Autor.fromJson(autorJson))
-                })
+                this.autores = Autores.fromJsonArray(autoresBanco)
             }
         },
         filtraAutores() {

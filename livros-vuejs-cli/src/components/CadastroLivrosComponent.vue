@@ -203,6 +203,8 @@ import { Guias } from '@/enums/Guias'
 import ModalConfirmacaoComponent from '@/components/ModalConfirmacaoComponent.vue'
 import { LivroJson } from '@/interfaces/ILivro'
 import { filtraLista } from '@/utils/filtra-lista'
+import { Autores } from '@/models/autores'
+import { Livros } from '@/models/livros'
 
 export default defineComponent({
     name: "CadastroLivrosComponent",
@@ -240,11 +242,7 @@ export default defineComponent({
             const autoresBanco = await this.autorService.buscaAutores(this.token)
 
             if (autoresBanco) {
-                this.autores = [] as Autor[]
-
-                autoresBanco.forEach(autorJson => {
-                    this.autores.push(Autor.fromJson(autorJson))
-                })
+                this.autores = Autores.fromJsonArray(autoresBanco)
             }
         },
         async buscaLivros() {
@@ -252,11 +250,7 @@ export default defineComponent({
             const livrosBanco = await this.livroService.buscaLivros(this.token)
 
             if (livrosBanco) {
-                this.livros = [] as Livro[]
-
-                livrosBanco.forEach(livroJson => {
-                    this.livros.push(Livro.fromJson(livroJson))
-                })
+                this.livros = Livros.fromJsonArray(livrosBanco)
             }
         },
         async salvaLivro() {
