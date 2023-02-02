@@ -35,6 +35,8 @@ export const store = createStore<Estado>({
       state.usuario.nomeUsuario = ''
       state.usuario.senha = ''
       state.usuario.token = ''
+
+      localStorage.removeItem('usuario')
     },
     [SALVAR_INFORMACOES_USUARIO](state, usuario: InformacoesUsuario) {
       console.log('Salvando informações de usuário e token')
@@ -42,11 +44,17 @@ export const store = createStore<Estado>({
       state.usuario.nomeUsuario = usuario.nomeUsuario
       state.usuario.senha = usuario.senha
       state.usuario.token = usuario.token
+
+      const usuarioArmazenamento = JSON.stringify(state.usuario)
+      localStorage.setItem('usuario', usuarioArmazenamento)
     },
     [ATUALIZAR_TOKEN](state, token: string) {
       console.log('Salvando token')
 
       state.usuario.token = token
+
+      const usuarioArmazenamento = JSON.stringify(state.usuario)
+      localStorage.setItem('usuario', usuarioArmazenamento)
     },
     [NOTIFICAR](state, novaNotificacao: INotificacao) {
       novaNotificacao.id = new Date().getTime()
@@ -67,7 +75,23 @@ export const store = createStore<Estado>({
   },
   getters: {
     semToken(state) {
-      return state.usuario.token.length === 0
+      const usuarioLocal = localStorage.getItem('usuario')
+      if (usuarioLocal) {
+        console.log('Carregando informações de usuário no localStorage')
+
+        const usuario: InformacoesUsuario = JSON.parse(usuarioLocal)
+
+        state.usuario.nomeUsuario = usuario.nomeUsuario
+        state.usuario.senha = usuario.senha
+        state.usuario.token = usuario.token
+      }
+
+      const semToken = state.usuario.token.length === 0
+      if (semToken) {
+        console.log('SEM token')
+      }
+
+      return semToken
     }
   },
   actions: {
