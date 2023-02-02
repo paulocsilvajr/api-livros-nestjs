@@ -205,6 +205,9 @@ import { LivroJson } from '@/interfaces/ILivro'
 import { filtraLista } from '@/utils/filtra-lista'
 import { Autores } from '@/models/autores'
 import { Livros } from '@/models/livros'
+import UsuarioService from '@/services/usuario-service'
+import { NaoAutorizadoError } from '@/errors/nao-autorizado-error'
+import { LIMPAR_INFORMACOES_USUARIO } from '@/store/tipos-mutacoes'
 
 export default defineComponent({
     name: "CadastroLivrosComponent",
@@ -331,7 +334,20 @@ export default defineComponent({
             this.defineLivroEPesquisaVazia()
         },
     },
-    beforeMount() {
+    async beforeMount() {
+        const usuarioService = new UsuarioService()
+        
+        try {
+            await usuarioService.buscaUsuarioPorNome(this.nomeUsuario, this.token)
+            console.log('TOKEN ainda válido')
+        } catch (error) {
+            if (error instanceof NaoAutorizadoError) {
+                console.warn(error.message)
+                this.store.commit(LIMPAR_INFORMACOES_USUARIO)
+            }
+        }
+        
+
         if (this.semToken) {
             this.$router.push({ name: "login" })
 
@@ -348,6 +364,7 @@ export default defineComponent({
         const semToken = computed(() => store.getters.semToken)
         const token = computed(() => store.state.usuario.token)
         const { definirGuiaAtiva } = useDefinidorGuiaAtiva()
+        const nomeUsuario =  computed(() => store.state.usuario.nomeUsuario)
 
         const { notificar } = useNotificador()
 
@@ -356,6 +373,8 @@ export default defineComponent({
             token,
             notificar,
             definirGuiaAtiva,
+            nomeUsuario,
+            store,
         }
     }
 })
