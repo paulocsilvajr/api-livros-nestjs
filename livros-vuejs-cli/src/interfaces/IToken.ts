@@ -1,3 +1,4 @@
 export default interface TokenJson {
-    access_token: string
+    access_token: string,
+    expiresInSeconds: number
 }
