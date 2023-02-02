@@ -133,19 +133,37 @@ export default defineComponent({
 
             this.carregando.salvar = false
         },
+        async buscaUsuarioLogado() {
+            try {
+                const usuarioLogado = await this.usuarioService.buscaUsuarioPorNome(this.store.state.usuario.nomeUsuario, this.token)
+                if (usuarioLogado) {
+                    console.log('Usuário logado', usuarioLogado)
+                }
+            } catch (error) {
+                if (error instanceof Error) {
+                    console.warn(error.message)
+                }
+            }
+        },
         voltaParaLogin() {
             this.$router.push({ name: "login" })
         }
     },
+    beforeMount() {
+        this.buscaUsuarioLogado()
+    },
     setup() {
         const store = useStore()
         const exibirBotaoVoltar = computed(() => store.getters.semToken)
+        const token = computed(() => store.state.usuario.token)
 
         const { notificar } = useNotificador()
 
         return {
             exibirBotaoVoltar,
-            notificar
+            notificar,
+            store,
+            token,
         }
     }
 })
