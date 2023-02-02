@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt"
 import { UsuarioService } from "../usuario/usuario.service";
 import * as bcryptjs from 'bcryptjs';
+import { jwtConstants } from "./constants";
 
 @Injectable()
 export class AuthService {
@@ -29,6 +30,7 @@ export class AuthService {
         const payload = { email: user.email, sub: user.name }
         return {
             access_token: this.jwtService.sign(payload),
+            expiresInSeconds: jwtConstants.expiresInSeconds,
         }
     }
 }
