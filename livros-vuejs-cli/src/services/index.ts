@@ -12,7 +12,7 @@ class HttpAxiosService {
         })
     }
 
-    public async get(url: string): Promise<AxiosResponse> {
+    public async get(url = ''): Promise<AxiosResponse> {
         return this.ax.get(url)
             .then(response => {
                 return response

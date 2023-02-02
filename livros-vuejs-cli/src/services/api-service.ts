@@ -1,27 +1,30 @@
 import VariaveisAmbiente from "@/utils/variaveis-ambiente";
+import { HttpAxiosService } from ".";
 
 export default class ApiService {
-    private url = VariaveisAmbiente.apiUrl
+
+    constructor(private axios = new HttpAxiosService()) { }
 
     public async apiEstaOnline(): Promise<boolean> {
         try {
-            const response = await fetch(this.url);
-            const data = await response.text()
-            console.warn(`Resposta da API: ${data}`);
+            const response = await this.axios.get();
 
+            console.warn(`Resposta da API: ${response.data}`);
             if (response.status === 200) {
                 console.log('API ONLINE');
-                return true;
+                return true
             }
             
             return false;
-        } catch (err) {
-            console.error(err);
+        } catch (error) {
+            if (error instanceof Error) {
+                console.error(error.message);
+            }
             return false;
         }
     }
 
     public getUrl(): string {
-        return this.url;
+        return VariaveisAmbiente.apiUrl;
     }
 }
