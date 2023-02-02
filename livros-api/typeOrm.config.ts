@@ -23,4 +23,5 @@ export default new DataSource({
     Livro,
     LivroUsuario,
   ],
+  migrations: [__dirname + '/migrations/**/*.ts'],
 });
