@@ -276,6 +276,44 @@
 					"response": []
 				},
 				{
+					"name": "localhost:3000/api/autores TESTES",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Autor b01\",\n    \"descricao\": \"Descrição do Autor b01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/autores",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"autores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "localhost:3000/api/autores SEM nome",
 					"request": {
 						"auth": {
@@ -657,7 +695,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/api/autores/999",
+							"raw": "localhost:3000/api/autores/",
 							"host": [
 								"localhost"
 							],
@@ -665,7 +703,7 @@
 							"path": [
 								"api",
 								"autores",
-								"999"
+								""
 							]
 						}
 					},
@@ -1638,7 +1676,7 @@
 					"response": []
 				},
 				{
-					"name": "localhost:3000/api/usuarios \"usuario01\" altera email ou senha",
+					"name": "localhost:3000/api/usuarios \"usuario01\" usuário já existe",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -1648,6 +1686,37 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"nome\": \"usuario01\",\n    \"email\": \"usuario01@gmail.com.br\",\n    \"senha\": \"ABCdef@321\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/usuarios",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/usuarios \"admin\" senha inválida",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"admin\",\n    \"email\": \"admin@admin.com.br\",\n    \"senha\": \"12345678\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2664,6 +2733,40 @@
 			]
 		},
 		{
+			"name": "localhost:3000/api/livrosdisponiveis",
+			"item": [
+				{
+					"name": "localhost:3000/api/livrosdisponiveis",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/livrosdisponiveis",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"livrosdisponiveis"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Hello World! NestJS",
 			"request": {
 				"method": "GET",
@@ -2713,7 +2816,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:3000/api/login",
+			"name": "localhost:3000/api/login GET TOKEN",
 			"event": [
 				{
 					"listen": "test",
