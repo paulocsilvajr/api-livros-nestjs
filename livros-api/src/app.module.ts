@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { Autor } from './autor/autor.entity';
 import { AutorModule } from './autor/autor.module';
+import { LivroDisponivelModule } from './livro-disponivel/livro-disponivel.module';
 import { LivroUsuario } from './livro-usuario/livro-usuario.entity';
 import { LivroUsuarioModule } from './livro-usuario/livro-usuario.module';
 import { Livro } from './livro/livro.entity';
@@ -20,6 +21,7 @@ import { UsuarioModule } from './usuario/usuario.module';
     AutorModule,
     LivroUsuarioModule,
     AuthModule,
+    LivroDisponivelModule,
     ConfigModule.forRoot(),
     // https://docs.nestjs.com/techniques/database
     TypeOrmModule.forRoot({
