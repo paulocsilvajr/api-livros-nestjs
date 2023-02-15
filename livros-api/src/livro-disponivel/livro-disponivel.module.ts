@@ -6,6 +6,9 @@ import { LivroDisponivelService } from "./livro-disponivel.service";
     imports: [
 
     ],
+    exports: [
+        LivroDisponivelService,
+    ],
     controllers: [
         LivroDisponivelController,
     ],
