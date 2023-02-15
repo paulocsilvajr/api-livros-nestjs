@@ -10,4 +10,9 @@ function verificaArray(entidade: Array<any>, msgIdentificacao: string) {
         throw new NotFoundException(`Não há ${msgIdentificacao} cadastrados(as)`);
 }
 
-export { verifica, verificaArray }
+function verificaNaoDisponivel(entidade: any, identificacao: any, msgIdentificacao: string) {
+    if(entidade.length <= 0)
+        throw new NotFoundException(`${msgIdentificacao} com identificação '${identificacao}' não está disponível`)
+}
+
+export { verifica, verificaArray, verificaNaoDisponivel }
