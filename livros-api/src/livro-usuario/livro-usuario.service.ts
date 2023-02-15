@@ -1,5 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { LivroDisponivelService } from "src/livro-disponivel/livro-disponivel.service";
+import { Livro } from "src/livro/livro.entity";
 import { LivroService } from "src/livro/livro.service";
 import { UsuarioService } from "src/usuario/usuario.service";
 import { verifica } from "src/util/verifica-entidade";
@@ -13,6 +15,7 @@ export class LivroUsuarioService {
         @InjectRepository(LivroUsuario) private livroUsuarioRepository: Repository<LivroUsuario>,
         private livroService: LivroService,
         private usuarioService: UsuarioService,
+        private livroDisponivelService: LivroDisponivelService,
     ) {}
 
     public async buscaLivrosUsuarios(): Promise<LivroUsuario[]> {
@@ -63,7 +66,7 @@ export class LivroUsuarioService {
             dataFimLeitura = new Date(livroUsuario.dataFimLeitura);
         }
 
-        const livro = await this.livroService.buscaLivroPorId(livroUsuario.livro);
+        const livro = await this.livroDisponivelService.buscaLivroDisponivelPorId(livroUsuario.livro);
 
         const usuario = await this.usuarioService.buscaUsuarioPorNome(livroUsuario.usuario);
 
@@ -77,18 +80,23 @@ export class LivroUsuarioService {
         return this.livroUsuarioRepository.save(livroUsuarioNovo);
     }
 
-    public async alteraLivroUsuario(idLivroUsuario, livroUsuario: AlteraLivroUsuarioDto): Promise<LivroUsuario> {
-        const dataInicioLeitura = new Date(livroUsuario.dataInicioLeitura);
+    public async alteraLivroUsuario(idLivroUsuario: number, livroUsuarioAlteracao: AlteraLivroUsuarioDto): Promise<LivroUsuario> {
+        const dataInicioLeitura = new Date(livroUsuarioAlteracao.dataInicioLeitura);
         let dataFimLeitura: null | Date = null;
-        if (livroUsuario.dataFimLeitura) {
-            dataFimLeitura = new Date(livroUsuario.dataFimLeitura);
+        if (livroUsuarioAlteracao.dataFimLeitura) {
+            dataFimLeitura = new Date(livroUsuarioAlteracao.dataFimLeitura);
         }
 
         const livroUsuarioBanco = await this.buscaLivroUsuarioPorId(idLivroUsuario);
 
-        const livro = await this.livroService.buscaLivroPorId(livroUsuario.livro);
+        var livro: Livro
+        if (livroUsuarioAlteracao.livro != livroUsuarioBanco.livroId) {
+            livro = await this.livroDisponivelService.buscaLivroDisponivelPorId(livroUsuarioAlteracao.livro);
+        } else {
+            livro = await this.livroService.buscaLivroPorId(livroUsuarioAlteracao.livro);
+        }
 
-        const usuario = await this.usuarioService.buscaUsuarioPorNome(livroUsuario.usuario);
+        const usuario = await this.usuarioService.buscaUsuarioPorNome(livroUsuarioAlteracao.usuario);
         
         livroUsuarioBanco.livro = livro;
         livroUsuarioBanco.usuario = usuario;
