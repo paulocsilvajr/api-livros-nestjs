@@ -26,8 +26,8 @@
                         </tfoot>
                         <tbody>
                             <tr v-for="lu in livrosUsuarios" :key="lu.id">
-                                <th class="is-vcentered">{{ lu.livroId }}</th>
-                                <td class="has-text-left is-vcentered">{{ lu.livroId }}</td>
+                                <th class="is-vcentered">{{ retornaTituloLivro(lu.livroId) }}</th>
+                                <td class="has-text-left is-vcentered">{{ retornaNomeAutorPorIdLivro(lu.livroId) }}</td>
                                 <td class="has-text-left is-vcentered">{{ formataData(lu.dataInicioLeitura) }}</td>
                                 <td class="has-text-left is-vcentered">{{ formataData(lu.dataFimLeitura) }}</td>
                             </tr>
@@ -53,8 +53,8 @@
                         </tfoot>
                         <tbody>
                             <tr v-for="lu in livrosUsuariosDevolvidos" :key="lu.id">
-                                <th class="is-vcentered">{{ lu.livroId }}</th>
-                                <td class="has-text-left is-vcentered">{{ lu.livroId }}</td>
+                                <th class="is-vcentered">{{ retornaTituloLivro(lu.livroId) }}</th>
+                                <td class="has-text-left is-vcentered">{{ retornaNomeAutorPorIdLivro(lu.livroId) }}</td>
                                 <td class="has-text-left is-vcentered">{{ formataData(lu.dataInicioLeitura) }}</td>
                                 <td class="has-text-left is-vcentered">{{ formataData(lu.dataFimLeitura) }}</td>
                             </tr>
@@ -117,6 +117,8 @@ import AutorJson from '@/interfaces/IAutor';
 import LivroUsuarioService from '@/services/livro-usuario-service';
 import LivroUsuarioJson from '@/interfaces/ILivroUsuario';
 import { formataDataBR } from '@/utils/formataData';
+import LivroService from '@/services/livro-service';
+import { LivroJson } from '@/interfaces/ILivro';
 
 export default defineComponent({
     name: 'EmprestimoLivrosComponent',
@@ -133,6 +135,8 @@ export default defineComponent({
             livrosUsuarios: [] as LivroUsuarioJson[],
             livroUsuarioService: new LivroUsuarioService(),
             livrosUsuariosDevolvidos: [] as LivroUsuarioJson[],
+            livroService: new LivroService(),
+            livros: [] as LivroJson[],
         }
     },
     computed: {
@@ -178,9 +182,25 @@ export default defineComponent({
                 })
             }
         },
+        async buscaLivros() {
+            console.log("Buscando livros em API")
+            const livrosBanco = await this.livroService.buscaLivros(this.token)
+
+            if (livrosBanco) {
+                this.livros = livrosBanco
+            }
+        },
         retornaNomeAutor(id: number) {
             const autorEncontrado = this.autores.find(autor => autor.id === id)
             return autorEncontrado?.nome
+        },
+        retornaTituloLivro(id: number) {
+            const livroEncontrado = this.livros.find(livro => livro.id === id)
+            return livroEncontrado?.titulo
+        },
+        retornaNomeAutorPorIdLivro(id: number) {
+            const livroEncontrado = this.livros.find(livro => livro.id === id)
+            return this.retornaNomeAutor(livroEncontrado!.id)
         },
         formataData(data: string): string {
             if (!data) {
@@ -200,6 +220,7 @@ export default defineComponent({
         }
 
         this.buscaAutores()
+        this.buscaLivros()
         this.buscaLivrosDisponiveis()
         this.buscaLivrosUsuarios()
     },
