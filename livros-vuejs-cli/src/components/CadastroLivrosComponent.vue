@@ -144,7 +144,7 @@
                                 <td class="has-text-left is-vcentered">{{ l.titulo }}</td>
                                 <td class="has-text-left is-vcentered">{{ retornaNomeAutor(l.autorId) }}</td>
                                 <td class="has-text-left is-vcentered">{{ l.numeroPaginas }}</td>
-                                <td class="has-text-left is-vcentered">{{ formataDataBR(l.dataCompra) }}</td>
+                                <td class="has-text-left is-vcentered">{{ formataData(l.dataCompra) }}</td>
                                 <td class="has-text-left is-vcentered">{{ l.resumo }}</td>
                                 <td class="is-vcentered">
                                     <div class="field has-addons">
@@ -208,6 +208,7 @@ import { Livros } from '@/models/livros'
 import UsuarioService from '@/services/usuario-service'
 import { NaoAutorizadoError } from '@/errors/nao-autorizado-error'
 import { LIMPAR_INFORMACOES_USUARIO } from '@/store/tipos-mutacoes'
+import { formataDataBR } from '@/utils/formataData'
 
 export default defineComponent({
     name: "CadastroLivrosComponent",
@@ -318,8 +319,8 @@ export default defineComponent({
                 }
             })
         },
-        formataDataBR(data: Date) {
-            return data.toLocaleDateString("pt-BR", { timeZone: "UTC" })
+        formataData(data: Date) {
+            return formataDataBR(data)
         },
         retornaNomeAutor(id: number) {
             const autorEncontrado = this.autores.find(autor => autor.id === id)
