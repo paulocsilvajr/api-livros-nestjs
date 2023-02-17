@@ -48,7 +48,7 @@
                         <tfoot>
                             <tr>
                                 <th colspan="2">Total</th>
-                                <th colspan="3">{{ totalLivrosUsuarios }}</th>
+                                <th colspan="3">{{ totalLivrosUsuariosDevolvidos }}</th>
                             </tr>
                         </tfoot>
                         <tbody>
@@ -146,6 +146,10 @@ export default defineComponent({
         },
         totalLivrosUsuarios(): string {
             const tamanho = this.livrosUsuarios.length
+            return `${tamanho} livro${tamanho != 1 ? "s" : ""}`
+        }, 
+        totalLivrosUsuariosDevolvidos(): string {
+            const tamanho = this.livrosUsuariosDevolvidos.length
             return `${tamanho} livro${tamanho != 1 ? "s" : ""}`
         }
     },
