@@ -26,15 +26,15 @@
                         </tfoot>
                         <tbody>
                             <tr v-for="lu in livrosUsuarios" :key="lu.id">
-                                <th class="is-vcentered">{{ retornaTituloLivro(lu.livroId) }}</th>
-                                <td class="has-text-left is-vcentered">{{ retornaNomeAutorPorIdLivro(lu.livroId) }}</td>
+                                <th class="is-vcentered" :id="lu.livroId.toString()">{{ retornaTituloLivro(lu.livroId) }}</th>
+                                <td class="has-text-left is-vcentered">{{ retornaNomeAutor( retornaIdAutorPorIdLivro(lu.livroId)) }}</td>
                                 <td class="has-text-left is-vcentered">{{ formataData(lu.dataInicioLeitura) }}</td>
                                 <td class="has-text-left is-vcentered">{{ formataData(lu.dataFimLeitura) }}</td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <h2 class="title is-2 has-text-left">Livros devolvidos</h2>
+                    <h2 class="title is-5 has-text-left">Livros devolvidos</h2>
 
                     <table class="table is-hoverable is-fullwidth is-striped">
                         <thead>
@@ -53,8 +53,8 @@
                         </tfoot>
                         <tbody>
                             <tr v-for="lu in livrosUsuariosDevolvidos" :key="lu.id">
-                                <th class="is-vcentered">{{ retornaTituloLivro(lu.livroId) }}</th>
-                                <td class="has-text-left is-vcentered">{{ retornaNomeAutorPorIdLivro(lu.livroId) }}</td>
+                                <th class="is-vcentered" :id="lu.livroId.toString()">{{ retornaTituloLivro(lu.livroId) }}</th>
+                                <td class="has-text-left is-vcentered">{{ retornaNomeAutor( retornaIdAutorPorIdLivro(lu.livroId)) }}</td>
                                 <td class="has-text-left is-vcentered">{{ formataData(lu.dataInicioLeitura) }}</td>
                                 <td class="has-text-left is-vcentered">{{ formataData(lu.dataFimLeitura) }}</td>
                             </tr>
@@ -202,9 +202,9 @@ export default defineComponent({
             const livroEncontrado = this.livros.find(livro => livro.id === id)
             return livroEncontrado?.titulo
         },
-        retornaNomeAutorPorIdLivro(id: number) {
+        retornaIdAutorPorIdLivro(id: number) {
             const livroEncontrado = this.livros.find(livro => livro.id === id)
-            return this.retornaNomeAutor(livroEncontrado!.id)
+            return livroEncontrado!.autorId
         },
         formataData(data: string): string {
             if (!data) {

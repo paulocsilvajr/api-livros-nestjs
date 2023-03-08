@@ -142,7 +142,7 @@
                             <tr v-for="l in livros" :key="l.id" :class="livro.id == l.id ? 'is-selected' : ''">
                                 <th class="is-vcentered">{{ l.id }}</th>
                                 <td class="has-text-left is-vcentered">{{ l.titulo }}</td>
-                                <td class="has-text-left is-vcentered">{{ retornaNomeAutor(l.autorId) }}</td>
+                                <td class="has-text-left is-vcentered" :id="l.autorId.toString()">{{ retornaNomeAutor(l.autorId) }}</td>
                                 <td class="has-text-left is-vcentered">{{ l.numeroPaginas }}</td>
                                 <td class="has-text-left is-vcentered">{{ formataData(l.dataCompra) }}</td>
                                 <td class="has-text-left is-vcentered">{{ l.resumo }}</td>
