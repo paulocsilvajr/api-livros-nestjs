@@ -16,12 +16,14 @@
                                 <th>Autor</th>
                                 <th>Início de Leitura</th>
                                 <th>Fim da leitura</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th colspan="2">Total</th>
                                 <th colspan="3">{{ totalLivrosUsuarios }}</th>
+                                <th></th>
                             </tr>
                         </tfoot>
                         <tbody>
@@ -30,6 +32,18 @@
                                 <td class="has-text-left is-vcentered">{{ retornaNomeAutor( retornaIdAutorPorIdLivro(lu.livroId)) }}</td>
                                 <td class="has-text-left is-vcentered">{{ formataData(lu.dataInicioLeitura) }}</td>
                                 <td class="has-text-left is-vcentered">{{ formataData(lu.dataFimLeitura) }}</td>
+                                <td class="is-vcentered">
+                                    <div class="field has-addons">
+                                        <p class="control">
+                                            <button class="button is-primary is-small" @click="devolveLivro(lu.id)">
+                                                <span class="icon is-small">
+                                                    <i class="fas fa-arrow-up"></i>
+                                                </span>
+                                                <span>Devolver</span>
+                                            </button>
+                                        </p>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -235,6 +249,31 @@ export default defineComponent({
                 }
             }
             
+        },
+        async devolveLivro(idLivroUsuario: number) {
+            const livroUsuario = this.livrosUsuarios.find(livroUsuario => livroUsuario.id == idLivroUsuario)
+
+            if (livroUsuario) {
+                const tituloLivro = this.retornaTituloLivro(livroUsuario.livroId)
+                console.log(`Devolvendo livro ${tituloLivro}`)
+    
+                try {
+                    
+                    const livroDevolvido = await this.livroUsuarioService.alteraLivroUsuario(this.token, livroUsuario)
+    
+                    if (livroDevolvido) {
+                        this.buscaLivrosDisponiveis();
+                        this.buscaLivrosUsuarios();
+    
+                        this.notificar(`Devolvido livro ${tituloLivro}`, TipoNotificacao.SUCESSO)
+                    }
+    
+                } catch (error) {
+                    if (error instanceof APIError) {
+                        this.notificar(error.message, TipoNotificacao.FALHA)
+                    }
+                }
+            }
         },
         retornaNomeAutor(id: number) {
             const autorEncontrado = this.autores.find(autor => autor.id === id)
