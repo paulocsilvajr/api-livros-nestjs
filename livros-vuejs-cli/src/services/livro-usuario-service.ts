@@ -1,5 +1,5 @@
 import { APIError } from "@/errors/api-error";
-import { LivroUsuarioJson, LivroUsuarioCadastro } from "@/interfaces/ILivroUsuario"
+import { LivroUsuarioJson, LivroUsuarioCadastroAlteracao } from "@/interfaces/ILivroUsuario"
 import { HttpAxiosService } from ".";
 
 export default class LivroUsuarioService {
@@ -20,7 +20,7 @@ export default class LivroUsuarioService {
     }
 
     public async salvaLivroUsuario(token: string, idLivro: number, usuario: string): Promise<LivroUsuarioJson | undefined> {
-        const livroUsuarioCadastro: LivroUsuarioCadastro = {
+        const livroUsuarioCadastro: LivroUsuarioCadastroAlteracao = {
             livro: idLivro,
             usuario: usuario,
             dataInicioLeitura: new Date().toISOString()
@@ -31,6 +31,28 @@ export default class LivroUsuarioService {
         const response = await this.axios.postComToken(url, token, livroUsuarioCadastro)
 
         if (response.status === 201) {
+            const data: LivroUsuarioJson = response.data
+
+            return data
+        } else {
+            throw new APIError(response)
+        }
+    }
+
+    public async alteraLivroUsuario(token: string, livroUsuario: LivroUsuarioJson): Promise<LivroUsuarioJson | undefined> {
+        const livroUsuarioAlteracao: LivroUsuarioCadastroAlteracao = {
+            id: livroUsuario.id,
+            livro: livroUsuario.livroId,
+            usuario: livroUsuario.usuarioNome,
+            dataInicioLeitura: livroUsuario.dataInicioLeitura,
+            dataFimLeitura: new Date().toISOString()
+        }
+
+        const url = `${this.url}/${livroUsuario.id}`
+
+        const response = await this.axios.putComToken(url, token, livroUsuarioAlteracao)
+
+        if (response.status === 200) {
             const data: LivroUsuarioJson = response.data
 
             return data

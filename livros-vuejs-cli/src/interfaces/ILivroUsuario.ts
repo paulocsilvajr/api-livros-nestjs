@@ -6,11 +6,12 @@ interface LivroUsuarioJson {
     dataFimLeitura: string
 }
 
-interface LivroUsuarioCadastro {
+interface LivroUsuarioCadastroAlteracao {
+    id?: number,
     livro: number,
     usuario: string,
     dataInicioLeitura: string,
     dataFimLeitura?: string
 }
 
-export { LivroUsuarioJson, LivroUsuarioCadastro }
+export { LivroUsuarioJson, LivroUsuarioCadastroAlteracao }
