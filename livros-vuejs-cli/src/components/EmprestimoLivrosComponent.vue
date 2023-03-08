@@ -76,12 +76,15 @@
                                 <th>Autor</th>
                                 <th>Resumo</th>
                                 <th>Nº páginas</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th colspan="2">Total</th>
                                 <th colspan="2">{{ totalLivrosDisponiveis }}</th>
+                                <th></th>
+                                <th></th>
                             </tr>
                         </tfoot>
                         <tbody>
@@ -91,6 +94,18 @@
                                 <td class="has-text-left is-vcentered">{{ retornaNomeAutor(ld.autorId) }}</td>
                                 <td class="has-text-left is-vcentered">{{ ld.resumo }}</td>
                                 <td class="is-vcentered">{{ ld.numeroPaginas }}</td>
+                                <td class="is-vcentered">
+                                    <div class="field has-addons">
+                                        <p class="control">
+                                            <button class="button is-primary is-small" @click="emprestaLivro(ld)">
+                                                <span class="icon is-small">
+                                                    <i class="fas fa-arrow-down"></i>
+                                                </span>
+                                                <span>Emprestar</span>
+                                            </button>
+                                        </p>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -115,10 +130,12 @@ import LivroDisponivelJson from '@/interfaces/ILivroDisponivel';
 import AutorService from '@/services/autor-service';
 import AutorJson from '@/interfaces/IAutor';
 import LivroUsuarioService from '@/services/livro-usuario-service';
-import LivroUsuarioJson from '@/interfaces/ILivroUsuario';
+import { LivroUsuarioJson } from '@/interfaces/ILivroUsuario';
 import { formataDataBR } from '@/utils/formataData';
 import LivroService from '@/services/livro-service';
 import { LivroJson } from '@/interfaces/ILivro';
+import { APIError } from '@/errors/api-error';
+import { TipoNotificacao } from '@/interfaces/INotificacoes';
 
 export default defineComponent({
     name: 'EmprestimoLivrosComponent',
@@ -176,7 +193,11 @@ export default defineComponent({
             const livrosUsuariosBanco = await this.livroUsuarioService.buscaLivroUsuarioPorUsuario(this.token, this.usuario)
 
             if (livrosUsuariosBanco) {
+                this.livrosUsuarios = [] as LivroUsuarioJson[]
+                this.livrosUsuariosDevolvidos = [] as LivroUsuarioJson[]
+
                 console.log("Listando livros emprestados e devolvidos")
+
                 livrosUsuariosBanco.forEach((lub) => {
                     if (!lub.dataFimLeitura) {
                         this.livrosUsuarios.push(lub)
@@ -194,6 +215,27 @@ export default defineComponent({
                 this.livros = livrosBanco
             }
         },
+        async emprestaLivro(livro: LivroDisponivelJson) {
+            console.log(`Emprestando livro ${livro.id} - ${livro.titulo}`)
+            
+            try {
+                
+                const livroEmprestado = await this.livroUsuarioService.salvaLivroUsuario(this.token, livro.id, this.usuario)
+
+                if (livroEmprestado) {
+                    this.buscaLivrosDisponiveis();
+                    this.buscaLivrosUsuarios();
+
+                    this.notificar(`Emprestado livro ${livro.titulo} para usuário ${this.usuario}`, TipoNotificacao.SUCESSO)
+                }
+
+            } catch (error) {
+                if (error instanceof APIError) {
+                    this.notificar(error.message, TipoNotificacao.FALHA)
+                }
+            }
+            
+        },
         retornaNomeAutor(id: number) {
             const autorEncontrado = this.autores.find(autor => autor.id === id)
             return autorEncontrado?.nome
@@ -202,9 +244,12 @@ export default defineComponent({
             const livroEncontrado = this.livros.find(livro => livro.id === id)
             return livroEncontrado?.titulo
         },
-        retornaIdAutorPorIdLivro(id: number) {
+        retornaIdAutorPorIdLivro(id: number): number {
             const livroEncontrado = this.livros.find(livro => livro.id === id)
-            return livroEncontrado!.autorId
+            if (livroEncontrado) {
+                return livroEncontrado.autorId
+            }
+            return 0
         },
         formataData(data: string): string {
             if (!data) {
