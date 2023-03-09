@@ -1,4 +1,6 @@
+import { NaoAutorizadoError } from "@/errors/nao-autorizado-error";
 import LivroDisponivelJson from "@/interfaces/ILivroDisponivel";
+import { UnauthorizedJson } from "@/interfaces/INaoAutorizado";
 import { HttpAxiosService } from ".";
 
 export default class LivroDisponivelService {
@@ -13,6 +15,10 @@ export default class LivroDisponivelService {
             const data: LivroDisponivelJson[] = response.data
 
             return data
+        } else if(response.status === 401) {
+            const json: UnauthorizedJson = response.data
+
+            throw new NaoAutorizadoError(json.message)
         }
     }
 }

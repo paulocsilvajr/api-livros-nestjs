@@ -3,6 +3,7 @@ import { IUsuarioParam } from "@/interfaces/IUsuarioParam";
 import TokenJson from "@/interfaces/IToken";
 import { Usuario } from "@/models/usuario";
 import { HttpAxiosService } from ".";
+import { UnauthorizedJson } from "@/interfaces/INaoAutorizado";
 
 export default class EntrarService {
     private url = 'api/login'
@@ -16,8 +17,10 @@ export default class EntrarService {
             const data: TokenJson = response.data
 
             return data
-        } else if (response.status === 401) {
-            throw new NaoAutorizadoError()
+        }  else if(response.status === 401) {
+            const json: UnauthorizedJson = response.data
+
+            throw new NaoAutorizadoError(json.message)
         }
     }
 }

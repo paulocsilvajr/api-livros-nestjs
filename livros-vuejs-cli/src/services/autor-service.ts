@@ -1,9 +1,11 @@
 import { APIError } from "@/errors/api-error";
 import { CadastrarError } from "@/errors/cadastrar-error";
+import { NaoAutorizadoError } from "@/errors/nao-autorizado-error";
 import AutorJson from "@/interfaces/IAutor";
 import { Autor } from "@/models/autor";
 import { AxiosResponse } from "axios";
 import { HttpAxiosService } from ".";
+import { UnauthorizedJson } from "@/interfaces/INaoAutorizado"
 
 export default class AutorService {
     private url = 'api/autores'
@@ -17,6 +19,10 @@ export default class AutorService {
             const data: AutorJson[] = response.data
 
             return data
+        } else if(response.status === 401) {
+            const json: UnauthorizedJson = response.data
+
+            throw new NaoAutorizadoError(json.message)
         }
     }
 
@@ -42,6 +48,10 @@ export default class AutorService {
             throw new APIError(response)
         } else if (response.status === 406){
             throw new CadastrarError('autor', 'Autor com nome informado já cadastrado')
+        } else if(response.status === 401) {
+            const json: UnauthorizedJson = response.data
+
+            throw new NaoAutorizadoError(json.message)
         } else {
             throw new CadastrarError('autor')
         }
@@ -52,6 +62,10 @@ export default class AutorService {
     
         if (response.status === 200) {
             return true
+        } else if(response.status === 401) {
+            const json: UnauthorizedJson = response.data
+
+            throw new NaoAutorizadoError(json.message)
         } else {
             throw new APIError(response)
         }

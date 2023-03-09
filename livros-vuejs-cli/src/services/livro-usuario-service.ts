@@ -1,5 +1,7 @@
 import { APIError } from "@/errors/api-error";
+import { NaoAutorizadoError } from "@/errors/nao-autorizado-error";
 import { LivroUsuarioJson, LivroUsuarioCadastroAlteracao } from "@/interfaces/ILivroUsuario"
+import { UnauthorizedJson } from "@/interfaces/INaoAutorizado";
 import { HttpAxiosService } from ".";
 
 export default class LivroUsuarioService {
@@ -16,6 +18,10 @@ export default class LivroUsuarioService {
             const data: LivroUsuarioJson[] = response.data
 
             return data
+        } else if(response.status === 401) {
+            const json: UnauthorizedJson = response.data
+
+            throw new NaoAutorizadoError(json.message)
         }
     }
 
@@ -34,6 +40,10 @@ export default class LivroUsuarioService {
             const data: LivroUsuarioJson = response.data
 
             return data
+        } else if(response.status === 401) {
+            const json: UnauthorizedJson = response.data
+
+            throw new NaoAutorizadoError(json.message)
         } else {
             throw new APIError(response)
         }
@@ -56,6 +66,10 @@ export default class LivroUsuarioService {
             const data: LivroUsuarioJson = response.data
 
             return data
+        } else if(response.status === 401) {
+            const json: UnauthorizedJson = response.data
+
+            throw new NaoAutorizadoError(json.message)
         } else {
             throw new APIError(response)
         }

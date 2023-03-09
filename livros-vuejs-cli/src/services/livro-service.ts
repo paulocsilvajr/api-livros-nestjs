@@ -1,6 +1,8 @@
 import { APIError } from "@/errors/api-error"
 import { CadastrarError } from "@/errors/cadastrar-error"
+import { NaoAutorizadoError } from "@/errors/nao-autorizado-error"
 import { LivroJson, LivroCadastroAlteracao } from "@/interfaces/ILivro"
+import { UnauthorizedJson } from "@/interfaces/INaoAutorizado"
 import { Livro } from "@/models/livro"
 import { HttpAxiosService } from "."
 
@@ -37,6 +39,10 @@ export default class LivroService {
             throw new APIError(response)
         } else if (response.status === 406){
             throw new CadastrarError('livro', 'Livro com nome informado já cadastrado')
+        } else if(response.status === 401) {
+            const json: UnauthorizedJson = response.data
+
+            throw new NaoAutorizadoError(json.message)
         } else {
             throw new APIError(response)
         }
@@ -59,6 +65,10 @@ export default class LivroService {
             return data  
         } else if (response.status === 400) {
             throw new APIError(response)
+        } else if(response.status === 401) {
+            const json: UnauthorizedJson = response.data
+
+            throw new NaoAutorizadoError(json.message)
         } else {
             throw new APIError(response)
         }
@@ -69,6 +79,10 @@ export default class LivroService {
 
         if (response.status === 200) {
             return true
+        } else if(response.status === 401) {
+            const json: UnauthorizedJson = response.data
+
+            throw new NaoAutorizadoError(json.message)
         } else {
             throw new APIError(response)
         }
