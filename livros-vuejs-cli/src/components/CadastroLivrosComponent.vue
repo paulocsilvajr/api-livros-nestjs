@@ -205,10 +205,10 @@ import { LivroJson } from '@/interfaces/ILivro'
 import { filtraLista } from '@/utils/filtra-lista'
 import { Autores } from '@/models/autores'
 import { Livros } from '@/models/livros'
-import UsuarioService from '@/services/usuario-service'
-import { NaoAutorizadoError } from '@/errors/nao-autorizado-error'
-import { LIMPAR_INFORMACOES_USUARIO } from '@/store/tipos-mutacoes'
 import { formataDataBR } from '@/utils/formataData'
+// import UsuarioService from '@/services/usuario-service'
+// import { NaoAutorizadoError } from '@/errors/nao-autorizado-error'
+// import { LIMPAR_INFORMACOES_USUARIO } from '@/store/tipos-mutacoes'
 
 export default defineComponent({
     name: "CadastroLivrosComponent",
@@ -335,25 +335,25 @@ export default defineComponent({
             this.defineLivroEPesquisaVazia()
         },
     },
-    async beforeMount() {
-        const usuarioService = new UsuarioService()
+    beforeMount() {
+        // const usuarioService = new UsuarioService()
         
-        try {
-            await usuarioService.buscaUsuarioPorNome(this.nomeUsuario, this.token)
-            console.log('TOKEN ainda válido')
-        } catch (error) {
-            if (error instanceof NaoAutorizadoError) {
-                console.warn(error.message)
-                this.store.commit(LIMPAR_INFORMACOES_USUARIO)
-            }
-        }
+        // try {
+        //     await usuarioService.buscaUsuarioPorNome(this.nomeUsuario, this.token)
+        //     console.log('TOKEN ainda válido')
+        // } catch (error) {
+        //     if (error instanceof NaoAutorizadoError) {
+        //         console.warn(error.message)
+        //         this.store.commit(LIMPAR_INFORMACOES_USUARIO)
+        //     }
+        // }
         
 
-        if (this.semToken) {
-            this.$router.push({ name: "login" })
+        // if (this.semToken) {
+        //     this.$router.push({ name: "login" })
 
-            return
-        }
+        //     return
+        // }
 
         this.defineLivroEPesquisaVazia()
 
@@ -362,20 +362,20 @@ export default defineComponent({
     },
     setup() {
         const store = useStore()
-        const semToken = computed(() => store.getters.semToken)
         const token = computed(() => store.state.usuario.token)
         const { definirGuiaAtiva } = useDefinidorGuiaAtiva()
-        const nomeUsuario =  computed(() => store.state.usuario.nomeUsuario)
+        // const semToken = computed(() => store.getters.semToken)
+        // const nomeUsuario =  computed(() => store.state.usuario.nomeUsuario)
 
         const { notificar } = useNotificador()
 
         return {
-            semToken,
             token,
             notificar,
             definirGuiaAtiva,
-            nomeUsuario,
-            store,
+            // store,
+            // semToken,
+            // nomeUsuario,
         }
     }
 })
