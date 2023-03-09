@@ -17,10 +17,6 @@ export default class EntrarService {
             const data: TokenJson = response.data
 
             return data
-        }  else if(response.status === 401) {
-            const json: UnauthorizedJson = response.data
-
-            throw new NaoAutorizadoError(json.message)
         }
     }
 }
