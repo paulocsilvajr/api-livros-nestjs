@@ -1,9 +1,7 @@
-import { NaoAutorizadoError } from "@/errors/nao-autorizado-error";
 import { IUsuarioParam } from "@/interfaces/IUsuarioParam";
 import TokenJson from "@/interfaces/IToken";
 import { Usuario } from "@/models/usuario";
 import { HttpAxiosService } from ".";
-import { UnauthorizedJson } from "@/interfaces/INaoAutorizado";
 
 export default class EntrarService {
     private url = 'api/login'

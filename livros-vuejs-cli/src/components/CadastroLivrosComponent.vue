@@ -336,24 +336,11 @@ export default defineComponent({
         },
     },
     beforeMount() {
-        // const usuarioService = new UsuarioService()
-        
-        // try {
-        //     await usuarioService.buscaUsuarioPorNome(this.nomeUsuario, this.token)
-        //     console.log('TOKEN ainda válido')
-        // } catch (error) {
-        //     if (error instanceof NaoAutorizadoError) {
-        //         console.warn(error.message)
-        //         this.store.commit(LIMPAR_INFORMACOES_USUARIO)
-        //     }
-        // }
-        
+        if (this.semToken) {
+            this.$router.push({ name: "login" })
 
-        // if (this.semToken) {
-        //     this.$router.push({ name: "login" })
-
-        //     return
-        // }
+            return
+        }
 
         this.defineLivroEPesquisaVazia()
 
@@ -364,8 +351,7 @@ export default defineComponent({
         const store = useStore()
         const token = computed(() => store.state.usuario.token)
         const { definirGuiaAtiva } = useDefinidorGuiaAtiva()
-        // const semToken = computed(() => store.getters.semToken)
-        // const nomeUsuario =  computed(() => store.state.usuario.nomeUsuario)
+        const semToken = computed(() => store.getters.semToken)
 
         const { notificar } = useNotificador()
 
@@ -373,9 +359,7 @@ export default defineComponent({
             token,
             notificar,
             definirGuiaAtiva,
-            // store,
-            // semToken,
-            // nomeUsuario,
+            semToken,
         }
     }
 })
