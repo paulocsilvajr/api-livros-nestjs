@@ -206,9 +206,7 @@ import { filtraLista } from '@/utils/filtra-lista'
 import { Autores } from '@/models/autores'
 import { Livros } from '@/models/livros'
 import { formataDataBR } from '@/utils/formataData'
-// import UsuarioService from '@/services/usuario-service'
-// import { NaoAutorizadoError } from '@/errors/nao-autorizado-error'
-// import { LIMPAR_INFORMACOES_USUARIO } from '@/store/tipos-mutacoes'
+import { redirecionaParaLoginSeNaoTemToken } from '@/utils/verifica-token'
 
 export default defineComponent({
     name: "CadastroLivrosComponent",
@@ -258,6 +256,10 @@ export default defineComponent({
             }
         },
         async salvaLivro() {
+            if (await redirecionaParaLoginSeNaoTemToken(this.usuarioLogado, this.token, this.$router)) {
+                return
+            }
+
             this.carregando.salvar = true
 
             try {
@@ -298,6 +300,10 @@ export default defineComponent({
             this.definirGuiaAtiva(Guias.Cadastro)
         },
         async excluiLivro() {
+            if (await redirecionaParaLoginSeNaoTemToken(this.usuarioLogado, this.token, this.$router)) {
+                return
+            }
+            
             try {
                 if (await this.livroService.excluiLivro(this.livro, this.token)) {
                     this.notificar(`Excluído livro '${this.livro.titulo}'`, TipoNotificacao.SUCESSO)
@@ -352,6 +358,7 @@ export default defineComponent({
         const token = computed(() => store.state.usuario.token)
         const { definirGuiaAtiva } = useDefinidorGuiaAtiva()
         const semToken = computed(() => store.getters.semToken)
+        const usuarioLogado = computed(() => store.state.usuario.nomeUsuario)
 
         const { notificar } = useNotificador()
 
@@ -360,6 +367,7 @@ export default defineComponent({
             notificar,
             definirGuiaAtiva,
             semToken,
+            usuarioLogado,
         }
     }
 })
