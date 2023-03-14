@@ -153,7 +153,6 @@ import ModalConfirmacaoComponent from './ModalConfirmacaoComponent.vue'
 import { filtraLista } from '@/utils/filtra-lista'
 import { Autores } from '@/models/autores'
 import { redirecionaParaLoginSeNaoTemToken } from '@/utils/verifica-token'
-import { esperePor } from '@/utils/espere'
 
 export default defineComponent({
     name: "CadastroAutoresComponent",
