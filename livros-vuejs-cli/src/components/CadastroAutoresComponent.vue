@@ -152,6 +152,7 @@ import { Guias } from '@/enums/Guias'
 import ModalConfirmacaoComponent from './ModalConfirmacaoComponent.vue'
 import { filtraLista } from '@/utils/filtra-lista'
 import { Autores } from '@/models/autores'
+import { redirecionaParaLoginSeNaoTemToken } from '@/utils/verifica-token'
 
 export default defineComponent({
     name: "CadastroAutoresComponent",
@@ -182,6 +183,10 @@ export default defineComponent({
             this.autor = new Autor()
         },
         async salvaAutor() {
+            if (await redirecionaParaLoginSeNaoTemToken(this.usuarioLogado, this.token, this.$router)) {
+                return
+            }
+            
             this.carregando.salvar = true
 
             try {
@@ -217,6 +222,10 @@ export default defineComponent({
             this.definirGuiaAtiva(Guias.Cadastro)
         },
         async excluiAutor() {
+            if (await redirecionaParaLoginSeNaoTemToken(this.usuarioLogado, this.token, this.$router)) {
+                return
+            }
+
             try {
                 if (await this.autorService.excluiAutor(this.autor, this.token)) {
                     this.notificar(`Excluído autor '${this.autor.nome}'`, TipoNotificacao.SUCESSO)
@@ -271,12 +280,14 @@ export default defineComponent({
 
         const { notificar } = useNotificador()
         const { definirGuiaAtiva } = useDefinidorGuiaAtiva()
+        const usuarioLogado = computed(() => store.state.usuario.nomeUsuario)
 
         return {
             semToken,
             notificar,
             token,
-            definirGuiaAtiva
+            definirGuiaAtiva,
+            usuarioLogado,
         }
     }
 })
