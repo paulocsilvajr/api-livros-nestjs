@@ -60,6 +60,8 @@ export const store = createStore<Estado>({
       novaNotificacao.id = new Date().getTime()
       state.notificacoes.push(novaNotificacao)
 
+      console.log(`Notificação\ntipo: ${novaNotificacao.tipo}\nmsg: ${novaNotificacao.texto}`)
+
       const segundos = 5
       const tempoEmMilisegundos = segundos * 1000
       setTimeout(() => {
