@@ -150,6 +150,7 @@ import LivroService from '@/services/livro-service';
 import { LivroJson } from '@/interfaces/ILivro';
 import { APIError } from '@/errors/api-error';
 import { TipoNotificacao } from '@/interfaces/INotificacoes';
+import { redirecionaParaLoginSeNaoTemToken } from '@/utils/verifica-token';
 
 export default defineComponent({
     name: 'EmprestimoLivrosComponent',
@@ -230,6 +231,10 @@ export default defineComponent({
             }
         },
         async emprestaLivro(livro: LivroDisponivelJson) {
+            if (await redirecionaParaLoginSeNaoTemToken(this.usuarioLogado, this.token, this.$router)) {
+                return
+            }
+
             console.log(`Emprestando livro ${livro.id} - ${livro.titulo}`)
             
             try {
@@ -251,6 +256,10 @@ export default defineComponent({
             
         },
         async devolveLivro(idLivroUsuario: number) {
+            if (await redirecionaParaLoginSeNaoTemToken(this.usuarioLogado, this.token, this.$router)) {
+                return
+            }
+            
             const livroUsuario = this.livrosUsuarios.find(livroUsuario => livroUsuario.id == idLivroUsuario)
 
             if (livroUsuario) {
@@ -320,6 +329,7 @@ export default defineComponent({
 
         const { notificar } = useNotificador()
         const { definirGuiaAtiva } = useDefinidorGuiaAtiva()
+        const usuarioLogado = computed(() => store.state.usuario.nomeUsuario)
 
         return {
             semToken,
@@ -327,6 +337,7 @@ export default defineComponent({
             token,
             definirGuiaAtiva,
             usuario,
+            usuarioLogado,
         }
     }
 })
