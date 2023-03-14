@@ -35,7 +35,7 @@
                                 <td class="is-vcentered">
                                     <div class="field has-addons">
                                         <p class="control">
-                                            <button class="button is-primary is-small" @click="devolveLivro(lu.id)">
+                                            <button class="button is-primary is-small" @click="devolveLivro(lu.id)" :class="carregando.devolver ? 'is-loading' : ''">
                                                 <span class="icon is-small">
                                                     <i class="fas fa-arrow-up"></i>
                                                 </span>
@@ -111,7 +111,7 @@
                                 <td class="is-vcentered">
                                     <div class="field has-addons">
                                         <p class="control">
-                                            <button class="button is-primary is-small" @click="emprestaLivro(ld)">
+                                            <button class="button is-primary is-small" @click="emprestaLivro(ld)" :class="carregando.emprestar ? 'is-loading' : ''">
                                                 <span class="icon is-small">
                                                     <i class="fas fa-arrow-down"></i>
                                                 </span>
@@ -169,6 +169,10 @@ export default defineComponent({
             livrosUsuariosDevolvidos: [] as LivroUsuarioJson[],
             livroService: new LivroService(),
             livros: [] as LivroJson[],
+            carregando: {
+                emprestar: false,
+                devolver: false,
+            },
         }
     },
     computed: {
@@ -235,6 +239,8 @@ export default defineComponent({
                 return
             }
 
+            this.carregando.emprestar = true
+
             console.log(`Emprestando livro ${livro.id} - ${livro.titulo}`)
             
             try {
@@ -254,11 +260,14 @@ export default defineComponent({
                 }
             }
             
+            this.carregando.emprestar = false
         },
         async devolveLivro(idLivroUsuario: number) {
             if (await redirecionaParaLoginSeNaoTemToken(this.usuarioLogado, this.token, this.$router)) {
                 return
             }
+
+            this.carregando.devolver = true
             
             const livroUsuario = this.livrosUsuarios.find(livroUsuario => livroUsuario.id == idLivroUsuario)
 
@@ -283,6 +292,8 @@ export default defineComponent({
                     }
                 }
             }
+
+            this.carregando.devolver = false
         },
         retornaNomeAutor(id: number) {
             const autorEncontrado = this.autores.find(autor => autor.id === id)

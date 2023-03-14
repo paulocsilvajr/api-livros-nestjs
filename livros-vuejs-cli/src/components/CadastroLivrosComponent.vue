@@ -157,7 +157,7 @@
                                             </button>
                                         </p>
                                         <p class="control">
-                                            <button class="button is-danger is-small" @click="exibeModalExclusao(l)">
+                                            <button class="button is-danger is-small" @click="exibeModalExclusao(l)" :class="carregando.excluir ? 'is-loading' : ''">
                                                 <span>Excluir</span>
                                                 <span class="icon is-small">
                                                     <i class="fas fa-times"></i>
@@ -224,6 +224,7 @@ export default defineComponent({
             autores: [] as Autor[],
             carregando: {
                 salvar: false,
+                excluir: false,
             },
             exibeModal: false,
             pesquisa: "",
@@ -304,6 +305,8 @@ export default defineComponent({
                 return
             }
             
+            this.carregando.excluir = true
+
             try {
                 if (await this.livroService.excluiLivro(this.livro, this.token)) {
                     this.notificar(`Excluído livro '${this.livro.titulo}'`, TipoNotificacao.SUCESSO)
@@ -317,6 +320,8 @@ export default defineComponent({
             }
 
             this.fechaModal()
+
+            this.carregando.excluir = false
         },
         filtraLivros() {
             this.buscaLivros().then(() => {

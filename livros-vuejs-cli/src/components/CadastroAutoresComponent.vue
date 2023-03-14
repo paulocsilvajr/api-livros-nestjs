@@ -110,7 +110,7 @@
                                             </button>
                                         </p>
                                         <p class="control">
-                                            <button class="button is-danger is-small" @click="exibeModalExclusao(a)">
+                                            <button class="button is-danger is-small" @click="exibeModalExclusao(a)" :class="carregando.excluir ? 'is-loading' : ''">
                                                 <span>Excluir</span>
                                                 <span class="icon is-small">
                                                     <i class="fas fa-times"></i>
@@ -153,6 +153,7 @@ import ModalConfirmacaoComponent from './ModalConfirmacaoComponent.vue'
 import { filtraLista } from '@/utils/filtra-lista'
 import { Autores } from '@/models/autores'
 import { redirecionaParaLoginSeNaoTemToken } from '@/utils/verifica-token'
+import { esperePor } from '@/utils/espere'
 
 export default defineComponent({
     name: "CadastroAutoresComponent",
@@ -169,6 +170,7 @@ export default defineComponent({
             exibeModal: false,
             carregando: {
                 salvar: false,
+                excluir: false,
             },
             pesquisa: "",
         }
@@ -226,6 +228,8 @@ export default defineComponent({
                 return
             }
 
+            this.carregando.excluir = true
+
             try {
                 if (await this.autorService.excluiAutor(this.autor, this.token)) {
                     this.notificar(`Excluído autor '${this.autor.nome}'`, TipoNotificacao.SUCESSO)
@@ -239,6 +243,8 @@ export default defineComponent({
             }
 
             this.fechaModal()
+
+            this.carregando.excluir = false
         },
         async buscaAutores() {
             console.log("Buscando autores em API")
