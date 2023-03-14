@@ -149,7 +149,7 @@
                                 <td class="is-vcentered">
                                     <div class="field has-addons">
                                         <p class="control">
-                                            <button class="button is-primary is-small" @click="alteraLivro(l)">
+                                            <button class="button is-info is-small" @click="alteraLivro(l)">
                                                 <span class="icon is-small">
                                                     <i class="fas fa-pencil"></i>
                                                 </span>

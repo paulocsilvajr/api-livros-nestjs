@@ -35,7 +35,7 @@
                                 <td class="is-vcentered">
                                     <div class="field has-addons">
                                         <p class="control">
-                                            <button class="button is-primary is-small" @click="devolveLivro(lu.id)" :class="carregando.devolver ? 'is-loading' : ''">
+                                            <button class="button is-warning is-small" @click="devolveLivro(lu.id)" :class="carregando.devolver ? 'is-loading' : ''">
                                                 <span class="icon is-small">
                                                     <i class="fas fa-arrow-up"></i>
                                                 </span>
