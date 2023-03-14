@@ -80,6 +80,18 @@
 
             <template v-slot:guia02>
 
+                <div class="columns">
+                    <div class="column">
+                        <div class="control has-icons-left">
+                            <input class="input" type="text" placeholder="Search" v-model="pesquisa"
+                                v-on:keyup.enter="filtraLivrosDisponiveis">
+                            <span class="icon is-left">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="table-container mt-1">
 
                     <table class="table is-hoverable is-fullwidth is-striped">
@@ -151,6 +163,8 @@ import { LivroJson } from '@/interfaces/ILivro';
 import { APIError } from '@/errors/api-error';
 import { TipoNotificacao } from '@/interfaces/INotificacoes';
 import { redirecionaParaLoginSeNaoTemToken } from '@/utils/verifica-token';
+import { filtraLista } from '@/utils/filtra-lista'
+import { LivroDisponivel } from '@/models/livroDisponivel'
 
 export default defineComponent({
     name: 'EmprestimoLivrosComponent',
@@ -173,6 +187,7 @@ export default defineComponent({
                 emprestar: false,
                 devolver: false,
             },
+            pesquisa: "",
         }
     },
     computed: {
@@ -294,6 +309,25 @@ export default defineComponent({
             }
 
             this.carregando.devolver = false
+        },
+        filtraLivrosDisponiveis() {
+            this.buscaLivrosDisponiveis().then(() => {
+                if (this.pesquisa) {
+                    let livrosFiltro = [] as LivroDisponivel[]
+
+                    this.livrosDisponiveis.forEach(l => {
+                        const livro = new LivroDisponivel()
+                        livrosFiltro.push(livro.fromJson(l))
+                    })
+
+                    livrosFiltro = filtraLista(livrosFiltro, this.pesquisa) as LivroDisponivel[]
+
+                    this.livrosDisponiveis = [] as LivroDisponivelJson[]
+                    livrosFiltro.forEach(l => {
+                        this.livrosDisponiveis.push(l.toJson())
+                    })
+                }
+            })
         },
         retornaNomeAutor(id: number) {
             const autorEncontrado = this.autores.find(autor => autor.id === id)
