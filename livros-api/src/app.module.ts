@@ -37,7 +37,7 @@ import { UsuarioModule } from './usuario/usuario.module';
         Livro,
         LivroUsuario
       ],
-      synchronize: true,  // synchronize não deve ser usado em PRODUÇÃO
+      synchronize: false,  // synchronize não deve ser usado em PRODUÇÃO
     }),
   ],
   controllers: [AppController],
