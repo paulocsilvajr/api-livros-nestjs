@@ -1,17 +1,18 @@
-import LivroJson from "@/interfaces/livro-json"
+import { IFiltro } from "@/interfaces/IFiltro"
+import { LivroJson } from "@/interfaces/ILivro"
 
-export default class Livro {
+class Livro implements IFiltro {
     constructor(
         public id: number = 0,
-        public nome: string = '',
-        public autor: string = '',
+        public titulo: string = '',
+        public autorId: number = 0,
+        public resumo: string = '',
         public numeroPaginas: number = 1,
         public dataCompra: Date = new Date(),
-        public lido: boolean = false
     ) { }
 
-    public set dataCompraInput(data: string) {
-        this.dataCompra = new Date(data)
+    get filtro(): string {
+        return this.titulo
     }
 
     public get dataCompraInput(): string {
@@ -22,28 +23,20 @@ export default class Livro {
         }
     }
 
-    public copia(): Livro {
-        return new Livro(
-            this.id,
-            this.nome,
-            this.autor,
-            this.numeroPaginas,
-            this.dataCompra,
-            this.lido
-            )
+    public set dataCompraInput(data: string) {
+        this.dataCompra = new Date(data)
     }
 
     static fromJson(livro: LivroJson): Livro {
         return new Livro(
             livro.id,
-            livro.nome,
-            livro.autor,
+            livro.titulo,
+            livro.autorId,
+            livro.resumo,
             livro.numeroPaginas,
-            new Date(livro.dataCompra),
-            livro.lido)
-    }
-
-    static toJson(livro: Livro): string {
-        return JSON.stringify(livro)
+            new Date(livro.dataCompra)
+        )
     }
 }
+
+export { Livro }

@@ -1,66 +1,90 @@
-import LivroJson from "@/interfaces/livro-json"
-import Livro from "@/models/livro"
+import { APIError } from "@/errors/api-error"
+import { CadastrarError } from "@/errors/cadastrar-error"
+import { NaoAutorizadoError } from "@/errors/nao-autorizado-error"
+import { LivroJson, LivroCadastroAlteracao } from "@/interfaces/ILivro"
+import { UnauthorizedJson } from "@/interfaces/INaoAutorizado"
+import { Livro } from "@/models/livro"
+import { HttpAxiosService } from "."
 
 export default class LivroService {
-    private url = 'http://localhost:3000/api/livros'
+    private url = 'api/livros'
 
-    public async buscaLivros(livros: Array<Livro>): Promise<string> {
-        try {
-            const response = await fetch(this.url)
-            const data = await response.json()
+    constructor(private axios = new HttpAxiosService()) { }
 
-            livros.splice(0, livros.length)
-            if (response.status == 200) {
-                data.forEach((livroJson: LivroJson) => {
-                    const livro = Livro.fromJson(livroJson)
+    public async buscaLivros(token: string): Promise<LivroJson[] | undefined> {
+        const response = await this.axios.getComToken(this.url, token)
 
-                    livros.push(livro)
-                });
-            }
-            return ''
-        } catch (err) {
-            return `Erro na conexão com a API '${this.url}'`
+        if (response.status === 200) {
+            const data: LivroJson[] = response.data
+
+            return data
         }
     }
 
-    public async salvaLivro(livro: Livro, livros: Array<Livro>) {
-        let response = new Response()
-        if (this.ehNovoLivro(livro)) {
-            console.log("Salvar livro ID:", livro.id)
-
-            response = await fetch(this.url, { method: "POST", headers: { 'Content-Type': 'application/json' }, body: Livro.toJson(livro) })
-        } else {
-            console.log("Alterar livro ID:", livro.id)
-
-            response = await fetch(`${this.url}/${livro.id}`, { method: "PUT", headers: { 'Content-Type': 'application/json' }, body: Livro.toJson(livro) })
+    public async salvaLivro(livro: Livro, token: string): Promise<LivroJson> {
+        const livroCadastrado: LivroCadastroAlteracao = {
+            titulo: livro.titulo,
+            autor: livro.autorId,
+            resumo: livro.resumo,
+            numeroPaginas: livro.numeroPaginas,
+            dataCompra: livro.dataCompra.toISOString(),
         }
-
-        const livroJson: LivroJson = await response.json()
-        console.log("Livro(JSON) retornado após salvar/alterar:", livroJson)
+        const response = await this.axios.postComToken(this.url, token, livroCadastrado)
 
         if (response.status == 201) {
-            const livroSalvo = Livro.fromJson(livroJson)
+            const data: LivroJson = response.data
 
-            livros.push(livroSalvo)
-        } else if (response.status == 200) {
-            const indice = livros.findIndex(liv => liv.id === livroJson.id)
-            const livroAlterado = Livro.fromJson(livroJson)
+            return data  
+        } else if (response.status === 400) {
+            throw new APIError(response)
+        } else if (response.status === 406){
+            throw new CadastrarError('livro', 'Livro com nome informado já cadastrado')
+        } else if(response.status === 401) {
+            const json: UnauthorizedJson = response.data
 
-            livros[indice] = livroAlterado
+            throw new NaoAutorizadoError(json.message)
+        } else {
+            throw new APIError(response)
         }
     }
 
-    public async removeLivro(id: number, livros: Array<Livro>) {
-        const response = await fetch(`${this.url}/${id}`, { method: "DELETE" })
+    public async alteraLivro(livro: Livro, token: string): Promise<LivroJson> {
+        const livroAlterado: LivroCadastroAlteracao = {
+            id: livro.id,
+            titulo: livro.titulo,
+            autor: livro.autorId,
+            resumo: livro.resumo,
+            numeroPaginas: livro.numeroPaginas,
+            dataCompra: livro.dataCompra.toISOString(),
+        }
+        const response = await this.axios.putComToken(`${this.url}/${livro.id}`, token, livroAlterado)
 
         if (response.status == 200) {
-            const indice = livros.findIndex(l => l.id === id)
-            livros.splice(indice, 1)
+            const data: LivroJson = response.data
+
+            return data  
+        } else if (response.status === 400) {
+            throw new APIError(response)
+        } else if(response.status === 401) {
+            const json: UnauthorizedJson = response.data
+
+            throw new NaoAutorizadoError(json.message)
+        } else {
+            throw new APIError(response)
         }
     }
 
-    private ehNovoLivro(livro: Livro) {
-        // NOVO livro, id == 0, senão ALTERAR livro
-        return livro.id === 0
+    public async excluiLivro(livro: Livro, token: string): Promise<boolean> {
+        const response = await this.axios.deleteComToken(this.url, token, livro)
+
+        if (response.status === 200) {
+            return true
+        } else if(response.status === 401) {
+            const json: UnauthorizedJson = response.data
+
+            throw new NaoAutorizadoError(json.message)
+        } else {
+            throw new APIError(response)
+        }
     }
 }

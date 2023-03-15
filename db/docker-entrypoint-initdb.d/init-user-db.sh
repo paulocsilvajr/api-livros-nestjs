@@ -5,4 +5,5 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 	CREATE USER docker PASSWORD 'masterkey';
 	CREATE DATABASE livros;
 	GRANT ALL PRIVILEGES ON DATABASE livros TO docker;
+    ALTER USER docker WITH SUPERUSER;
 EOSQL
