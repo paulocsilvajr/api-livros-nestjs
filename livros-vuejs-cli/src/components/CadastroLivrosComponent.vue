@@ -180,7 +180,7 @@
     </div>
 
     <ModalConfirmacaoComponent titulo="Confirmar exclusão de livro"
-        :mensagem="'Deseja realmente excluir o autor ' + livro.titulo " texto-botao="Excluir"
+        :mensagem="'Deseja realmente excluir o livro ' + livro.titulo " texto-botao="Excluir"
         @ao-clicar-confirmacao="excluiLivro" @ao-fechar-modal="fechaModal" v-if="exibeModal">
     </ModalConfirmacaoComponent>
 
