@@ -10,5 +10,8 @@ module.exports = {
     plugins: [
       new Dotenv()
     ]
+  },
+  devServer: {
+    port: process.env.DEV_PORT
   }
 }
