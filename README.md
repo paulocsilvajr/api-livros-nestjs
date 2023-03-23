@@ -45,7 +45,8 @@ A pasta *livros-vuejs-cli* contém a interface web desenvolvida em **Vue.js** a 
 - Use o script *run-serve.sh* para testar no modo desenvolvimento ou compile com o script *run-build.sh* para gerar a aplicação final na pasta *build*. Para rodar a interface WEB, o banco de dados e a API devem estar rodando.
 - O script *install_http-server.sh* instala um servidor HTTP em Node para rodar a interface web. Use o script *run-server-http_dist.sh* para rodar o interface web que está na pasta *dist*.
 - Na interface WEB é possível cadastrar um novo usuário já na tela inicial, gerenciar livros e autores e emprestar/devolver livros.
-- Quando em execução, a interface WEB está disponível no endereço **http://localhost:8080**.
+- Configuração de url da API e Porta em arquivo *.env*
+- Quando em execução, a interface WEB está disponível no endereço **http://localhost:8088**.
 
 
 ### Licença
