@@ -8,7 +8,7 @@ O repositório contém shell scripts para automatizar a tarefa de instalação d
 
 ### Pré-requisitos:
 
-- Instalar o **Node.js** com o script *install_node_snap_ubuntu20.04+.sh* e instalar o **NestJS** com o script *install_nestjs-cli.sh*, se necessário.
+- Instalar o **Node.js** com o script *install_node_snap_ubuntu20.04+.sh*, instalar o **NestJS** com o script *install_nestjs-cli.sh* e o **Vue** com o script *install_vue-cli.sh*, se necessário.
 - Instalar o **Docker** e **docker-compose** com o comando `sudo apt install docker.io docker-compose docker-doc` em Distribuição Linux baseadas no Ubuntu22.04+.
 - Scripts desenvolvidos para o *Ubuntu 22.04*+ ou derivados.
 
